@@ -32,20 +32,26 @@
 
 
 ////////////////////////////////////////////////////////////////////////////////
-/// @brief Generate geometry for the rocket engine
+/// @brief Generate geometry for a single segment of a wing.
 ////////////////////////////////////////////////////////////////////////////////
-int EVDS_InternalWing_GenerateGeometry(EVDS_OBJECT* object) {
-	//int i,j;
-	//EVDS_VARIABLE* geometry;
-	//EVDS_VARIABLE* variable;
+int EVDS_InternalWingSegment_GenerateGeometry(EVDS_OBJECT* object) {
 	return EVDS_OK;
 }
 
 
 ////////////////////////////////////////////////////////////////////////////////
-/// @brief Solver itself
+/// @brief Update state of the wing segment.
 ////////////////////////////////////////////////////////////////////////////////
-int EVDS_InternalWing_Solve(EVDS_SYSTEM* system, EVDS_SOLVER* solver, EVDS_OBJECT* object, EVDS_REAL delta_time) {
+int EVDS_InternalWingSegment_Solve(EVDS_SYSTEM* system, EVDS_SOLVER* solver, EVDS_OBJECT* object, EVDS_REAL delta_time) {
+	return EVDS_OK;
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+/// @brief Return forces acting upon a wing segment or control surface.
+////////////////////////////////////////////////////////////////////////////////
+int EVDS_InternalWingSegment_Integrate(EVDS_SYSTEM* system, EVDS_SOLVER* solver, EVDS_OBJECT* object,
+									   EVDS_REAL delta_time, EVDS_STATE_VECTOR* state, EVDS_STATE_VECTOR_DERIVATIVE* derivative) {
 	return EVDS_OK;
 }
 
@@ -53,11 +59,29 @@ int EVDS_InternalWing_Solve(EVDS_SYSTEM* system, EVDS_SOLVER* solver, EVDS_OBJEC
 ////////////////////////////////////////////////////////////////////////////////
 /// @brief Initialize solver
 ////////////////////////////////////////////////////////////////////////////////
+int EVDS_InternalWingSegment_Initialize(EVDS_SYSTEM* system, EVDS_SOLVER* solver, EVDS_OBJECT* object) {
+	if ((EVDS_Object_CheckType(object,"wing.segment") != EVDS_OK) &&
+		(EVDS_Object_CheckType(object,"wing.control_surface") != EVDS_OK)) return EVDS_IGNORE_OBJECT;
+
+	//Generate geometry for the wing segment
+	//EVDS_InternalWing_GenerateGeometry(object);
+	return EVDS_CLAIM_OBJECT;
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+/// @brief Update wing state and control surface deflections, flap positions
+////////////////////////////////////////////////////////////////////////////////
+int EVDS_InternalWing_Solve(EVDS_SYSTEM* system, EVDS_SOLVER* solver, EVDS_OBJECT* object, EVDS_REAL delta_time) {
+	return EVDS_OK;
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+/// @brief Initialize wing geometry and create all segments, control surfaces.
+////////////////////////////////////////////////////////////////////////////////
 int EVDS_InternalWing_Initialize(EVDS_SYSTEM* system, EVDS_SOLVER* solver, EVDS_OBJECT* object) {
 	if (EVDS_Object_CheckType(object,"wing") != EVDS_OK) return EVDS_IGNORE_OBJECT;
-
-	//Generate geometry for the wing
-	EVDS_InternalWing_GenerateGeometry(object);
 	return EVDS_CLAIM_OBJECT;
 }
 
@@ -75,6 +99,18 @@ EVDS_SOLVER EVDS_Solver_Wing = {
 	0, //OnStartup
 	0, //OnShutdown
 };
+
+EVDS_SOLVER EVDS_Solver_WingSegment = {
+	EVDS_InternalWingSegment_Initialize, //OnInitialize
+	0, //OnDeinitialize
+	EVDS_InternalWingSegment_Solve, //OnSolve
+	EVDS_InternalWingSegment_Integrate, //OnIntegrate
+	0, //OnStateSave
+	0, //OnStateLoad
+	0, //OnStartup
+	0, //OnShutdown
+};
+
 ////////////////////////////////////////////////////////////////////////////////
 /// @brief Register wing solver
 ///
@@ -86,5 +122,7 @@ EVDS_SOLVER EVDS_Solver_Wing = {
 /// @retval EVDS_ERROR_BAD_STATE Cannot register solvers in current state
 ////////////////////////////////////////////////////////////////////////////////
 int EVDS_Wing_Register(EVDS_SYSTEM* system) {
-	return EVDS_Solver_Register(system,&EVDS_Solver_Wing);
+	EVDS_ERRCHECK(EVDS_Solver_Register(system,&EVDS_Solver_Wing));
+	EVDS_ERRCHECK(EVDS_Solver_Register(system,&EVDS_Solver_WingSegment));
+	return EVDS_OK;
 }

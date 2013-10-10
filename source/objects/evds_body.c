@@ -402,7 +402,7 @@ int EVDS_InternalRigidBody_Solve(EVDS_SYSTEM* system, EVDS_SOLVER* solver, EVDS_
 /// @brief Rigid body integration routine. Outputs actual motion of the body
 ////////////////////////////////////////////////////////////////////////////////
 int EVDS_InternalRigidBody_Integrate(EVDS_SYSTEM* system, EVDS_SOLVER* solver, EVDS_OBJECT* object,
-								  EVDS_REAL delta_time, EVDS_STATE_VECTOR* state, EVDS_STATE_VECTOR_DERIVATIVE* derivative) {
+									 EVDS_REAL delta_time, EVDS_STATE_VECTOR* state, EVDS_STATE_VECTOR_DERIVATIVE* derivative) {
 	//State variables and parent coordinate system reference
 	EVDS_OBJECT *parent_coordinates;
 	EVDS_VECTOR cm,Ix,Iy,Iz,Ix1,Iy1,Iz1;
