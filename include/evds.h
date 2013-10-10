@@ -1572,6 +1572,8 @@ EVDS_API int EVDS_Planet_Register(EVDS_SYSTEM* system);
 EVDS_API int EVDS_Wiring_Register(EVDS_SYSTEM* system);
 // Modifier
 EVDS_API int EVDS_Modifier_Register(EVDS_SYSTEM* system);
+// Aerodynamic wing or aerodynamic surface
+EVDS_API int EVDS_Wing_Register(EVDS_SYSTEM* system);
 
 // Forward euler propagator
 EVDS_API int EVDS_Propagator_ForwardEuler_Register(EVDS_SYSTEM* system);

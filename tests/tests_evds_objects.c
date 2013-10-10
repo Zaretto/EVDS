@@ -937,3 +937,21 @@ void Test_EVDS_ROCKET_ENGINE() {
 		REAL_EQUAL_TO(real,0.0);
 	} END_TEST
 }
+
+
+
+
+void Test_EVDS_WING() {
+	START_TEST("Wing (general)") {
+		/*ERROR_CHECK(EVDS_Object_LoadFromString(root,
+"<EVDS version=\"31\">"
+"    <object name=\"Rocket engine\" type=\"rocket_engine\">"
+"        <parameter name=\"mass\">1000</parameter>"
+"        <parameter name=\"nozzle.exit_radius\">2.0</parameter>"
+"    </object>"
+"</EVDS>",&object));
+		ERROR_CHECK(EVDS_Object_Initialize(object,1));
+		ERROR_CHECK(EVDS_Object_GetRealVariable(object,"nozzle.exit_area",&real,&variable));
+		REAL_EQUAL_TO(real,EVDS_PI*4.0);*/
+	} END_TEST
+}

@@ -1331,6 +1331,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\source\objects\evds_wing.c"
+				>
+			</File>
+			<File
 				RelativePath="..\..\source\objects\evds_wiring.c"
 				>
 			</File>
