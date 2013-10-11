@@ -279,6 +279,10 @@ void EVDS_Vector_Convert(EVDS_VECTOR* target, EVDS_VECTOR* v, EVDS_OBJECT* targe
 		return;
 	}
 
+	//Make sure coordinate system is defined for the vector to be converted
+	EVDS_ASSERT(v->coordinate_system != 0);
+	EVDS_ASSERT(target_coordinates != 0);
+
 	//Execute short conversion
 	if ((target_coordinates->parent == v->coordinate_system) ||
 		(target_coordinates == v->coordinate_system->parent)) {

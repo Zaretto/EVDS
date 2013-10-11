@@ -181,8 +181,9 @@ int EVDS_InternalModifier_Initialize(EVDS_SYSTEM* system, EVDS_SOLVER* solver, E
 
 	//Check modifier type, run additional calculations if needed
 	vars.type = EVDS_MODIFIER_TYPE_LINEAR;
-	EVDS_Object_GetVariable(object,"pattern",&variable);
-	EVDS_Variable_GetString(variable,type_str,256,0);
+	if (EVDS_Object_GetVariable(object,"pattern",&variable) == EVDS_OK) {
+		EVDS_Variable_GetString(variable,type_str,256,0); //Only read type string if the "pattern" variable exists
+	}
 	if (strcmp(type_str,"circular") == 0) {
 		EVDS_VECTOR normal,direction,vector;
 		EVDS_REAL mag;

@@ -125,12 +125,12 @@ int EVDS_Variable_Copy(EVDS_VARIABLE* source, EVDS_VARIABLE* variable) {
 		case EVDS_VARIABLE_TYPE_VECTOR: {
 			EVDS_VECTOR value;
 			EVDS_Variable_GetVector(source,&value);
-			EVDS_Variable_SetVector(source,&value);
+			EVDS_Variable_SetVector(variable,&value);
 		} break;
 		case EVDS_VARIABLE_TYPE_QUATERNION: {
 			EVDS_QUATERNION value;
 			EVDS_Variable_GetQuaternion(source,&value);
-			EVDS_Variable_SetQuaternion(source,&value);
+			EVDS_Variable_SetQuaternion(variable,&value);
 		} break;
 		case EVDS_VARIABLE_TYPE_NESTED: {
 			size_t length;
