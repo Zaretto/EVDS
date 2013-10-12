@@ -29,9 +29,18 @@
 #define CSECTION_ELLIPSE	0
 #define CSECTION_RECTANGLE	1
 #define CSECTION_NGON		2
+#define CSECTION_POLYGON	3
 
 // Structure that stores cross-section variables (for all types), just for the quick lookup
 #ifndef DOXYGEN_INTERNAL_STRUCTS
+#define CSECTION_MAX_NODES	32
+
+typedef struct EVDS_INTERNALMESH_NODE_TAG {
+	float t;
+	float x;
+	float y;
+} EVDS_INTERNALMESH_NODE;
+
 typedef struct EVDS_INTERNALMESH_ATTRIBUTES_TAG {
 	//Shared between all
 	int type;
@@ -53,6 +62,10 @@ typedef struct EVDS_INTERNALMESH_ATTRIBUTES_TAG {
 
 	//NGON
 	EVDS_REAL n,phi;
+
+	//POLYGON, BEZIER
+	int nodes_count;
+	EVDS_INTERNALMESH_NODE nodes[CSECTION_MAX_NODES];
 } EVDS_INTERNALMESH_ATTRIBUTES;
 #endif
 
@@ -70,6 +83,7 @@ void EVDS_InternalMesh_GetAttributes(EVDS_VARIABLE* cross_section, EVDS_INTERNAL
 	if (EVDS_Variable_GetAttribute(cross_section,"type",&v) == EVDS_OK) EVDS_Variable_GetString(v,type,256,0);
 	if (strncmp(type,"rectangle",256) == 0) attributes->type = CSECTION_RECTANGLE;
 	if (strncmp(type,"ngon",256) == 0) attributes->type = CSECTION_NGON;
+	if (strncmp(type,"polygon",256) == 0) attributes->type = CSECTION_POLYGON;
 
 	//Get variables
 	if (EVDS_Variable_GetAttribute(cross_section,"offset",&v) == EVDS_OK) EVDS_Variable_GetReal(v,&attributes->offset);
@@ -93,6 +107,64 @@ void EVDS_InternalMesh_GetAttributes(EVDS_VARIABLE* cross_section, EVDS_INTERNAL
 
 	if (EVDS_Variable_GetAttribute(cross_section,"n",&v) == EVDS_OK)   EVDS_Variable_GetReal(v,&attributes->n);
 	if (EVDS_Variable_GetAttribute(cross_section,"phi",&v) == EVDS_OK) EVDS_Variable_GetReal(v,&attributes->phi);
+
+	//Read nodes for polygon, bezier types
+	if (attributes->type == CSECTION_POLYGON) {
+		int i;
+		float px,py;
+		float length = 0.0;
+		SIMC_LIST* list;
+		SIMC_LIST_ENTRY* entry;
+
+		//Get list of all nodes
+		EVDS_Variable_GetList(cross_section,&list);
+
+		//Read all nodes
+		attributes->nodes_count = 0;
+		entry = SIMC_List_GetFirst(list);
+		while (entry && (attributes->nodes_count < (CSECTION_MAX_NODES-1))) {
+			EVDS_VARIABLE* node_var = (EVDS_VARIABLE*)SIMC_List_GetData(list,entry);
+			EVDS_Variable_GetName(node_var,type,256);
+			if (strncmp(type,"node",256) == 0) {
+				EVDS_REAL x,y;
+				EVDS_INTERNALMESH_NODE* node = &attributes->nodes[attributes->nodes_count];
+
+				//Get node attributes
+				if (EVDS_Variable_GetAttribute(node_var,"x",&v) == EVDS_OK)   EVDS_Variable_GetReal(v,&x);
+				if (EVDS_Variable_GetAttribute(node_var,"y",&v) == EVDS_OK)   EVDS_Variable_GetReal(v,&y);
+				node->x = (float)x;
+				node->y = (float)y;
+
+				//Calculate total length of the curve
+				if (attributes->nodes_count > 0) {
+					length += sqrtf((node->x-px)*(node->x-px) + (node->y-py)*(node->y-py));
+				}
+								
+				px = node->x;
+				py = node->y;
+				node->t = length;
+				attributes->nodes_count++;
+			}
+			entry = SIMC_List_GetNext(list,entry);
+		}
+
+		//Add one more node to close the curve
+		{
+			EVDS_INTERNALMESH_NODE* node = &attributes->nodes[attributes->nodes_count];
+			node->x = attributes->nodes[0].x;
+			node->y = attributes->nodes[0].y;
+
+			length += sqrtf((node->x-px)*(node->x-px) + (node->y-py)*(node->y-py));
+			node->t = length;
+
+			attributes->nodes_count++;
+		}
+
+		//Calculate time for each node
+		for (i = 0; i < attributes->nodes_count; i++) {
+			attributes->nodes[i].t /= length;
+		}
+	}
 }
 
 
@@ -101,6 +173,13 @@ void EVDS_InternalMesh_GetAttributes(EVDS_VARIABLE* cross_section, EVDS_INTERNAL
 ///
 /// Returns X and Y offsets relative to cross-section guiding line, local smoothing
 /// group number.
+///
+/// Time    X   Y
+/// 0.000   1   0
+/// 0.250   0   1
+/// 0.500  -1   0
+/// 0.750   0  -1
+/// 1.000   1   0
 ////////////////////////////////////////////////////////////////////////////////
 void EVDS_InternalMesh_GetPoint(EVDS_INTERNALMESH_ATTRIBUTES* attributes, float time, float* x, float* y, int* group) {
 	switch (attributes->type) {
@@ -133,6 +212,25 @@ void EVDS_InternalMesh_GetPoint(EVDS_INTERNALMESH_ATTRIBUTES* attributes, float 
 			//*group = (int)(time*n);
 			*group = (int)(((phi + dphi) / (2.0*EVDS_PIf))*n - EVDS_EPSf);
 			if (*group >= n) *group = 0;
+		} break;
+		case CSECTION_POLYGON: {
+			float t;
+			int i,j;
+
+			//Find between which two nodes the point lies
+			i = 1;
+			for (j = 1; j < attributes->nodes_count; j++) {
+				if (attributes->nodes[j].t >= time) {
+					i = j;
+					break;
+				}
+			}
+
+			//Linearly interpolate
+			t = (time - attributes->nodes[i-1].t)/(attributes->nodes[i].t - attributes->nodes[i-1].t);
+			*x = attributes->nodes[i].x*t + attributes->nodes[i-1].x*(1-t);
+			*y = attributes->nodes[i].y*t + attributes->nodes[i-1].y*(1-t);
+			*group = 0;//i-1;			
 		} break;
 		default: {
 			*x = 0;
