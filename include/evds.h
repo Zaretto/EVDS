@@ -1000,8 +1000,23 @@ EVDS_API int EVDS_System_SetCallback_OnInitialize(EVDS_SYSTEM* system, EVDS_Call
 EVDS_API int EVDS_System_SetUserdata(EVDS_SYSTEM* system, void* userdata);
 // Get userdata
 EVDS_API int EVDS_System_GetUserdata(EVDS_SYSTEM* system, void** p_userdata);
+////////////////////////////////////////////////////////////////////////////////
+/// @}
+////////////////////////////////////////////////////////////////////////////////
 
 
+
+
+
+
+
+
+////////////////////////////////////////////////////////////////////////////////
+/// @defgroup EVDS_UTIL Miscellaneous API
+/// @brief Logging and miscellanous functions
+///
+/// @{
+////////////////////////////////////////////////////////////////////////////////
 // Convert a null-terminated string to an EVDS_REAL (parses units from input string, value is in metric units)
 EVDS_API int EVDS_StringToReal(const char* str, char** str_end, EVDS_REAL* p_value);
 // Signals an assert has failed
