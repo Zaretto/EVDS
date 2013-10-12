@@ -41,7 +41,7 @@ if true then -- (not os.isfile(evds_defmat))
   local source = "char* EVDS_Internal_Database = \n"..xml_contents..";\n"
 
   -- Save source code
-  local file = io.open(evds_defmat,"w+")
+  local file = io.open(evds_defmat,"wb+")
   file:write(source)
   file:close()
 end
