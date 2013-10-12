@@ -30,15 +30,20 @@
 #define CSECTION_RECTANGLE	1
 #define CSECTION_NGON		2
 #define CSECTION_POLYGON	3
+#define CSECTION_BEZIER		4
 
 // Structure that stores cross-section variables (for all types), just for the quick lookup
 #ifndef DOXYGEN_INTERNAL_STRUCTS
 #define CSECTION_MAX_NODES	32
 
 typedef struct EVDS_INTERNALMESH_NODE_TAG {
-	float t;
-	float x;
+	float t; //Time of node on the curve
+	float x; //Position of node in cross-section plane
 	float y;
+	/*float start_nx; //Normal at this node
+	float start_ny;
+	float end_nx; //Normal just before the next node
+	float end_ny;*/
 } EVDS_INTERNALMESH_NODE;
 
 typedef struct EVDS_INTERNALMESH_ATTRIBUTES_TAG {
@@ -71,6 +76,93 @@ typedef struct EVDS_INTERNALMESH_ATTRIBUTES_TAG {
 
 
 ////////////////////////////////////////////////////////////////////////////////
+/// @brief Get nodes from the cross-section (for bezier and polygonal cross-sections)
+////////////////////////////////////////////////////////////////////////////////
+int EVDS_InternalMesh_CompareNodeEntries(const EVDS_INTERNALMESH_NODE* v1, const EVDS_INTERNALMESH_NODE* v2) {
+	if (v1->t > v2->t) return 1;
+	if (v1->t < v2->t) return -1;
+    return 0;
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+/// @brief Read the list of nodes for cross-section
+////////////////////////////////////////////////////////////////////////////////
+void EVDS_InternalMesh_GetNodesForAttributes(EVDS_VARIABLE* cross_section, EVDS_INTERNALMESH_ATTRIBUTES* attributes) {
+	int i;
+	char node_var_name[256] = { 0 };
+	float px,py;
+	float length = 0.0;
+	SIMC_LIST* list;
+	SIMC_LIST_ENTRY* entry;
+
+	//Get list of all nodes
+	EVDS_Variable_GetList(cross_section,&list);
+
+	//Read all nodes
+	attributes->nodes_count = 0;
+	entry = SIMC_List_GetFirst(list);
+	while (entry && (attributes->nodes_count < (CSECTION_MAX_NODES-1))) {
+		EVDS_VARIABLE* v;
+		EVDS_VARIABLE* node_var = (EVDS_VARIABLE*)SIMC_List_GetData(list,entry);
+		EVDS_Variable_GetName(node_var,node_var_name,256);
+		if (strncmp(node_var_name,"node",256) == 0) {
+			EVDS_REAL x,y;
+			EVDS_INTERNALMESH_NODE* node = &attributes->nodes[attributes->nodes_count];
+
+			//Get node attributes
+			if (EVDS_Variable_GetAttribute(node_var,"x",&v) == EVDS_OK)   EVDS_Variable_GetReal(v,&x);
+			if (EVDS_Variable_GetAttribute(node_var,"y",&v) == EVDS_OK)   EVDS_Variable_GetReal(v,&y);
+			node->x = (float)x;
+			node->y = (float)y;
+
+			//Calculate total length of the curve
+			if (attributes->nodes_count > 0) {
+				length += sqrtf((node->x-px)*(node->x-px) + (node->y-py)*(node->y-py));
+			}
+		
+			//Calculate time for each node
+			px = node->x;
+			py = node->y;
+			node->t = length;
+			/*if (1) {
+				//Determine time from angle relative to central point
+				node->t = atan2f(node->y,node->x)/(2.0f*EVDS_PIf);
+				if (node->t < 0.0) node->t += 1.0;
+
+				//Just make a good guess if point is located in center
+				if ((node->x == 0.0f) && (node->y == 0.0f)) {
+					node->t = 0.0f;
+					if (attributes->nodes_count > 0) {
+						node->t = attributes->nodes[attributes->nodes_count-1].t;
+					}
+				}
+			}*/
+			attributes->nodes_count++;
+		}
+		entry = SIMC_List_GetNext(list,entry);
+	}
+
+	//Add one more node to close the curve
+	{
+		EVDS_INTERNALMESH_NODE* node = &attributes->nodes[attributes->nodes_count];
+		node->x = attributes->nodes[0].x;
+		node->y = attributes->nodes[0].y;
+
+		length += sqrtf((node->x-px)*(node->x-px) + (node->y-py)*(node->y-py));
+		node->t = length;
+
+		attributes->nodes_count++;
+	}
+
+	//Calculate time for each node
+	for (i = 0; i < attributes->nodes_count; i++) {
+		attributes->nodes[i].t /= length;
+	}
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
 /// @brief Get attributes from the cross-section (and its parent properties too)
 ////////////////////////////////////////////////////////////////////////////////
 void EVDS_InternalMesh_GetAttributes(EVDS_VARIABLE* cross_section, EVDS_INTERNALMESH_ATTRIBUTES* attributes) {
@@ -84,6 +176,7 @@ void EVDS_InternalMesh_GetAttributes(EVDS_VARIABLE* cross_section, EVDS_INTERNAL
 	if (strncmp(type,"rectangle",256) == 0) attributes->type = CSECTION_RECTANGLE;
 	if (strncmp(type,"ngon",256) == 0) attributes->type = CSECTION_NGON;
 	if (strncmp(type,"polygon",256) == 0) attributes->type = CSECTION_POLYGON;
+	if (strncmp(type,"bezier",256) == 0) attributes->type = CSECTION_BEZIER;
 
 	//Get variables
 	if (EVDS_Variable_GetAttribute(cross_section,"offset",&v) == EVDS_OK) EVDS_Variable_GetReal(v,&attributes->offset);
@@ -109,61 +202,9 @@ void EVDS_InternalMesh_GetAttributes(EVDS_VARIABLE* cross_section, EVDS_INTERNAL
 	if (EVDS_Variable_GetAttribute(cross_section,"phi",&v) == EVDS_OK) EVDS_Variable_GetReal(v,&attributes->phi);
 
 	//Read nodes for polygon, bezier types
-	if (attributes->type == CSECTION_POLYGON) {
-		int i;
-		float px,py;
-		float length = 0.0;
-		SIMC_LIST* list;
-		SIMC_LIST_ENTRY* entry;
-
-		//Get list of all nodes
-		EVDS_Variable_GetList(cross_section,&list);
-
-		//Read all nodes
-		attributes->nodes_count = 0;
-		entry = SIMC_List_GetFirst(list);
-		while (entry && (attributes->nodes_count < (CSECTION_MAX_NODES-1))) {
-			EVDS_VARIABLE* node_var = (EVDS_VARIABLE*)SIMC_List_GetData(list,entry);
-			EVDS_Variable_GetName(node_var,type,256);
-			if (strncmp(type,"node",256) == 0) {
-				EVDS_REAL x,y;
-				EVDS_INTERNALMESH_NODE* node = &attributes->nodes[attributes->nodes_count];
-
-				//Get node attributes
-				if (EVDS_Variable_GetAttribute(node_var,"x",&v) == EVDS_OK)   EVDS_Variable_GetReal(v,&x);
-				if (EVDS_Variable_GetAttribute(node_var,"y",&v) == EVDS_OK)   EVDS_Variable_GetReal(v,&y);
-				node->x = (float)x;
-				node->y = (float)y;
-
-				//Calculate total length of the curve
-				if (attributes->nodes_count > 0) {
-					length += sqrtf((node->x-px)*(node->x-px) + (node->y-py)*(node->y-py));
-				}
-								
-				px = node->x;
-				py = node->y;
-				node->t = length;
-				attributes->nodes_count++;
-			}
-			entry = SIMC_List_GetNext(list,entry);
-		}
-
-		//Add one more node to close the curve
-		{
-			EVDS_INTERNALMESH_NODE* node = &attributes->nodes[attributes->nodes_count];
-			node->x = attributes->nodes[0].x;
-			node->y = attributes->nodes[0].y;
-
-			length += sqrtf((node->x-px)*(node->x-px) + (node->y-py)*(node->y-py));
-			node->t = length;
-
-			attributes->nodes_count++;
-		}
-
-		//Calculate time for each node
-		for (i = 0; i < attributes->nodes_count; i++) {
-			attributes->nodes[i].t /= length;
-		}
+	if ((attributes->type == CSECTION_POLYGON) ||
+		(attributes->type == CSECTION_BEZIER)) {
+		EVDS_InternalMesh_GetNodesForAttributes(cross_section, attributes);
 	}
 }
 
