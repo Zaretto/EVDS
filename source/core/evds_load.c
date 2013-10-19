@@ -232,12 +232,23 @@ int EVDS_Internal_LoadParameter(EVDS_OBJECT* object, EVDS_VARIABLE* parent_varia
 			EVDS_ERRCHECK(SIMC_XML_Iterate(doc,element,&nested_element,0));
 		}
 
+		//Load all nested attributes
+		EVDS_ERRCHECK(SIMC_XML_GetFirstAttribute(doc,element,&nested_attribute));
+		while (nested_attribute) {
+			EVDS_ERRCHECK(EVDS_Internal_LoadParameter(0,variable,doc,0,nested_attribute,info,1));
+			EVDS_ERRCHECK(SIMC_XML_IterateAttributes(doc,nested_attribute,&nested_attribute));
+		}
+
 		//Initialize function table
 		if (nested_in_function) { //This function variable contains actual data
 			function->constant_value = 0.0;
 			EVDS_ERRCHECK(EVDS_InternalVariable_InitializeFunction(variable,function,value));
 		} else { //This function variable only contains constant value and more functions
-			function->constant_value = real_value;
+			if (value) {
+				function->constant_value = real_value;
+			} else {
+				function->constant_value = 0.0;
+			}
 			EVDS_ERRCHECK(EVDS_InternalVariable_InitializeFunction(variable,function,0));
 		}
 	} else if (element) {

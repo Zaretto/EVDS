@@ -148,11 +148,11 @@ extern "C" {
 /// ~~~
 ////////////////////////////////////////////////////////////////////////////////
 #ifndef DOXYGEN_INTERNAL_STRUCTS
-typedef struct EVDS_VARIABLE_TVALUE_ENTRY_TAG {
+typedef struct EVDS_VARIABLE_FVALUE_LINEAR_TAG {
 	EVDS_REAL x;						//X value
 	EVDS_REAL value;					//Constant value
 	EVDS_VARIABLE* function;			//Nested function
-} EVDS_VARIABLE_TVALUE_ENTRY;
+} EVDS_VARIABLE_FVALUE_LINEAR;
 
 /// Linear interpolation
 //#define EVDS_VARIABLE_FUNCTION_INTERPOLATION_LINEAR		0
@@ -161,8 +161,14 @@ typedef struct EVDS_VARIABLE_TVALUE_ENTRY_TAG {
 
 typedef struct EVDS_VARIABLE_FUNCTION_TAG {
 	//int interpolation;					//Interpolation method for this function
+	//union {
+		//void* data;							//Table of values
+		//EVDS_VARIABLE_FVALUE_LINEAR* linear;	//Table of linear values
+		//EVDS_VARIABLE_FVALUE_SPLINE* spline;	//Table of spline values
+	//};
+
 	EVDS_REAL constant_value;				//Constant value of the function
-	EVDS_VARIABLE_TVALUE_ENTRY* data;		//Table of values
+	EVDS_VARIABLE_FVALUE_LINEAR* data;		//Table of linear values
 	int data_count;							//Size of the values table
 } EVDS_VARIABLE_FUNCTION;
 

@@ -83,6 +83,8 @@ int EVDS_Variable_Create(EVDS_SYSTEM* system, const char* name, EVDS_VARIABLE_TY
 		case EVDS_VARIABLE_TYPE_FUNCTION:
 			variable->value_size = sizeof(EVDS_VARIABLE_FUNCTION);
 			variable->value = (EVDS_VARIABLE_FUNCTION*)malloc(sizeof(EVDS_VARIABLE_FUNCTION));
+
+			SIMC_List_Create(&variable->attributes,0);
 			SIMC_List_Create(&variable->list,0);
 		break;
 	}
@@ -401,7 +403,8 @@ int EVDS_Variable_AddAttribute(EVDS_VARIABLE* parent_variable, const char* name,
 	if (!name) return EVDS_ERROR_BAD_PARAMETER;
 	if (!p_variable) return EVDS_ERROR_BAD_PARAMETER;
 	if (!parent_variable) return EVDS_ERROR_BAD_PARAMETER;
-	if (parent_variable->type != EVDS_VARIABLE_TYPE_NESTED) return EVDS_ERROR_BAD_STATE;
+	if ((parent_variable->type != EVDS_VARIABLE_TYPE_NESTED) &&
+		(parent_variable->type != EVDS_VARIABLE_TYPE_FUNCTION)) return EVDS_ERROR_BAD_STATE;
 #ifndef EVDS_SINGLETHREADED
 	if (parent_variable->object) {
 		if (parent_variable->object->destroyed) return EVDS_ERROR_INVALID_OBJECT;
@@ -451,7 +454,8 @@ int EVDS_Variable_AddFloatAttribute(EVDS_VARIABLE* parent_variable, const char* 
 	EVDS_VARIABLE* variable;
 	if (!name) return EVDS_ERROR_BAD_PARAMETER;
 	if (!parent_variable) return EVDS_ERROR_BAD_PARAMETER;
-	if (parent_variable->type != EVDS_VARIABLE_TYPE_NESTED) return EVDS_ERROR_BAD_STATE;
+	if ((parent_variable->type != EVDS_VARIABLE_TYPE_NESTED) &&
+		(parent_variable->type != EVDS_VARIABLE_TYPE_FUNCTION)) return EVDS_ERROR_BAD_STATE;
 #ifndef EVDS_SINGLETHREADED
 	if (parent_variable->object) {
 		if (parent_variable->object->destroyed) return EVDS_ERROR_INVALID_OBJECT;
@@ -500,7 +504,8 @@ int EVDS_Variable_GetAttribute(EVDS_VARIABLE* parent_variable, const char* name,
 	if (!name) return EVDS_ERROR_BAD_PARAMETER;
 	if (!p_variable) return EVDS_ERROR_BAD_PARAMETER;
 	if (!parent_variable) return EVDS_ERROR_BAD_PARAMETER;
-	if (parent_variable->type != EVDS_VARIABLE_TYPE_NESTED) return EVDS_ERROR_BAD_STATE;
+	if ((parent_variable->type != EVDS_VARIABLE_TYPE_NESTED) &&
+		(parent_variable->type != EVDS_VARIABLE_TYPE_FUNCTION)) return EVDS_ERROR_BAD_STATE;
 #ifndef EVDS_SINGLETHREADED
 	if (parent_variable->object) {
 		if (parent_variable->object->destroyed) return EVDS_ERROR_INVALID_OBJECT;
@@ -758,7 +763,8 @@ int EVDS_Variable_GetList(EVDS_VARIABLE* variable, SIMC_LIST** p_list) {
 int EVDS_Variable_GetAttributes(EVDS_VARIABLE* variable, SIMC_LIST** p_list) {
 	if (!variable) return EVDS_ERROR_BAD_PARAMETER;
 	if (!p_list) return EVDS_ERROR_BAD_PARAMETER;
-	if (variable->type != EVDS_VARIABLE_TYPE_NESTED) return EVDS_ERROR_BAD_STATE;
+	if ((variable->type != EVDS_VARIABLE_TYPE_NESTED) &&
+		(variable->type != EVDS_VARIABLE_TYPE_FUNCTION)) return EVDS_ERROR_BAD_STATE;
 #ifndef EVDS_SINGLETHREADED
 	if (variable->object) {
 		if (variable->object->destroyed) return EVDS_ERROR_INVALID_OBJECT;

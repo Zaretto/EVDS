@@ -46,7 +46,7 @@ int EVDS_InternalVariable_InitializeFunction(EVDS_VARIABLE* variable, EVDS_VARIA
 
 	//Calculate number of data entries
 	if (data) {
-		ptr = data;
+		ptr = (char*)data;
 		while (1) {
 			//Parse strings
 			EVDS_StringToReal(ptr,&end_ptr,&x);
@@ -70,12 +70,14 @@ int EVDS_InternalVariable_InitializeFunction(EVDS_VARIABLE* variable, EVDS_VARIA
 		entry = SIMC_List_GetNext(variable->list,entry);
 	}
 
+
 	//Allocate table
-	function->data = malloc(sizeof(EVDS_VARIABLE_TVALUE_ENTRY)*function->data_count);
+	function->data = malloc(sizeof(EVDS_VARIABLE_FVALUE_LINEAR)*function->data_count);
+
 
 	//Fill table with data entries
 	if (data) {
-		ptr = data;
+		ptr = (char*)data;
 		while (1) {
 			//Parse strings
 			EVDS_StringToReal(ptr,&end_ptr,&x);
@@ -97,10 +99,19 @@ int EVDS_InternalVariable_InitializeFunction(EVDS_VARIABLE* variable, EVDS_VARIA
 	//Fill table with nested function entries
 	entry = SIMC_List_GetFirst(variable->list);
 	while (entry) {
+		EVDS_VARIABLE* nested_function = SIMC_List_GetData(variable->list,entry);
+		EVDS_VARIABLE* x_var;
+
+		//Get X value
+		x = 0.0;
+		if (EVDS_Variable_GetAttribute(nested_function,"value",&x_var) == EVDS_OK) {
+			EVDS_Variable_GetReal(x_var,&x);
+		}
+
 		//FIXME: check if type is "data"
-		function->data[i].x = 0;
+		function->data[i].x = x;
 		function->data[i].value = 0;
-		function->data[i].function = SIMC_List_GetData(variable->list,entry);
+		function->data[i].function = nested_function;
 		i++;
 
 		entry = SIMC_List_GetNext(variable->list,entry);
