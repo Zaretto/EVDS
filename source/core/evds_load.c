@@ -73,6 +73,8 @@ const int EVDS_Internal_ObjectRemappingTableCount =
 
 ////////////////////////////////////////////////////////////////////////////////
 /// @brief Load parameter from the XML file
+///
+/// @param[in] nested_in_function All variables nested inside function are treated as functions.
 ////////////////////////////////////////////////////////////////////////////////
 int EVDS_Internal_LoadParameter(EVDS_OBJECT* object, EVDS_VARIABLE* parent_variable, 
 								SIMC_XML_DOCUMENT* doc, SIMC_XML_ELEMENT* element, SIMC_XML_ATTRIBUTE* attribute,
@@ -129,7 +131,7 @@ int EVDS_Internal_LoadParameter(EVDS_OBJECT* object, EVDS_VARIABLE* parent_varia
 	}
 
 	//Try to guess data type based on value (FIXME: do not ignore "type" attribute)
-	if (value && (!nested_in_function)) {
+	if (value) {
 		char *end_ptr, *end_value;
 		EVDS_StringToReal(value,&end_ptr,&real_value); //Convert string to a real value
 		end_value = value + strlen(value);
@@ -170,9 +172,12 @@ int EVDS_Internal_LoadParameter(EVDS_OBJECT* object, EVDS_VARIABLE* parent_varia
 		if (nested_element) type = EVDS_VARIABLE_TYPE_FUNCTION;
 	}
 
-	//If this variable is nested inside a function variable, it has always "nested" type
+	//If this variable is nested inside a function variable and it's called 'data', 
+	// it has always "function" type (so the functions are initialized recursively)
 	if (nested_in_function) {
-		type = EVDS_VARIABLE_TYPE_NESTED;
+		if (strcmp(name,"data") == 0) {
+			type = EVDS_VARIABLE_TYPE_FUNCTION;
+		}
 	}
 
 	//Add variable to object or to parent variable
@@ -220,13 +225,6 @@ int EVDS_Internal_LoadParameter(EVDS_OBJECT* object, EVDS_VARIABLE* parent_varia
 	} else if (type == EVDS_VARIABLE_TYPE_FUNCTION) {
 		EVDS_VARIABLE_FUNCTION* function = (EVDS_VARIABLE_FUNCTION*)variable->value;
 
-		//Set constant value
-		if (value) {
-			function->constant_value = real_value;
-		} else {
-			function->constant_value = 0.0;
-		}
-
 		//Read all nested data entries
 		EVDS_ERRCHECK(SIMC_XML_GetElement(doc,element,&nested_element,0));
 		while (nested_element) {
@@ -235,7 +233,13 @@ int EVDS_Internal_LoadParameter(EVDS_OBJECT* object, EVDS_VARIABLE* parent_varia
 		}
 
 		//Initialize function table
-		EVDS_ERRCHECK(EVDS_InternalVariable_InitializeFunction(variable,function));
+		if (nested_in_function) { //This function variable contains actual data
+			function->constant_value = 0.0;
+			EVDS_ERRCHECK(EVDS_InternalVariable_InitializeFunction(variable,function,value));
+		} else { //This function variable only contains constant value and more functions
+			function->constant_value = real_value;
+			EVDS_ERRCHECK(EVDS_InternalVariable_InitializeFunction(variable,function,0));
+		}
 	} else if (element) {
 		//Save text value of the nested element
 		if (value) {

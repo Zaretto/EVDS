@@ -34,7 +34,79 @@
 ////////////////////////////////////////////////////////////////////////////////
 /// @brief Initialize function data structure
 ////////////////////////////////////////////////////////////////////////////////
-int EVDS_InternalVariable_InitializeFunction(EVDS_VARIABLE* variable, EVDS_VARIABLE_FUNCTION* function) {
+int EVDS_InternalVariable_InitializeFunction(EVDS_VARIABLE* variable, EVDS_VARIABLE_FUNCTION* function, const char* data) {
+	SIMC_LIST_ENTRY* entry;
+	char *ptr,*end_ptr;
+	EVDS_REAL x,value;
+	int i;
+
+	//Count total number of entries
+	function->data_count = 0;
+	i = 0;
+
+	//Calculate number of data entries
+	if (data) {
+		ptr = data;
+		while (1) {
+			//Parse strings
+			EVDS_StringToReal(ptr,&end_ptr,&x);
+			if (end_ptr == ptr) break;
+			ptr = end_ptr;
+
+			EVDS_StringToReal(ptr,&end_ptr,&value);
+			if (end_ptr == ptr) break;
+			ptr = end_ptr;
+
+			//Count an extra entry if both are valid numbers
+			function->data_count++;
+		}
+	}
+
+	//Calculate number of nested functions
+	entry = SIMC_List_GetFirst(variable->list);
+	while (entry) {
+		//FIXME: check if type is "data"
+		function->data_count++;
+		entry = SIMC_List_GetNext(variable->list,entry);
+	}
+
+	//Allocate table
+	function->data = malloc(sizeof(EVDS_VARIABLE_TVALUE_ENTRY)*function->data_count);
+
+	//Fill table with data entries
+	if (data) {
+		ptr = data;
+		while (1) {
+			//Parse strings
+			EVDS_StringToReal(ptr,&end_ptr,&x);
+			if (end_ptr == ptr) break;
+			ptr = end_ptr;
+
+			EVDS_StringToReal(ptr,&end_ptr,&value);
+			if (end_ptr == ptr) break;
+			ptr = end_ptr;
+
+			//Write entry
+			function->data[i].x = x;
+			function->data[i].value = value;
+			function->data[i].function = 0;
+			i++;
+		}
+	}
+
+	//Fill table with nested function entries
+	entry = SIMC_List_GetFirst(variable->list);
+	while (entry) {
+		//FIXME: check if type is "data"
+		function->data[i].x = 0;
+		function->data[i].value = 0;
+		function->data[i].function = SIMC_List_GetData(variable->list,entry);
+		i++;
+
+		entry = SIMC_List_GetNext(variable->list,entry);
+	}
+
+	//Sort the table of values in the right order
 	return EVDS_OK;
 }
 

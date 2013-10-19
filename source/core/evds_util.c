@@ -108,6 +108,7 @@ const struct {
 	{ "R",		5.0/9.0 },
 	{ "btu",	1054.35026444 },
 	//Temp hack
+	{ "bar",	1e5 },
 	{ "kg/m3",	1.0 },
 	{ "lb/ft3", 16.0184634 },
 	{ "btu/(lb R)", 1054.35026444/(0.45359237*5.0/9.0) },
@@ -151,7 +152,7 @@ int EVDS_StringToReal(const char* str, char** str_end, EVDS_REAL* p_value) {
 	//Check if units of measurements can be parsed
 	while (*end == ' ') end++;
 	for (i = 0; i < EVDS_Internal_UnitsTableCount; i++) {
-		if (strcmp(end,EVDS_Internal_UnitsTable[i].name) == 0) {
+		if (strncmp(end,EVDS_Internal_UnitsTable[i].name,strlen(EVDS_Internal_UnitsTable[i].name)) == 0) {
 			value *= EVDS_Internal_UnitsTable[i].scale_factor;
 			value += EVDS_Internal_UnitsTable[i].offset_factor;
 			end += strlen(EVDS_Internal_UnitsTable[i].name);

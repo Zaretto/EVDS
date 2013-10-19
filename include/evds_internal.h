@@ -154,7 +154,13 @@ typedef struct EVDS_VARIABLE_TVALUE_ENTRY_TAG {
 	EVDS_VARIABLE* function;			//Nested function
 } EVDS_VARIABLE_TVALUE_ENTRY;
 
+/// Linear interpolation
+//#define EVDS_VARIABLE_FUNCTION_INTERPOLATION_LINEAR		0
+/// Spline interpolation
+//#define EVDS_VARIABLE_FUNCTION_INTERPOLATION_SPLINE		1
+
 typedef struct EVDS_VARIABLE_FUNCTION_TAG {
+	//int interpolation;					//Interpolation method for this function
 	EVDS_REAL constant_value;				//Constant value of the function
 	EVDS_VARIABLE_TVALUE_ENTRY* data;		//Table of values
 	int data_count;							//Size of the values table
@@ -434,7 +440,7 @@ int EVDS_Variable_Create(EVDS_SYSTEM* system, const char* name, EVDS_VARIABLE_TY
 // Creates a new variable as a copy of existing one
 int EVDS_Variable_Copy(EVDS_VARIABLE* source, EVDS_VARIABLE* variable);
 // Initialize function data
-int EVDS_InternalVariable_InitializeFunction(EVDS_VARIABLE* variable, EVDS_VARIABLE_FUNCTION* function);
+int EVDS_InternalVariable_InitializeFunction(EVDS_VARIABLE* variable, EVDS_VARIABLE_FUNCTION* function, const char* data);
 // Destroy function data
 int EVDS_InternalVariable_DestroyFunction(EVDS_VARIABLE* variable, EVDS_VARIABLE_FUNCTION* function);
 
