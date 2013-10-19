@@ -1,25 +1,14 @@
-Status
---------------------------------------------------------------------------------
-This is a pre-release repository. It's not yet fully ready for use in real applications,
+********************************************************************************
+The EVDS library is still under development. Some features are still under development,
 but it can already be used for familiarization.
 
-The build files for platforms other than VS2008 may be inconsistent/invalid. Please
-refer to compilation guide on how to generate new ones.
-
-Quick Reference
---------------------------------------------------------------------------------
-Links:
- - [EVDS Documentation (http://evds.wireos.com)](http://evds.wireos.com/).
- - [Black Phoenix (phoenix@uol.ua)](mailto:phoenix@uol.ua).
- - [Black Phoenix's Website (http://brain.wireos.com)](http://brain.wireos.com/).
-
-Community:
- - IRC: #x-plane @ irc.x-plane.org
- - IRC: #foxworks @ irc.freenode.org
- - IRC: ##aerospace @ irc.freenode.org
+Please refer to compilation guide on how to generate build files for target platform.
+********************************************************************************
 
 
-Information
+
+
+External Vessel Dynamics Simulator
 --------------------------------------------------------------------------------
 EVDS is an open-source aerospace physics simulation library (flight dynamics library, FDM)
 written in C. It's designed for realtime and non-realtime, multithreaded simulation
@@ -60,6 +49,7 @@ EVDS contains a powerful vector math library which provides consistency checks
 across different coordinate frames and allows correct transformation of vectors
 between non-inertial coordinate frames.
 
+
 Target Use
 --------------------------------------------------------------------------------
 EVDS was designed to be used in a realtime aerospace flight simulator, but
@@ -74,6 +64,20 @@ The main version of EVDS is 64-bit, but it is also available in a 32-bit version
 EVDS supports the following platforms at the moment:
  - Windows (32-bit and 64-bit)
  - Linux (32-bit and 64-bit)
+ 
+ 
+References
+--------------------------------------------------------------------------------
+Links:
+ - [EVDS Documentation (http://evds.wireos.com)](http://evds.wireos.com/).
+ - [Black Phoenix (phoenix@uol.ua)](mailto:phoenix@uol.ua).
+ - [Black Phoenix's Website (http://brain.wireos.com)](http://brain.wireos.com/).
+
+Community:
+ - IRC: #x-plane @ irc.x-plane.org
+ - IRC: #foxworks @ irc.freenode.org
+ - IRC: ##aerospace @ irc.freenode.org
+
 
 Compiling
 --------------------------------------------------------------------------------
@@ -87,10 +91,10 @@ The EVDS library contains build files for various platforms in the `support`
 folder:
  - `vs2008` - Visual Studio 2008
  - `vs2010` - Visual Studio 2010
- - `gmake` - Makefiles
+ - `gmake` - Linux Makefiles
 
 If build files must be generated from scratch or a local copy of documentation
-is needed, [Premake4](http://industriousone.com/premake) must be used:
+is needed, [Premake5 or Premake4.4](http://industriousone.com/premake) must be used:
 ```
 cd support
 premake4 vs2008
@@ -108,7 +112,8 @@ cd support/gmake
 make
 ```
 
-Documentation and Example
+
+Example of Use
 --------------------------------------------------------------------------------
 [Documentation for the EVDS library is available here](http://evds.wireos.com/).
 
@@ -164,18 +169,12 @@ These are the features that are yet to be implemented in the core EVDS library o
 addons:
 - Find some interesting people to discuss various function names and variable
  names with to finalize the API before first release.
-- Support for interpolation of data tables based on interpolation equation. This
- should make it much easier to specify things like material parameters as a function
- of many variables.
-- Support for piecewise interpolation for interpolation equations.
-- Support for 2D tables for use with linear interpolation.
 - A way to specify explicitly which variables are interpolated by.
 - If variable already exists with wrong type, many functions will silently fail
  without any way to find out exact reason
 - Add additional debug asserts in various code points to avoid common errors.
-- Modifiers that are actually EVDS objects. Support for saving and loading runtime
-  objects
 - Unique identifiers must be made truly unique
 - Add more unit tests
 - Work more on predefined coordinate frames
 - Add proper support for geodetic datums
+- Basic aerodynamics code
