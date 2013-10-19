@@ -34,7 +34,13 @@
 ////////////////////////////////////////////////////////////////////////////////
 /// @brief 
 ////////////////////////////////////////////////////////////////////////////////
-int EVDS_InternalVariable_CompareFunctionEntries(const EVDS_VARIABLE_FVALUE_LINEAR* v1, const EVDS_VARIABLE_FVALUE_LINEAR* v2) {
+int EVDS_InternalVariable_CompareEntries_Linear(const EVDS_VARIABLE_FVALUE_LINEAR* v1, const EVDS_VARIABLE_FVALUE_LINEAR* v2) {
+	if (v1->x > v2->x) return 1;
+	if (v1->x < v2->x) return -1;
+	return 0;
+}
+
+int EVDS_InternalVariable_CompareEntries_Spline(const EVDS_VARIABLE_FVALUE_SPLINE* v1, const EVDS_VARIABLE_FVALUE_SPLINE* v2) {
 	if (v1->x > v2->x) return 1;
 	if (v1->x < v2->x) return -1;
 	return 0;
@@ -45,10 +51,13 @@ int EVDS_InternalVariable_CompareFunctionEntries(const EVDS_VARIABLE_FVALUE_LINE
 /// @brief Initialize function data structure
 ////////////////////////////////////////////////////////////////////////////////
 int EVDS_InternalVariable_InitializeFunction(EVDS_VARIABLE* variable, EVDS_VARIABLE_FUNCTION* function, const char* data) {
-	SIMC_LIST_ENTRY* entry;
+	//SIMC_LIST_ENTRY* entry;
 	char *ptr,*end_ptr;
 	EVDS_REAL x,value;
 	int i;
+
+	//Select interpolation type
+	function->interpolation = EVDS_VARIABLE_FUNCTION_INTERPOLATION_LINEAR;
 
 	//Count total number of entries
 	function->data_count = 0;
@@ -99,9 +108,9 @@ int EVDS_InternalVariable_InitializeFunction(EVDS_VARIABLE* variable, EVDS_VARIA
 			ptr = end_ptr;
 
 			//Write entry
-			function->data[i].x = x;
-			function->data[i].value = value;
-			function->data[i].function = 0;
+			function->linear[i].x = x;
+			function->linear[i].value = value;
+			function->linear[i].function = 0;
 			i++;
 		}
 	}
@@ -119,16 +128,23 @@ int EVDS_InternalVariable_InitializeFunction(EVDS_VARIABLE* variable, EVDS_VARIA
 		}
 
 		//FIXME: check if type is "data"
-		function->data[i].x = x;
-		function->data[i].value = 0;
-		function->data[i].function = nested_function;
+		function->linear[i].x = x;
+		function->linear[i].value = 0; //FIXME
+		function->linear[i].function = nested_function;
 		i++;
 
 		entry = SIMC_List_GetNext(variable->list,entry);
 	}*/
 
 	//Sort the table of values in the right order
-	qsort(function->data,function->data_count,sizeof(EVDS_VARIABLE_FVALUE_LINEAR),EVDS_InternalVariable_CompareFunctionEntries);
+	switch (function->interpolation) {
+		case EVDS_VARIABLE_FUNCTION_INTERPOLATION_LINEAR:
+			qsort(function->linear,function->data_count,sizeof(EVDS_VARIABLE_FVALUE_LINEAR),EVDS_InternalVariable_CompareEntries_Linear);
+		break;
+		case EVDS_VARIABLE_FUNCTION_INTERPOLATION_SPLINE:
+			qsort(function->spline,function->data_count,sizeof(EVDS_VARIABLE_FVALUE_SPLINE),EVDS_InternalVariable_CompareEntries_Spline);
+		break;
+	}
 	return EVDS_OK;
 }
 
@@ -141,10 +157,56 @@ int EVDS_InternalVariable_DestroyFunction(EVDS_VARIABLE* variable, EVDS_VARIABLE
 
 
 ////////////////////////////////////////////////////////////////////////////////
+/// @brief Get value from a 1D linear function 
+////////////////////////////////////////////////////////////////////////////////
+int EVDS_InternalVariable_GetFunction1D_Linear(EVDS_VARIABLE_FUNCTION* function, EVDS_REAL x, EVDS_REAL* p_value) {
+	int i;
+
+	//Check for edge cases
+	if (function->data_count == 1) {
+		*p_value = function->linear[0].value;
+		return EVDS_OK;
+	}
+	if (x <= function->linear[0].x) {
+		*p_value = function->linear[0].value;
+		return EVDS_OK;
+	}
+	if (x >= function->linear[function->data_count-1].x) {
+		*p_value = function->linear[function->data_count-1].value;
+		return EVDS_OK;
+	}
+
+	//Find interpolation segment
+	for (i = function->data_count-1; i >= 0; i--) {
+		if (x > function->linear[i].x) {
+			break;
+		}
+	}
+
+	//Linear interpolation
+#if (defined(_MSC_VER) && (_MSC_VER >= 1500) && (_MSC_VER < 1600))
+	{
+		double A = (function->linear[i+1].x - function->linear[i].x);
+		double B = (x - function->linear[i].x) / A;
+		*p_value = function->linear[i].value  + (function->linear[i+1].value - function->linear[i].value) * B;
+
+		//*p_value = table->data[i].f  + (table->data[i+1].f - table->data[i].f) * 
+			//((x - table->data[i].x) / A);
+		//*p_value = table->data[i].f  + (table->data[i+1].f - table->data[i].f) * 
+			//((x - table->data[i].x) / (table->data[i+1].x - table->data[i].x));
+	}
+#else
+	*p_value = table->data1d[i].f  + (table->data1d[i+1].f - table->data1d[i].f) *
+		((x - table->data1d[i].x) / (table->data1d[i+1].x - table->data1d[i].x));
+#endif
+	return EVDS_OK;
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
 /// @brief Get value from a 1D function 
 ////////////////////////////////////////////////////////////////////////////////
 int EVDS_Variable_GetFunction1D(EVDS_VARIABLE* variable, EVDS_REAL x, EVDS_REAL* p_value) {
-	int i;
 	EVDS_VARIABLE_FUNCTION* function;
 	if (!variable) return EVDS_ERROR_BAD_PARAMETER;
 	if (!p_value) return EVDS_ERROR_BAD_PARAMETER;
@@ -159,48 +221,19 @@ int EVDS_Variable_GetFunction1D(EVDS_VARIABLE* variable, EVDS_REAL x, EVDS_REAL*
 		return EVDS_Variable_GetReal(variable,p_value);
 	}
 
-	//Get table and check if a lesser dimension function must be used
+	//Check if the table is empty and a constant value must be used
 	function = (EVDS_VARIABLE_FUNCTION*)variable->value;
 	if (function->data_count == 0) {
 		return EVDS_Variable_GetReal(variable,p_value);
 	}
 
-	//Check for edge cases
-	if (function->data_count == 1) {
-		*p_value = function->data[0].value;
-		return EVDS_OK;
-	}
-	if (x <= function->data[0].x) {
-		*p_value = function->data[0].value;
-		return EVDS_OK;
-	}
-	if (x >= function->data[function->data_count-1].x) {
-		*p_value = function->data[function->data_count-1].value;
-		return EVDS_OK;
-	}
-
-	//Find interpolation segment
-	for (i = function->data_count-1; i >= 0; i--) {
-		if (x > function->data[i].x) {
+	//Select the right interpolating function
+	switch (function->interpolation) {
+		case EVDS_VARIABLE_FUNCTION_INTERPOLATION_LINEAR:
+			return EVDS_InternalVariable_GetFunction1D_Linear(function,x,p_value);
+		case EVDS_VARIABLE_FUNCTION_INTERPOLATION_SPLINE:
 			break;
-		}
+			//return EVDS_InternalVariable_GetFunction1D_Spline(function,x,p_value);
 	}
-
-	//Linear interpolation
-#if (defined(_MSC_VER) && (_MSC_VER >= 1500) && (_MSC_VER < 1600))
-	{
-		double A = (function->data[i+1].x - function->data[i].x);
-		double B = (x - function->data[i].x) / A;
-		*p_value = function->data[i].value  + (function->data[i+1].value - function->data[i].value) * B;
-
-		//*p_value = table->data[i].f  + (table->data[i+1].f - table->data[i].f) * 
-			//((x - table->data[i].x) / A);
-		//*p_value = table->data[i].f  + (table->data[i+1].f - table->data[i].f) * 
-			//((x - table->data[i].x) / (table->data[i+1].x - table->data[i].x));
-	}
-#else
-	*p_value = table->data1d[i].f  + (table->data1d[i+1].f - table->data1d[i].f) *
-		((x - table->data1d[i].x) / (table->data1d[i+1].x - table->data1d[i].x));
-#endif
 	return EVDS_OK;
 }

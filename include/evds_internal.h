@@ -150,25 +150,33 @@ extern "C" {
 #ifndef DOXYGEN_INTERNAL_STRUCTS
 typedef struct EVDS_VARIABLE_FVALUE_LINEAR_TAG {
 	EVDS_REAL x;						//X value
-	EVDS_REAL value;					//Constant value
 	EVDS_VARIABLE* function;			//Nested function
+	EVDS_REAL value;					//Constant value
 } EVDS_VARIABLE_FVALUE_LINEAR;
 
+typedef struct EVDS_VARIABLE_FVALUE_SPLINE_TAG {
+	EVDS_REAL x;						//X value
+	EVDS_VARIABLE* function;			//Nested function
+	EVDS_REAL a;						//A coefficient
+	EVDS_REAL b;						//B coefficient
+	EVDS_REAL c;						//C coefficient
+	EVDS_REAL d;						//D coefficient
+} EVDS_VARIABLE_FVALUE_SPLINE;
+
 /// Linear interpolation
-//#define EVDS_VARIABLE_FUNCTION_INTERPOLATION_LINEAR		0
+#define EVDS_VARIABLE_FUNCTION_INTERPOLATION_LINEAR		0
 /// Spline interpolation
-//#define EVDS_VARIABLE_FUNCTION_INTERPOLATION_SPLINE		1
+#define EVDS_VARIABLE_FUNCTION_INTERPOLATION_SPLINE		1
 
 typedef struct EVDS_VARIABLE_FUNCTION_TAG {
-	//int interpolation;					//Interpolation method for this function
-	//union {
-		//void* data;							//Table of values
-		//EVDS_VARIABLE_FVALUE_LINEAR* linear;	//Table of linear values
-		//EVDS_VARIABLE_FVALUE_SPLINE* spline;	//Table of spline values
-	//};
+	int interpolation;					//Interpolation method for this function
+	union {
+		void* data;								//Table of values
+		EVDS_VARIABLE_FVALUE_LINEAR* linear;	//Table of linear values
+		EVDS_VARIABLE_FVALUE_SPLINE* spline;	//Table of spline values
+	};
 
 	EVDS_REAL constant_value;				//Constant value of the function
-	EVDS_VARIABLE_FVALUE_LINEAR* data;		//Table of linear values
 	int data_count;							//Size of the values table
 } EVDS_VARIABLE_FUNCTION;
 
