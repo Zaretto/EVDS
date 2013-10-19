@@ -2,6 +2,7 @@
 
 void Test_EVDS_FUNCTIONS() {
 	START_TEST("Test") {
+		EVDS_REAL x,y;
 		ERROR_CHECK(EVDS_System_DatabaseFromString(system,
 "<EVDS>"
 "	<database name=\"combustion\">"
@@ -9,8 +10,8 @@ void Test_EVDS_FUNCTIONS() {
 "			<parameter name=\"adiabatic_temperature\" interpolation=\"linear\">"
 "				3.0 1000 K"
 "				3.5 2000 K"
-"				10.0 3000 K"
-"				20.0 1000 K"
+"				8.0 3000 K"
+"				10.0 1000 K"
 "				<data value=\"4.0\" interpolation=\"linear\">"
 "					300.0 bar	2983.2 K"
 "					325.0 bar	2984.7 K"
@@ -50,6 +51,17 @@ void Test_EVDS_FUNCTIONS() {
 "		</entry>"
 "	</database>"
 "</EVDS>"));
+
+		ERROR_CHECK(EVDS_System_GetDatabaseByName(system,"combustion",&variable));
+		ERROR_CHECK(EVDS_Variable_GetNested(variable,"H2-O2",&variable));
+		ERROR_CHECK(EVDS_Variable_GetNested(variable,"adiabatic_temperature",&variable));
+
+		//Get an interpolated function
+		for (x = 2.8; x < 10.2; x += 0.1) {
+			EVDS_Variable_GetFunction1D(variable,x,&y);
+			printf("%.2f = %.0f\n",x,y);
+		}
+		//EVDS_System_QueryDatabase
 
 
 	} END_TEST

@@ -240,17 +240,8 @@ int EVDS_Internal_LoadParameter(EVDS_OBJECT* object, EVDS_VARIABLE* parent_varia
 		}
 
 		//Initialize function table
-		if (nested_in_function) { //This function variable contains actual data
-			function->constant_value = 0.0;
-			EVDS_ERRCHECK(EVDS_InternalVariable_InitializeFunction(variable,function,value));
-		} else { //This function variable only contains constant value and more functions
-			if (value) {
-				function->constant_value = real_value;
-			} else {
-				function->constant_value = 0.0;
-			}
-			EVDS_ERRCHECK(EVDS_InternalVariable_InitializeFunction(variable,function,0));
-		}
+		function->constant_value = 0.0;
+		EVDS_ERRCHECK(EVDS_InternalVariable_InitializeFunction(variable,function,value));
 	} else if (element) {
 		//Save text value of the nested element
 		if (value) {

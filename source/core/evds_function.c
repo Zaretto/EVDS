@@ -32,6 +32,16 @@
 
 
 ////////////////////////////////////////////////////////////////////////////////
+/// @brief 
+////////////////////////////////////////////////////////////////////////////////
+int EVDS_InternalVariable_CompareFunctionEntries(const EVDS_VARIABLE_FVALUE_LINEAR* v1, const EVDS_VARIABLE_FVALUE_LINEAR* v2) {
+	if (v1->x > v2->x) return 1;
+	if (v1->x < v2->x) return -1;
+	return 0;
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
 /// @brief Initialize function data structure
 ////////////////////////////////////////////////////////////////////////////////
 int EVDS_InternalVariable_InitializeFunction(EVDS_VARIABLE* variable, EVDS_VARIABLE_FUNCTION* function, const char* data) {
@@ -63,12 +73,12 @@ int EVDS_InternalVariable_InitializeFunction(EVDS_VARIABLE* variable, EVDS_VARIA
 	}
 
 	//Calculate number of nested functions
-	entry = SIMC_List_GetFirst(variable->list);
+	/*entry = SIMC_List_GetFirst(variable->list);
 	while (entry) {
 		//FIXME: check if type is "data"
 		function->data_count++;
 		entry = SIMC_List_GetNext(variable->list,entry);
-	}
+	}*/
 
 
 	//Allocate table
@@ -97,7 +107,7 @@ int EVDS_InternalVariable_InitializeFunction(EVDS_VARIABLE* variable, EVDS_VARIA
 	}
 
 	//Fill table with nested function entries
-	entry = SIMC_List_GetFirst(variable->list);
+	/*entry = SIMC_List_GetFirst(variable->list);
 	while (entry) {
 		EVDS_VARIABLE* nested_function = SIMC_List_GetData(variable->list,entry);
 		EVDS_VARIABLE* x_var;
@@ -115,9 +125,10 @@ int EVDS_InternalVariable_InitializeFunction(EVDS_VARIABLE* variable, EVDS_VARIA
 		i++;
 
 		entry = SIMC_List_GetNext(variable->list,entry);
-	}
+	}*/
 
 	//Sort the table of values in the right order
+	qsort(function->data,function->data_count,sizeof(EVDS_VARIABLE_FVALUE_LINEAR),EVDS_InternalVariable_CompareFunctionEntries);
 	return EVDS_OK;
 }
 
@@ -133,8 +144,8 @@ int EVDS_InternalVariable_DestroyFunction(EVDS_VARIABLE* variable, EVDS_VARIABLE
 /// @brief Get value from a 1D function 
 ////////////////////////////////////////////////////////////////////////////////
 int EVDS_Variable_GetFunction1D(EVDS_VARIABLE* variable, EVDS_REAL x, EVDS_REAL* p_value) {
-	/*int i;
-	EVDS_VARIABLE_FUNCTION* table;
+	int i;
+	EVDS_VARIABLE_FUNCTION* function;
 	if (!variable) return EVDS_ERROR_BAD_PARAMETER;
 	if (!p_value) return EVDS_ERROR_BAD_PARAMETER;
 	if ((variable->type != EVDS_VARIABLE_TYPE_FLOAT) &&
@@ -145,33 +156,32 @@ int EVDS_Variable_GetFunction1D(EVDS_VARIABLE* variable, EVDS_REAL x, EVDS_REAL*
 
 	//Float constants are accepted as zero-size tables
 	if (variable->type == EVDS_VARIABLE_TYPE_FLOAT) {
-		*p_value = *((double*)variable->value);
-		return EVDS_OK;
+		return EVDS_Variable_GetReal(variable,p_value);
 	}
 
 	//Get table and check if a lesser dimension function must be used
-	table = (EVDS_VARIABLE_FUNCTION*)variable->value;
-	if (table->data1d_count == 0) {
+	function = (EVDS_VARIABLE_FUNCTION*)variable->value;
+	if (function->data_count == 0) {
 		return EVDS_Variable_GetReal(variable,p_value);
 	}
 
 	//Check for edge cases
-	if (table->data1d_count == 1) {
-		*p_value = table->data1d[0].f;
+	if (function->data_count == 1) {
+		*p_value = function->data[0].value;
 		return EVDS_OK;
 	}
-	if (x <= table->data1d[0].x) {
-		*p_value = table->data1d[0].f;
+	if (x <= function->data[0].x) {
+		*p_value = function->data[0].value;
 		return EVDS_OK;
 	}
-	if (x >= table->data1d[table->data1d_count-1].x) {
-		*p_value = table->data1d[table->data1d_count-1].f;
+	if (x >= function->data[function->data_count-1].x) {
+		*p_value = function->data[function->data_count-1].value;
 		return EVDS_OK;
 	}
 
 	//Find interpolation segment
-	for (i = table->data1d_count-1; i >= 0; i--) {
-		if (x > table->data1d[i].x) {
+	for (i = function->data_count-1; i >= 0; i--) {
+		if (x > function->data[i].x) {
 			break;
 		}
 	}
@@ -179,9 +189,9 @@ int EVDS_Variable_GetFunction1D(EVDS_VARIABLE* variable, EVDS_REAL x, EVDS_REAL*
 	//Linear interpolation
 #if (defined(_MSC_VER) && (_MSC_VER >= 1500) && (_MSC_VER < 1600))
 	{
-		double A = (table->data1d[i+1].x - table->data1d[i].x);
-		double B = (x - table->data1d[i].x) / A;
-		*p_value = table->data1d[i].f  + (table->data1d[i+1].f - table->data1d[i].f) * B;
+		double A = (function->data[i+1].x - function->data[i].x);
+		double B = (x - function->data[i].x) / A;
+		*p_value = function->data[i].value  + (function->data[i+1].value - function->data[i].value) * B;
 
 		//*p_value = table->data[i].f  + (table->data[i+1].f - table->data[i].f) * 
 			//((x - table->data[i].x) / A);
@@ -191,6 +201,6 @@ int EVDS_Variable_GetFunction1D(EVDS_VARIABLE* variable, EVDS_REAL x, EVDS_REAL*
 #else
 	*p_value = table->data1d[i].f  + (table->data1d[i+1].f - table->data1d[i].f) *
 		((x - table->data1d[i].x) / (table->data1d[i+1].x - table->data1d[i].x));
-#endif*/
+#endif
 	return EVDS_OK;
 }
