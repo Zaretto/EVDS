@@ -51,10 +51,12 @@ int EVDS_InternalVariable_CompareEntries_Spline(const EVDS_VARIABLE_FVALUE_SPLIN
 /// @brief Initialize function data structure
 ////////////////////////////////////////////////////////////////////////////////
 int EVDS_InternalVariable_InitializeFunction(EVDS_VARIABLE* variable, EVDS_VARIABLE_FUNCTION* function, const char* data) {
-	//SIMC_LIST_ENTRY* entry;
+	int i;
+	SIMC_LIST_ENTRY* entry;
 	char *ptr,*end_ptr;
 	EVDS_REAL x,value;
-	int i;
+	EVDS_REAL avg_value;
+	int avg_count;
 
 	//Select interpolation type
 	function->interpolation = EVDS_VARIABLE_FUNCTION_INTERPOLATION_LINEAR;
@@ -82,16 +84,20 @@ int EVDS_InternalVariable_InitializeFunction(EVDS_VARIABLE* variable, EVDS_VARIA
 	}
 
 	//Calculate number of nested functions
-	/*entry = SIMC_List_GetFirst(variable->list);
+	entry = SIMC_List_GetFirst(variable->list);
 	while (entry) {
 		//FIXME: check if type is "data"
 		function->data_count++;
 		entry = SIMC_List_GetNext(variable->list,entry);
-	}*/
+	}
 
 
 	//Allocate table
 	function->data = malloc(sizeof(EVDS_VARIABLE_FVALUE_LINEAR)*function->data_count);
+
+	//Compute average value (to determine constant)
+	avg_count = 0;
+	avg_value = 0.0;
 
 
 	//Fill table with data entries
@@ -111,12 +117,21 @@ int EVDS_InternalVariable_InitializeFunction(EVDS_VARIABLE* variable, EVDS_VARIA
 			function->linear[i].x = x;
 			function->linear[i].value = value;
 			function->linear[i].function = 0;
+
+			//Accumulate
+			avg_value += value;
+			avg_count++;
 			i++;
 		}
 	}
 
+	//Compute constant value
+	if (avg_count > 0) {
+		function->constant_value = avg_value / ((EVDS_REAL)avg_count);
+	}
+
 	//Fill table with nested function entries
-	/*entry = SIMC_List_GetFirst(variable->list);
+	entry = SIMC_List_GetFirst(variable->list);
 	while (entry) {
 		EVDS_VARIABLE* nested_function = SIMC_List_GetData(variable->list,entry);
 		EVDS_VARIABLE* x_var;
@@ -127,14 +142,17 @@ int EVDS_InternalVariable_InitializeFunction(EVDS_VARIABLE* variable, EVDS_VARIA
 			EVDS_Variable_GetReal(x_var,&x);
 		}
 
+		//Get default Y value
+		EVDS_Variable_GetReal(nested_function,&value);
+
 		//FIXME: check if type is "data"
 		function->linear[i].x = x;
-		function->linear[i].value = 0; //FIXME
+		function->linear[i].value = value;
 		function->linear[i].function = nested_function;
 		i++;
 
 		entry = SIMC_List_GetNext(variable->list,entry);
-	}*/
+	}
 
 	//Sort the table of values in the right order
 	switch (function->interpolation) {
