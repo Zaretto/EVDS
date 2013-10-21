@@ -1281,12 +1281,8 @@ EVDS_API int EVDS_Variable_GetDataPointer(EVDS_VARIABLE* variable, void** data);
 EVDS_API int EVDS_Variable_SetFunctionPointer(EVDS_VARIABLE* variable, void* data);
 // Get pointer to callback function
 EVDS_API int EVDS_Variable_GetFunctionPointer(EVDS_VARIABLE* variable, void** data);
-// Get value from a 1D function 
-EVDS_API int EVDS_Variable_GetFunction1D(EVDS_VARIABLE* variable, EVDS_REAL x, EVDS_REAL* p_value);
-// Get value from a 2D function 
-EVDS_API int EVDS_Variable_GetFunction2D(EVDS_VARIABLE* variable, EVDS_REAL x, EVDS_REAL y, EVDS_REAL* p_value);
-// Get value from a 3D function
-//EVDS_API int EVDS_Variable_GetFunction3D(EVDS_VARIABLE* variable, EVDS_REAL x, EVDS_REAL y, EVDS_REAL z, EVDS_REAL* p_value);
+// Get value from a 1D/2D/3D function 
+EVDS_API int EVDS_Variable_GetFunctionValue(EVDS_VARIABLE* variable, EVDS_REAL x, EVDS_REAL y, EVDS_REAL z, EVDS_REAL* p_value);
 
 // Set userdata
 EVDS_API int EVDS_Variable_SetUserdata(EVDS_VARIABLE* variable, void* userdata);
