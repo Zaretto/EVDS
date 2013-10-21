@@ -2,7 +2,7 @@
 
 void Test_EVDS_FUNCTIONS() {
 	START_TEST("Test") {
-		EVDS_REAL x;
+		EVDS_REAL x,y;
 		ERROR_CHECK(EVDS_System_DatabaseFromString(system,
 "<EVDS>"
 "	<database name=\"combustion\">"
@@ -71,13 +71,79 @@ void Test_EVDS_FUNCTIONS() {
 		ERROR_CHECK(EVDS_Variable_GetNested(variable,"H2-O2",&variable));
 		ERROR_CHECK(EVDS_Variable_GetNested(variable,"adiabatic_temperature",&variable));
 
+
+		//Test 1D interpolation (in nodes)
+		ERROR_CHECK(EVDS_Variable_GetFunctionValue(variable, 3.0, 300.0e5, 0.0, &y));
+		REAL_EQUAL_TO(y, 1000.0);
+		ERROR_CHECK(EVDS_Variable_GetFunctionValue(variable, 3.5, 300.0e5, 0.0, &y));
+		REAL_EQUAL_TO(y, 2000.0);
+		ERROR_CHECK(EVDS_Variable_GetFunctionValue(variable, 4.0, 300.0e5, 0.0, &y));
+		REAL_EQUAL_TO(y, 2983.2);
+		ERROR_CHECK(EVDS_Variable_GetFunctionValue(variable, 4.5, 300.0e5, 0.0, &y));
+		REAL_EQUAL_TO(y, 3196.1);
+		ERROR_CHECK(EVDS_Variable_GetFunctionValue(variable, 5.0, 300.0e5, 0.0, &y));
+		REAL_EQUAL_TO(y, 3375.4);
+		ERROR_CHECK(EVDS_Variable_GetFunctionValue(variable, 5.5, 300.0e5, 0.0, &y));
+		REAL_EQUAL_TO(y, 3521.9);
+		ERROR_CHECK(EVDS_Variable_GetFunctionValue(variable, 6.0, 300.0e5, 0.0, &y));
+		REAL_EQUAL_TO(y, 3635.8);
+		ERROR_CHECK(EVDS_Variable_GetFunctionValue(variable, 8.0, 300.0e5, 0.0, &y));
+		REAL_EQUAL_TO(y, 3000);
+		ERROR_CHECK(EVDS_Variable_GetFunctionValue(variable,10.0, 300.0e5, 0.0, &y));
+		REAL_EQUAL_TO(y, 1000);
+
+
+		//Test 2D interpolation (in nodes)
+		ERROR_CHECK(EVDS_Variable_GetFunctionValue(variable, 4.5, 300.0e5, 0.0, &y));
+		REAL_EQUAL_TO(y, 3196.1);
+		ERROR_CHECK(EVDS_Variable_GetFunctionValue(variable, 4.5, 350.0e5, 0.0, &y));
+		REAL_EQUAL_TO(y, 3201.2);
+		ERROR_CHECK(EVDS_Variable_GetFunctionValue(variable, 4.5, 400.0e5, 0.0, &y));
+		REAL_EQUAL_TO(y, 3205.4);
+
+		ERROR_CHECK(EVDS_Variable_GetFunctionValue(variable, 5.0, 300.0e5, 0.0, &y));
+		REAL_EQUAL_TO(y, 3375.4);
+		ERROR_CHECK(EVDS_Variable_GetFunctionValue(variable, 5.0, 350.0e5, 0.0, &y));
+		REAL_EQUAL_TO(y, 3383.4);
+		ERROR_CHECK(EVDS_Variable_GetFunctionValue(variable, 5.0, 400.0e5, 0.0, &y));
+		REAL_EQUAL_TO(y, 3390.0);
+
+		ERROR_CHECK(EVDS_Variable_GetFunctionValue(variable, 5.5, 300.0e5, 0.0, &y));
+		REAL_EQUAL_TO(y, 3521.9);
+		ERROR_CHECK(EVDS_Variable_GetFunctionValue(variable, 5.5, 350.0e5, 0.0, &y));
+		REAL_EQUAL_TO(y, 3533.0);
+		ERROR_CHECK(EVDS_Variable_GetFunctionValue(variable, 5.5, 400.0e5, 0.0, &y));
+		REAL_EQUAL_TO(y, 3542.2);
+
+
+		//Test 3D interpolation (in nodes)
+		ERROR_CHECK(EVDS_Variable_GetFunctionValue(variable, 5.0, 300.0e5, 0.0, &y));
+		REAL_EQUAL_TO(y, 3375.4);
+		ERROR_CHECK(EVDS_Variable_GetFunctionValue(variable, 5.0, 350.0e5, 0.0, &y));
+		REAL_EQUAL_TO(y, 3383.4);
+		ERROR_CHECK(EVDS_Variable_GetFunctionValue(variable, 5.0, 400.0e5, 0.0, &y));
+		REAL_EQUAL_TO(y, 3390.0);
+
+		ERROR_CHECK(EVDS_Variable_GetFunctionValue(variable, 5.0, 300.0e5, 1.0, &y));
+		REAL_EQUAL_TO(y, 0.0);
+		ERROR_CHECK(EVDS_Variable_GetFunctionValue(variable, 5.0, 350.0e5, 1.0, &y));
+		REAL_EQUAL_TO(y, 0.0);
+		ERROR_CHECK(EVDS_Variable_GetFunctionValue(variable, 5.0, 400.0e5, 1.0, &y));
+		REAL_EQUAL_TO(y, 0.0);
+
+
 		//Get an interpolated function
-		for (x = 2.8; x < 10.2; x += 0.1) {
+		//for (x = 2.8; x < 10.2; x += 0.1) {
+		for (x = 4.5; x < 5.5; x += 0.05) {
 			EVDS_REAL y1,y2,y3,y4;
+			//EVDS_Variable_GetFunctionValue(variable,x,300.0e5,0.0,&y1);
+			//EVDS_Variable_GetFunctionValue(variable,x,350.0e5,0.0,&y2);
+			//EVDS_Variable_GetFunctionValue(variable,x,400.0e5,0.0,&y3);
+			//EVDS_Variable_GetFunctionValue(variable,x,450.0e5,1.0,&y4);
 			EVDS_Variable_GetFunctionValue(variable,x,300.0e5,0.0,&y1);
-			EVDS_Variable_GetFunctionValue(variable,x,350.0e5,0.0,&y2);
-			EVDS_Variable_GetFunctionValue(variable,x,400.0e5,0.0,&y3);
-			EVDS_Variable_GetFunctionValue(variable,x,450.0e5,1.0,&y4);
+			EVDS_Variable_GetFunctionValue(variable,x,400.0e5,0.0,&y2);
+			EVDS_Variable_GetFunctionValue(variable,x,300.0e5,0.5,&y3);
+			EVDS_Variable_GetFunctionValue(variable,x,400.0e5,0.5,&y4);
 			printf("%.2f = %.1f %.1f %.1f %.1f\n",x,y1,y2,y3,y4);
 		}
 		//EVDS_System_QueryDatabase
