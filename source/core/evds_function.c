@@ -148,7 +148,7 @@ int EVDS_InternalVariable_InitializeFunction(EVDS_VARIABLE* variable, EVDS_VARIA
 		//FIXME: check if type is "data"
 		function->linear[i].x = x;
 		function->linear[i].value = value;
-		function->linear[i].function = nested_function;
+		function->linear[i].function = nested_function->value;
 		i++;
 
 		entry = SIMC_List_GetNext(variable->list,entry);
@@ -175,22 +175,45 @@ int EVDS_InternalVariable_DestroyFunction(EVDS_VARIABLE* variable, EVDS_VARIABLE
 
 
 ////////////////////////////////////////////////////////////////////////////////
-/// @brief Get value from a 1D linear function 
+/// @brief Get functions value at node by index
 ////////////////////////////////////////////////////////////////////////////////
-int EVDS_InternalVariable_GetFunction1D_Linear(EVDS_VARIABLE_FUNCTION* function, EVDS_REAL x, EVDS_REAL* p_value) {
+int EVDS_InternalVariable_GetFunction_Linear(EVDS_VARIABLE_FUNCTION* function, 
+											 EVDS_REAL x, EVDS_REAL y, EVDS_REAL z, EVDS_REAL* p_value);
+
+EVDS_REAL EVDS_InternalVariable_GetFunctionValue_Linear(EVDS_VARIABLE_FUNCTION* function,
+														int index, EVDS_REAL y, EVDS_REAL z) {
+	if (!function->linear[index].function) {
+		return function->linear[index].value;
+	} else {
+		EVDS_REAL value = 0.0;
+		EVDS_InternalVariable_GetFunction_Linear(function->linear[index].function,
+			y,z,0.0,&value);
+		return value;
+	}
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+/// @brief Get value from a linear function.
+///
+/// If additional variables are required for nested functions, then 'y' and 'z' are used.
+////////////////////////////////////////////////////////////////////////////////
+int EVDS_InternalVariable_GetFunction_Linear(EVDS_VARIABLE_FUNCTION* function, 
+											 EVDS_REAL x, EVDS_REAL y, EVDS_REAL z, EVDS_REAL* p_value) {
 	int i;
+	EVDS_REAL vi,vj;
 
 	//Check for edge cases
 	if (function->data_count == 1) {
-		*p_value = function->linear[0].value;
+		*p_value = EVDS_InternalVariable_GetFunctionValue_Linear(function,0,y,z);
 		return EVDS_OK;
 	}
 	if (x <= function->linear[0].x) {
-		*p_value = function->linear[0].value;
+		*p_value = EVDS_InternalVariable_GetFunctionValue_Linear(function,0,y,z);
 		return EVDS_OK;
 	}
 	if (x >= function->linear[function->data_count-1].x) {
-		*p_value = function->linear[function->data_count-1].value;
+		*p_value = EVDS_InternalVariable_GetFunctionValue_Linear(function,function->data_count-1,y,z);
 		return EVDS_OK;
 	}
 
@@ -202,7 +225,7 @@ int EVDS_InternalVariable_GetFunction1D_Linear(EVDS_VARIABLE_FUNCTION* function,
 	}
 
 	//Linear interpolation
-#if (defined(_MSC_VER) && (_MSC_VER >= 1500) && (_MSC_VER < 1600))
+/*#if (defined(_MSC_VER) && (_MSC_VER >= 1500) && (_MSC_VER < 1600))
 	{
 		double A = (function->linear[i+1].x - function->linear[i].x);
 		double B = (x - function->linear[i].x) / A;
@@ -214,9 +237,13 @@ int EVDS_InternalVariable_GetFunction1D_Linear(EVDS_VARIABLE_FUNCTION* function,
 			//((x - table->data[i].x) / (table->data[i+1].x - table->data[i].x));
 	}
 #else
-	*p_value = table->data1d[i].f  + (table->data1d[i+1].f - table->data1d[i].f) *
-		((x - table->data1d[i].x) / (table->data1d[i+1].x - table->data1d[i].x));
-#endif
+	*p_value = function->linear[i].f  + (function->linear[i+1].f - function->linear[i].f) *
+		((x - function->linear[i].x) / (function->linear[i+1].x - function->linear[i].x));
+#endif*/
+	vi = EVDS_InternalVariable_GetFunctionValue_Linear(function,i,  y,z);
+	vj = EVDS_InternalVariable_GetFunctionValue_Linear(function,i+1,y,z);
+
+	*p_value = vi + (vj-vi)*((x - function->linear[i].x)/(function->linear[i+1].x - function->linear[i].x));
 	return EVDS_OK;
 }
 
@@ -248,10 +275,46 @@ int EVDS_Variable_GetFunction1D(EVDS_VARIABLE* variable, EVDS_REAL x, EVDS_REAL*
 	//Select the right interpolating function
 	switch (function->interpolation) {
 		case EVDS_VARIABLE_FUNCTION_INTERPOLATION_LINEAR:
-			return EVDS_InternalVariable_GetFunction1D_Linear(function,x,p_value);
+			return EVDS_InternalVariable_GetFunction_Linear(function,x,0,0,p_value);
 		case EVDS_VARIABLE_FUNCTION_INTERPOLATION_SPLINE:
 			break;
-			//return EVDS_InternalVariable_GetFunction1D_Spline(function,x,p_value);
+			//return EVDS_InternalVariable_GetFunction_Spline(function,x,0,0,p_value);
+	}
+	return EVDS_OK;
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+/// @brief Get value from a 2D function 
+////////////////////////////////////////////////////////////////////////////////
+int EVDS_Variable_GetFunction2D(EVDS_VARIABLE* variable, EVDS_REAL x, EVDS_REAL y, EVDS_REAL* p_value) {
+	EVDS_VARIABLE_FUNCTION* function;
+	if (!variable) return EVDS_ERROR_BAD_PARAMETER;
+	if (!p_value) return EVDS_ERROR_BAD_PARAMETER;
+	if ((variable->type != EVDS_VARIABLE_TYPE_FLOAT) &&
+		(variable->type != EVDS_VARIABLE_TYPE_FUNCTION))return EVDS_ERROR_BAD_STATE;
+#ifndef EVDS_SINGLETHREADED
+	if (variable->object && variable->object->destroyed) return EVDS_ERROR_INVALID_OBJECT;
+#endif
+
+	//Float constants are accepted as zero-size tables
+	if (variable->type == EVDS_VARIABLE_TYPE_FLOAT) {
+		return EVDS_Variable_GetReal(variable,p_value);
+	}
+
+	//Check if the table is empty and a constant value must be used
+	function = (EVDS_VARIABLE_FUNCTION*)variable->value;
+	if (function->data_count == 0) {
+		return EVDS_Variable_GetReal(variable,p_value);
+	}
+
+	//Select the right interpolating function
+	switch (function->interpolation) {
+		case EVDS_VARIABLE_FUNCTION_INTERPOLATION_LINEAR:
+			return EVDS_InternalVariable_GetFunction_Linear(function,x,y,0,p_value);
+		case EVDS_VARIABLE_FUNCTION_INTERPOLATION_SPLINE:
+			break;
+			//return EVDS_InternalVariable_GetFunction_Spline(function,x,y,0,p_value);
 	}
 	return EVDS_OK;
 }

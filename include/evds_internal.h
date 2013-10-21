@@ -149,14 +149,14 @@ extern "C" {
 ////////////////////////////////////////////////////////////////////////////////
 #ifndef DOXYGEN_INTERNAL_STRUCTS
 typedef struct EVDS_VARIABLE_FVALUE_LINEAR_TAG {
+	struct EVDS_VARIABLE_FUNCTION_TAG* function; //Nested function
 	EVDS_REAL x;						//X value
-	EVDS_VARIABLE* function;			//Nested function
 	EVDS_REAL value;					//Constant value
 } EVDS_VARIABLE_FVALUE_LINEAR;
 
 typedef struct EVDS_VARIABLE_FVALUE_SPLINE_TAG {
+	struct EVDS_VARIABLE_FUNCTION_TAG* function; //Nested function
 	EVDS_REAL x;						//X value
-	EVDS_VARIABLE* function;			//Nested function
 	EVDS_REAL a;						//A coefficient
 	EVDS_REAL b;						//B coefficient
 	EVDS_REAL c;						//C coefficient

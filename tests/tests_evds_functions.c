@@ -58,8 +58,13 @@ void Test_EVDS_FUNCTIONS() {
 
 		//Get an interpolated function
 		for (x = 2.8; x < 10.2; x += 0.1) {
-			EVDS_Variable_GetFunction1D(variable,x,&y);
-			printf("%.2f = %.0f\n",x,y);
+			EVDS_REAL y1,y2,y3,y4;
+			//EVDS_Variable_GetFunction1D(variable,x,&y);
+			EVDS_Variable_GetFunction2D(variable,x,300.0e5,&y1);
+			EVDS_Variable_GetFunction2D(variable,x,350.0e5,&y2);
+			EVDS_Variable_GetFunction2D(variable,x,400.0e5,&y3);
+			EVDS_Variable_GetFunction2D(variable,x,450.0e5,&y4);
+			printf("%.2f = %.1f %.1f %.1f %.1f\n",x,y1,y2,y3,y4);
 		}
 		//EVDS_System_QueryDatabase
 

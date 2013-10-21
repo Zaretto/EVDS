@@ -1284,7 +1284,7 @@ EVDS_API int EVDS_Variable_GetFunctionPointer(EVDS_VARIABLE* variable, void** da
 // Get value from a 1D function 
 EVDS_API int EVDS_Variable_GetFunction1D(EVDS_VARIABLE* variable, EVDS_REAL x, EVDS_REAL* p_value);
 // Get value from a 2D function 
-//EVDS_API int EVDS_Variable_GetFunction2D(EVDS_VARIABLE* variable, EVDS_REAL x, EVDS_REAL y, EVDS_REAL* p_value);
+EVDS_API int EVDS_Variable_GetFunction2D(EVDS_VARIABLE* variable, EVDS_REAL x, EVDS_REAL y, EVDS_REAL* p_value);
 // Get value from a 3D function
 //EVDS_API int EVDS_Variable_GetFunction3D(EVDS_VARIABLE* variable, EVDS_REAL x, EVDS_REAL y, EVDS_REAL z, EVDS_REAL* p_value);
 
