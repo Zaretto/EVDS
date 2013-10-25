@@ -94,6 +94,7 @@ int EVDS_InternalVariable_InitializeFunction(EVDS_VARIABLE* variable, EVDS_VARIA
 
 	//Allocate table
 	function->data = malloc(sizeof(EVDS_VARIABLE_FVALUE_LINEAR)*function->data_count);
+	memset(function->data,0,sizeof(EVDS_VARIABLE_FVALUE_LINEAR)*function->data_count);
 
 	//Compute average value (to determine constant)
 	avg_count = 0;
@@ -234,6 +235,9 @@ int EVDS_InternalVariable_GetFunction_Linear(EVDS_VARIABLE_FUNCTION* function,
 	EVDS_REAL vi,vj,xi,xj;
 
 	//Check for edge cases
+	if (function->data_count == 0) {
+		return function->constant_value;
+	}
 	if (function->data_count == 1) {
 		return EVDS_InternalVariable_GetFunctionValue_Linear(function,0,y,z,p_value);
 	}

@@ -344,6 +344,8 @@ typedef struct EVDS_GEODETIC_COORDINATE_TAG {
 
 /// Called when object is being initialized
 typedef int EVDS_Callback_Initialize(EVDS_SYSTEM* system, EVDS_SOLVER* solver, EVDS_OBJECT* object);
+/// Called after the object was initialized (global callback)
+typedef int EVDS_Callback_PostInitialize(EVDS_SYSTEM* system, EVDS_SOLVER* solver, EVDS_OBJECT* object);
 /// Called when object is being deinitialized
 typedef int EVDS_Callback_Deinitialize(EVDS_SYSTEM* system, EVDS_SOLVER* solver, EVDS_OBJECT* object);
 /// Called when solver is started up
@@ -456,6 +458,7 @@ typedef struct EVDS_GLOBAL_CALLBACKS_TAG {
 	//Callbacks
 	EVDS_Callback_Initialize*		OnInitialize;		///< Called when object is being initialized
 	EVDS_Callback_Deinitialize*		OnDeinitialize;		///< Called when object is being deinitialized
+	EVDS_Callback_PostInitialize*	OnPostInitialize;	///< Called after the object was initialized
 	//EVDS_Callback_StateSave*		OnStateSave;		///< Called when objects state must be saved
 	//EVDS_Callback_StateLoad*		OnStateLoad;		///< Called when objects state must be restored
 	//EVDS_Callback_Startup*			OnStartup;			///< Called when solver is started up
