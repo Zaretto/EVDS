@@ -406,7 +406,7 @@ struct EVDS_SYSTEM_TAG {
 	SIMC_LIST* databases;						// List of databases (each an EVDS_VARIABLE)
 
 	// Global callbacks
-	EVDS_Callback_Initialize* OnInitialize;		// Global initialization callback
+	EVDS_GLOBAL_CALLBACKS callbacks;			// Global callbacks
 
 	// Various special variables
 	unsigned int uid_counter;					// Unique ID counter (for objects without a defined UID)

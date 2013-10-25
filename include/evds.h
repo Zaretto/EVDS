@@ -438,6 +438,31 @@ struct EVDS_SOLVER {
 };
 
 
+////////////////////////////////////////////////////////////////////////////////
+/// @ingroup EVDS_SYSTEM
+/// @brief A list of global callbacks.
+///
+/// See EVDS_SOLVER for more information on how the callbacks are used. This data
+/// structure allows setting a list of global callbacks for EVDS system.
+///
+/// The system-wide callback will be called before every object is initialized. It can be used to append
+/// additional simulator-specific variables of interest. The callback will be called from the initializing
+/// thread (which may be different from the one that called EVDS_Object_Initialize()).
+///
+/// The system-wide callback must return EVDS_OK if completed successfully. EVDS_CLAIM_OBJECT can be returned
+/// to claim the object (the solvers initialization routine will then be ignored).
+////////////////////////////////////////////////////////////////////////////////
+typedef struct EVDS_GLOBAL_CALLBACKS_TAG {
+	//Callbacks
+	EVDS_Callback_Initialize*		OnInitialize;		///< Called when object is being initialized
+	EVDS_Callback_Deinitialize*		OnDeinitialize;		///< Called when object is being deinitialized
+	//EVDS_Callback_StateSave*		OnStateSave;		///< Called when objects state must be saved
+	//EVDS_Callback_StateLoad*		OnStateLoad;		///< Called when objects state must be restored
+	//EVDS_Callback_Startup*			OnStartup;			///< Called when solver is started up
+	//EVDS_Callback_Shutdown*			OnShutdown;			///< Called when solver is shut down
+} EVDS_GLOBAL_CALLBACKS;
+
+
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -991,10 +1016,8 @@ EVDS_API int EVDS_System_GetDatabaseEntries(EVDS_SYSTEM* system, const char* nam
 // Get an entry from a database by name and object name
 EVDS_API int EVDS_System_QueryDatabase(EVDS_SYSTEM* system, const char* query, EVDS_VARIABLE** p_variable);
 
-// Set global initialization callback
-EVDS_API int EVDS_System_SetCallback_OnInitialize(EVDS_SYSTEM* system, EVDS_Callback_Initialize* p_callback);
-// Set global deinitialization callback
-//EVDS_API int EVDS_System_SetCallback_OnDeinitialize(EVDS_SYSTEM* system, EVDS_Callback_Deinitialize* p_callback);
+// Set global callbacks
+EVDS_API int EVDS_System_SetGlobalCallbacks(EVDS_SYSTEM* system, EVDS_GLOBAL_CALLBACKS* p_callbacks);
 
 // Set userdata
 EVDS_API int EVDS_System_SetUserdata(EVDS_SYSTEM* system, void* userdata);

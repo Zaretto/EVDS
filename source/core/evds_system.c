@@ -822,27 +822,23 @@ int EVDS_System_QueryByReference(EVDS_OBJECT* root, const char* query, EVDS_VARI
 
 
 ////////////////////////////////////////////////////////////////////////////////
-/// @brief Set global initialization callback for system.
+/// @brief Set list of global callbacks.
 ///
-/// This system-wide callback will be called before every object is initialized. It can be used to append
-/// additional simulator-specific variables of interest. The callback will be called from the initializing
-/// thread (which may be different from the one that called EVDS_Object_Initialize()).
-///
-/// The system-wide callback must return EVDS_OK if completed successfully. EVDS_CLAIM_OBJECT can be returned
-/// to claim the object (the solvers initialization routine will then be ignored).
-///
-/// Call with null callback pointer to disable.
+/// The global callbacks will be called prior to the solvers callbacks. See
+/// EVDS_GLOBAL_CALLBACKS for more information on using global callbacks.
 ///
 /// @param[in] system Pointer to system
-/// @param[in] p_callback Pointer to the callback function (can be null)
+/// @param[in] p_callbacks Pointer to the callback function list
 ///
 /// @returns Error code
 /// @retval EVDS_OK Successfully completed
 /// @retval EVDS_ERROR_BAD_PARAMETER "system" is null
+/// @retval EVDS_ERROR_BAD_PARAMETER "p_callback" is null
 ////////////////////////////////////////////////////////////////////////////////
-int EVDS_System_SetCallback_OnInitialize(EVDS_SYSTEM* system, EVDS_Callback_Initialize* p_callback) {
+int EVDS_System_SetGlobalCallbacks(EVDS_SYSTEM* system, EVDS_GLOBAL_CALLBACKS* p_callbacks) {
 	if (!system) return EVDS_ERROR_BAD_PARAMETER;
+	if (!p_callbacks) return EVDS_ERROR_BAD_PARAMETER;
 
-	system->OnInitialize = p_callback;
+	memcpy(&system->callbacks,p_callbacks,sizeof(EVDS_GLOBAL_CALLBACKS));
 	return EVDS_OK;
 }

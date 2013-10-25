@@ -471,8 +471,8 @@ void EVDS_InternalThread_Initialize_Object(EVDS_OBJECT* object) {
 
 		//Check if this solver will not ignore the object
 		int error_code = EVDS_IGNORE_OBJECT;
-		if (system->OnInitialize) {
-			error_code = system->OnInitialize(system,solver,object);
+		if (system->callbacks.OnInitialize) {
+			error_code = system->callbacks.OnInitialize(system,solver,object);
 			if ((error_code == EVDS_OK) && (solver->OnInitialize)) {
 				error_code = solver->OnInitialize(system,solver,object);
 			}
@@ -676,7 +676,14 @@ int EVDS_Object_Destroy(EVDS_OBJECT* object) {
 
 	//Deinitialize solver
 	if (object->solver) {
-		if (object->solver->OnDeinitialize) object->solver->OnDeinitialize(object->system,object->solver,object);
+		if (object->system->callbacks.OnDeinitialize) {
+			int error_code = object->system->callbacks.OnDeinitialize(object->system,object->solver,object);
+			if ((error_code == EVDS_OK) && (object->solver->OnDeinitialize)) {
+				error_code = object->solver->OnDeinitialize(object->system,object->solver,object);
+			}
+		} else {
+			if (object->solver->OnDeinitialize) object->solver->OnDeinitialize(object->system,object->solver,object);
+		}
 	}
 
 #ifndef EVDS_SINGLETHREADED
