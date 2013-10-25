@@ -193,12 +193,18 @@ int EVDS_InternalModifier_Initialize(EVDS_SYSTEM* system, EVDS_SOLVER* solver, E
 		EVDS_Vector_Set(&normal,   EVDS_VECTOR_DIRECTION,0,vars.vector1[0],vars.vector1[1],vars.vector1[2]);
 		EVDS_Vector_Set(&direction,EVDS_VECTOR_DIRECTION,0,vars.vector2[0],vars.vector2[1],vars.vector2[2]);
 
-		//Default values for normal/direction
+		//Default values for normal/direction (update vector1/vector2 variables which are used for circular modifier)
 		EVDS_Vector_Length(&mag,&normal);
-		if (mag == 0.0) EVDS_Vector_Set(&normal,EVDS_VECTOR_DIRECTION,0,1,0,0); //+X normal
+		if (mag == 0.0) {
+			EVDS_Vector_Set(&normal,EVDS_VECTOR_DIRECTION,0,1,0,0); //+X normal
+			EVDS_Vector_Get(&normal,&vars.vector1[0],&vars.vector1[1],&vars.vector1[2],normal.coordinate_system);
+		}
 
 		EVDS_Vector_Length(&mag,&direction);
-		if (mag == 0.0) EVDS_Vector_Set(&direction,EVDS_VECTOR_DIRECTION,0,0,0,1); //+Z direction
+		if (mag == 0.0) {
+			EVDS_Vector_Set(&direction,EVDS_VECTOR_DIRECTION,0,0,0,1); //+Z direction
+			EVDS_Vector_Get(&direction,&vars.vector2[0],&vars.vector2[1],&vars.vector2[2],direction.coordinate_system);
+		}
 
 		//Normalize directions		
 		EVDS_Vector_Normalize(&normal,&normal);
