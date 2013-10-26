@@ -236,7 +236,8 @@ int EVDS_InternalVariable_GetFunction_Linear(EVDS_VARIABLE_FUNCTION* function,
 
 	//Check for edge cases
 	if (function->data_count == 0) {
-		return function->constant_value;
+		*p_value = function->constant_value;
+		return EVDS_OK;
 	}
 	if (function->data_count == 1) {
 		return EVDS_InternalVariable_GetFunctionValue_Linear(function,0,y,z,p_value);
