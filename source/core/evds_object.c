@@ -2268,9 +2268,6 @@ int EVDS_Object_GetStateVector(EVDS_OBJECT* object, EVDS_STATE_VECTOR* vector) {
 /// The consistency means that objects velocity vector is always assumed to lie in objects
 /// position, and any information about otherwise is discarded.
 ///
-/// @note No automatic conversion is performed. The state vector must be correctly defined
-///       when passed into this function.
-///
 /// Example of use:
 /// ~~~{.c}
 ///		EVDS_STATE_VECTOR state;
@@ -2288,19 +2285,21 @@ int EVDS_Object_GetStateVector(EVDS_OBJECT* object, EVDS_STATE_VECTOR* vector) {
 /// @retval EVDS_ERROR_INVALID_OBJECT Object was destroyed
 ////////////////////////////////////////////////////////////////////////////////
 int EVDS_Object_SetStateVector(EVDS_OBJECT* object, EVDS_STATE_VECTOR* vector) {
+	EVDS_STATE_VECTOR new_vector;
 	if (!object) return EVDS_ERROR_BAD_PARAMETER;
 	if (!vector) return EVDS_ERROR_BAD_PARAMETER;
 #ifndef EVDS_SINGLETHREADED
 	if (object->destroyed) return EVDS_ERROR_INVALID_OBJECT;
 #endif
 
-	//Assert validity of the state vector
-	EVDS_ASSERT(vector->position.coordinate_system == object->parent);
-	EVDS_ASSERT(vector->velocity.coordinate_system == object->parent);
-	EVDS_ASSERT(vector->acceleration.coordinate_system == object->parent);
-	EVDS_ASSERT(vector->orientation.coordinate_system == object->parent);
-	EVDS_ASSERT(vector->angular_velocity.coordinate_system == object->parent);
-	EVDS_ASSERT(vector->angular_acceleration.coordinate_system == object->parent);
+	//Convert the state vector (FIXME: conversion results in invalid doubles somewhere in the converted vector
+	// must be looked into it)
+	EVDS_Vector_Convert(&new_vector.position,&vector->position,object->parent);
+	EVDS_Vector_Convert(&new_vector.velocity,&vector->velocity,object->parent);
+	EVDS_Vector_Convert(&new_vector.acceleration,&vector->acceleration,object->parent);
+	EVDS_Quaternion_Convert(&new_vector.orientation,&vector->orientation,object->parent);
+	EVDS_Vector_Convert(&new_vector.angular_velocity,&vector->angular_velocity,object->parent);
+	EVDS_Vector_Convert(&new_vector.angular_acceleration,&vector->angular_acceleration,object->parent);
 
 	//Set previous state vector
 	SIMC_SRW_EnterWrite(object->state_lock);
@@ -2311,7 +2310,7 @@ int EVDS_Object_SetStateVector(EVDS_OBJECT* object, EVDS_STATE_VECTOR* vector) {
 
 	//Copy new state vector and reset vector positions/velocities
 	SIMC_SRW_EnterWrite(object->state_lock);
-		memcpy(&object->state,vector,sizeof(EVDS_STATE_VECTOR));
+		memcpy(&object->state,&new_vector,sizeof(EVDS_STATE_VECTOR));
 
 		//Objects state vector is always specified in parent coordinates, all vectors
 		//are assumed to be located in objects reference points. To avoid any mathematical
@@ -2329,7 +2328,7 @@ int EVDS_Object_SetStateVector(EVDS_OBJECT* object, EVDS_STATE_VECTOR* vector) {
 		object->state.angular_acceleration.vcoordinate_system = 0;
 	SIMC_SRW_LeaveWrite(object->state_lock);
 #ifndef EVDS_SINGLETHREADED
-	memcpy(&object->private_state,vector,sizeof(EVDS_STATE_VECTOR)); //FIXME: this must be locked!!
+	memcpy(&object->private_state,&new_vector,sizeof(EVDS_STATE_VECTOR)); //FIXME: this must be locked!!
 #endif
 	return EVDS_OK;
 }

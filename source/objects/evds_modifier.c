@@ -76,9 +76,9 @@ int EVDS_InternalModifier_Copy(EVDS_MODIFIER_VARIABLES* vars, EVDS_OBJECT* modif
 	if (EVDS_System_GetObjectByName(system,name,parent,&new_object) == EVDS_OK) {
 		return EVDS_OK;
 	} else {
+		EVDS_Object_GetStateVector(object,&vector); //Work and transform the original objects position
 		EVDS_Object_Copy(object,parent,&new_object);
 		EVDS_Object_SetName(new_object,name);
-		EVDS_Object_GetStateVector(new_object,&vector);
 	}
 
 	//Calculate child copies offset
@@ -99,29 +99,26 @@ int EVDS_InternalModifier_Copy(EVDS_MODIFIER_VARIABLES* vars, EVDS_OBJECT* modif
 					vars->vector2[1] * vars->circular_radius + vars->u[1]*x + vars->v[1]*y + vars->vector1[1]*vars->circular_normal_step*vars->k,
 					vars->vector2[2] * vars->circular_radius + vars->u[2]*x + vars->v[2]*y + vars->vector1[2]*vars->circular_normal_step*vars->k);
 
+				//Rotate the object to align it with the circle
 				if (vars->circular_rotate > 0.5) {
 					EVDS_VECTOR axis;
 					EVDS_QUATERNION delta_quaternion;
 					EVDS_Vector_Set(&axis,EVDS_VECTOR_DIRECTION,modifier,
 						vars->vector1[0],vars->vector1[1],vars->vector1[2]);
 					EVDS_Quaternion_FromVectorAngle(&delta_quaternion,&axis,EVDS_RAD(vars->i*vars->circular_step));
-					{
-						EVDS_REAL x,y,z;
-						EVDS_Quaternion_ToEuler(&delta_quaternion,delta_quaternion.coordinate_system,&x,&y,&z);
-						x = EVDS_DEG(x);
-						y = EVDS_DEG(y);
-						z = EVDS_DEG(z);
-					}
 
 					//Apply rotation
 					EVDS_Quaternion_Multiply(&vector.orientation,&delta_quaternion,&vector.orientation);
+
+					//Rotate the local position of the object in modifiers coordinates
+					EVDS_Vector_Rotate(&vector.position,&vector.position,&delta_quaternion);
 				}
 			} break;
 	}
 
 	//Apply transformation
 	EVDS_Vector_Add(&vector.position,&vector.position,&offset);
-	EVDS_Object_SetStateVector(new_object,&vector);
+	EVDS_Object_SetStateVector(new_object,&vector); //This also converts the state vector from parent coords to new coords
 
 	//Initialize object (because parents children were already initialized
 	// prior to modifier initialization)
@@ -197,13 +194,13 @@ int EVDS_InternalModifier_Initialize(EVDS_SYSTEM* system, EVDS_SOLVER* solver, E
 		EVDS_Vector_Length(&mag,&normal);
 		if (mag == 0.0) {
 			EVDS_Vector_Set(&normal,EVDS_VECTOR_DIRECTION,0,1,0,0); //+X normal
-			EVDS_Vector_Get(&normal,&vars.vector1[0],&vars.vector1[1],&vars.vector1[2],normal.coordinate_system);
+			EVDS_Vector_Get(&normal,&vars.vector1[0],&vars.vector1[1],&vars.vector1[2],0);
 		}
 
 		EVDS_Vector_Length(&mag,&direction);
 		if (mag == 0.0) {
 			EVDS_Vector_Set(&direction,EVDS_VECTOR_DIRECTION,0,0,0,1); //+Z direction
-			EVDS_Vector_Get(&direction,&vars.vector2[0],&vars.vector2[1],&vars.vector2[2],direction.coordinate_system);
+			EVDS_Vector_Get(&direction,&vars.vector2[0],&vars.vector2[1],&vars.vector2[2],0);
 		}
 
 		//Normalize directions		
