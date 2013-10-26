@@ -2202,13 +2202,10 @@ int EVDS_Object_SetParent(EVDS_OBJECT* object, EVDS_OBJECT* new_parent) {
 		EVDS_Quaternion_Convert(&object->state.orientation,			&vector.orientation,new_parent);
 		EVDS_Vector_Convert(&object->state.angular_velocity,		&vector.angular_velocity,new_parent);
 		EVDS_Vector_Convert(&object->state.angular_acceleration,	&vector.angular_acceleration,new_parent);
-
-		//FIXME: fix "parent_level" recursively in all objects
-
 	SIMC_SRW_LeaveRead(object->state_lock);
 
 	//Make sure the object has a unique name
-	EVDS_Object_SetUniqueName(object,0); //FIXME: not properly thread-protected
+	EVDS_Object_SetUniqueName(object,0);
 
 	//Add object to new parents list
 	object->rparent_entry = SIMC_List_Append(new_parent->raw_children,object);
