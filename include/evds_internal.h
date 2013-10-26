@@ -315,6 +315,9 @@ struct EVDS_OBJECT_TAG {
 #endif
 
 	// Fixed object information
+#ifndef EVDS_SINGLETHREADED
+	SIMC_SRW_ID name_lock;
+#endif
 	char name[256];							//Object name
 	char type[256];							//Object type
 	EVDS_OBJECT* parent;					//Objects parent

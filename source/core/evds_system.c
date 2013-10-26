@@ -536,6 +536,8 @@ int EVDS_System_GetObjectByUID(EVDS_SYSTEM* system, unsigned int uid, EVDS_OBJEC
 /// @retval EVDS_ERROR_NOT_FOUND No object with this name was found
 ////////////////////////////////////////////////////////////////////////////////
 int EVDS_System_GetObjectByName(EVDS_SYSTEM* system, const char* name, EVDS_OBJECT* parent, EVDS_OBJECT** p_object) {
+	char parent_name[257] = { 0 };
+	char child_name[257] = { 0 };
 	SIMC_LIST_ENTRY* entry;
 	EVDS_OBJECT* child;
 	if (!system) return EVDS_ERROR_BAD_PARAMETER;
@@ -543,7 +545,8 @@ int EVDS_System_GetObjectByName(EVDS_SYSTEM* system, const char* name, EVDS_OBJE
 	if (!p_object) return EVDS_ERROR_BAD_PARAMETER;
 
 	//Check if searching for the parent
-	if (parent && (strncmp(parent->name,name,256) == 0)) {
+	EVDS_Object_GetName(parent,parent_name,256);
+	if (parent && (strncmp(parent_name,name,256) == 0)) {
 			*p_object = parent;
 			return EVDS_OK;
 	}
@@ -553,8 +556,8 @@ int EVDS_System_GetObjectByName(EVDS_SYSTEM* system, const char* name, EVDS_OBJE
 		entry = SIMC_List_GetFirst(parent->raw_children);
 		while (entry) {
 			child = (EVDS_OBJECT*)SIMC_List_GetData(parent->raw_children,entry);
-			//if ((!child->modifier) && (strncmp(child->name,name,256) == 0)) {
-			if (strncmp(child->name,name,256) == 0) {
+			EVDS_Object_GetName(child,child_name,256);
+			if (strncmp(child_name,name,256) == 0) {
 				*p_object = child;
 				SIMC_List_Stop(parent->raw_children,entry);
 				return EVDS_OK;
@@ -577,8 +580,8 @@ int EVDS_System_GetObjectByName(EVDS_SYSTEM* system, const char* name, EVDS_OBJE
 		entry = SIMC_List_GetFirst(system->objects);
 		while (entry) {
 			child = (EVDS_OBJECT*)SIMC_List_GetData(system->objects,entry);
-			//if ((!child->modifier) && (strncmp(child->name,name,256) == 0)) {
-			if (strncmp(child->name,name,256) == 0) {
+			EVDS_Object_GetName(child,child_name,256);
+			if (strncmp(child_name,name,256) == 0) {
 				*p_object = child;
 				SIMC_List_Stop(system->objects,entry);
 				return EVDS_OK;
@@ -650,6 +653,7 @@ int EVDS_System_DatabaseFromString(EVDS_SYSTEM* system, const char* description)
 /// @brief Get database by name
 ////////////////////////////////////////////////////////////////////////////////
 int EVDS_System_GetDatabaseByName(EVDS_SYSTEM* system, const char* name, EVDS_VARIABLE** p_database) {
+	char child_name[257] = { 0 };
 	SIMC_LIST_ENTRY* entry;
 	EVDS_VARIABLE* child;
 	if (!system) return EVDS_ERROR_BAD_PARAMETER;
@@ -659,7 +663,8 @@ int EVDS_System_GetDatabaseByName(EVDS_SYSTEM* system, const char* name, EVDS_VA
 	entry = SIMC_List_GetFirst(system->databases);
 	while (entry) {
 		child = (EVDS_VARIABLE*)SIMC_List_GetData(system->databases,entry);
-		if (strncmp(child->name,name,256) == 0) {
+		EVDS_Object_GetName(child,child_name,256);
+		if (strncmp(child_name,name,256) == 0) {
 			*p_database = child;
 			SIMC_List_Stop(system->databases,entry);
 			return EVDS_OK;

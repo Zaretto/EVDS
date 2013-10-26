@@ -423,10 +423,10 @@ void EVDS_InternalThread_Initialize_Object(EVDS_OBJECT* object) {
 	object->initialize_thread = SIMC_Thread_GetUniqueID();
 #endif
 
-	//Make sure all children have unique names FIXME
-	//
+	//Make sure the object has a unique name
+	EVDS_Object_SetUniqueName(object,0);
 
-	//Make sure all children have unique identifiers FIXME
+	//Make sure the object has a unique identifier
 	//
 
 	//Initialize all children
@@ -860,6 +860,7 @@ int EVDS_Object_Create(EVDS_SYSTEM* system, EVDS_OBJECT* parent, EVDS_OBJECT** p
 	object->create_thread = SIMC_Thread_GetUniqueID();
 	object->state_lock = SIMC_SRW_Create();
 	object->previous_state_lock = SIMC_SRW_Create();
+	object->name_lock = SIMC_SRW_Create();
 #endif
 	object->uid = 100000+(system->uid_counter++); //FIXME: could it be more arbitrary
 
@@ -1051,11 +1052,15 @@ int EVDS_Object_CopySingle(EVDS_OBJECT* source, EVDS_OBJECT* parent, EVDS_OBJECT
 	} else {
 		EVDS_Object_Create(source->system,parent,&object);
 	}
-	strncpy(object->name,source->name,256);
+	SIMC_SRW_EnterWrite(object->name_lock);
+	SIMC_SRW_EnterRead(source->name_lock);
+		strncpy(object->name,source->name,256);
+	SIMC_SRW_LeaveRead(source->name_lock);
+	SIMC_SRW_LeaveWrite(object->name_lock);
 	strncpy(object->type,source->type,256);
 
 	SIMC_SRW_EnterRead(source->state_lock); //Copy state under a lock
-	EVDS_StateVector_Copy(&object->state,&source->state);
+		EVDS_StateVector_Copy(&object->state,&source->state);
 	SIMC_SRW_LeaveRead(source->state_lock);
 
 	//Copy userdata pointer
@@ -1142,12 +1147,14 @@ int EVDS_Object_CopySingle(EVDS_OBJECT* source, EVDS_OBJECT* parent, EVDS_OBJECT
 ////////////////////////////////////////////////////////////////////////////////
 int EVDS_Object_CreateBy(EVDS_OBJECT* origin, const char* sub_name, EVDS_OBJECT* parent, EVDS_OBJECT** p_object) {
 	char full_name[257] = { 0 };
+	char origin_name[257] = { 0 };
 	if (!origin) return EVDS_ERROR_BAD_PARAMETER;
 	if (!sub_name) return EVDS_ERROR_BAD_PARAMETER;
 	if (!p_object) return EVDS_ERROR_BAD_PARAMETER;
 
 	//Get full name of the sub-object
-	snprintf(full_name,256,"%s (%s)",origin->name,sub_name);
+	EVDS_Object_GetName(origin,origin_name,256);
+	snprintf(full_name,256,"%s (%s)",origin_name,sub_name);
 
 	//Find this object inside parent or inside the entire system, or create new one
 	if (EVDS_System_GetObjectByName(origin->system,full_name,parent,p_object) != EVDS_OK) {
@@ -1379,7 +1386,7 @@ int EVDS_Object_SetType(EVDS_OBJECT* object, const char* type) {
 
 
 ////////////////////////////////////////////////////////////////////////////////
-/// @brief Sets object name. @evds_init_only
+/// @brief Sets object name.
 ///
 /// Object name usually has no special meaning other than to distinguish the object from
 /// others. Some code (solvers or rendering code) may execute special behavior based on
@@ -1403,8 +1410,6 @@ int EVDS_Object_SetType(EVDS_OBJECT* object, const char* type) {
 /// @retval EVDS_ERROR_BAD_PARAMETER "name" is null
 /// @retval EVDS_ERROR_BAD_STATE Object was already initialized
 /// @retval EVDS_ERROR_INVALID_OBJECT Object was destroyed
-/// @retval EVDS_ERROR_INTERTHREAD_CALL The function can only be called from thread that is initializing the object 
-///  (or thread that has created the object before initializer was called)
 ////////////////////////////////////////////////////////////////////////////////
 int EVDS_Object_SetName(EVDS_OBJECT* object, const char* name) {
 	int count;
@@ -1412,11 +1417,8 @@ int EVDS_Object_SetName(EVDS_OBJECT* object, const char* name) {
 	char* clean_name_ptr;
 	if (!object) return EVDS_ERROR_BAD_PARAMETER;
 	if (!name) return EVDS_ERROR_BAD_PARAMETER;
-	if (object->initialized) return EVDS_ERROR_BAD_STATE;
 #ifndef EVDS_SINGLETHREADED
 	if (object->destroyed) return EVDS_ERROR_INVALID_OBJECT;
-	if ((object->create_thread != SIMC_Thread_GetUniqueID()) &&
-		(object->initialize_thread != SIMC_Thread_GetUniqueID())) return EVDS_ERROR_INTERTHREAD_CALL;
 #endif
 
 	//Sanitize the name
@@ -1438,17 +1440,22 @@ int EVDS_Object_SetName(EVDS_OBJECT* object, const char* name) {
 	if (count < 256) *clean_name_ptr = '\0';
 
 	//Store it
-	strncpy(object->name,clean_name,256);
+	SIMC_SRW_EnterWrite(object->name_lock);
+		strncpy(object->name,clean_name,256);
+	SIMC_SRW_LeaveWrite(object->name_lock);
 	return EVDS_OK;
 }
 
 
 ////////////////////////////////////////////////////////////////////////////////
-/// @brief Set objects name to a unique string.
+/// @brief Updates the objects name to be unique within its parent (or target parent)
 ///
-/// This function call can be used to assign a globally unique name to the object.
+/// This function makes sure that objects name is unique amongst all children of the
+/// parent object. If no other objects with its name exist, nothing will be changed.
+/// If an object already exists with such name, a sequential index will be appended.
 ///
 /// @param[in] object Pointer to object
+/// @param[in] parent Parent in which the object must have unique name (can be null)
 ///
 /// @returns Error code
 /// @retval EVDS_OK Successfully completed
@@ -1458,16 +1465,52 @@ int EVDS_Object_SetName(EVDS_OBJECT* object, const char* name) {
 /// @retval EVDS_ERROR_INTERTHREAD_CALL The function can only be called from thread that is initializing the object 
 ///  (or thread that has created the object before initializer was called)
 ////////////////////////////////////////////////////////////////////////////////
-int EVDS_Object_SetUniqueName(EVDS_OBJECT* object) {
+int EVDS_Object_SetUniqueName(EVDS_OBJECT* object, EVDS_OBJECT* parent) {
+	int index;
+	int renamed_object;
+	char name[257] = { 0 };
+	char original_name[257] = { 0 };
+	SIMC_LIST_ENTRY* entry;
 	if (!object) return EVDS_ERROR_BAD_PARAMETER;
-	if (object->initialized) return EVDS_ERROR_BAD_STATE;
+	//if (object->initialized) return EVDS_ERROR_BAD_STATE;
 #ifndef EVDS_SINGLETHREADED
 	if (object->destroyed) return EVDS_ERROR_INVALID_OBJECT;
 	if ((object->create_thread != SIMC_Thread_GetUniqueID()) &&
 		(object->initialize_thread != SIMC_Thread_GetUniqueID())) return EVDS_ERROR_INTERTHREAD_CALL;
 #endif
 
-	snprintf(object->name,256,"@%4X%4X",rand(),rand()); //FIXME: better unique name
+	//Use objects parent
+	if (!parent) parent = object->parent;
+	//Root node always has unique name (empty name)
+	if (!object->parent) return EVDS_OK;
+
+	//Get original name of the object
+	EVDS_Object_GetName(object,original_name,256);
+	strncpy(name,original_name,256);
+
+	//Search for the first unused name
+	index = 1;
+	renamed_object = 1;
+	while (renamed_object) {
+		renamed_object = 0;
+
+		//Traverse the parents children
+		entry = SIMC_List_GetFirst(parent->raw_children);
+		while (entry) {
+			char object_name[257] = { 0 };
+			EVDS_OBJECT* child = (EVDS_OBJECT*)SIMC_List_GetData(parent->raw_children,entry);
+			EVDS_Object_GetName(child,object_name,256);
+			if ((strncmp(object_name,name,256) == 0) && (child != object)) {
+				renamed_object = 1;
+				snprintf(name,256,"%s (%d)",original_name,index);
+				index++;
+			}
+			entry = SIMC_List_GetNext(parent->raw_children,entry);
+		}
+	}
+
+	//Set the objects name
+	EVDS_Object_SetName(object,name);
 	return EVDS_OK;
 }
 
@@ -1738,7 +1781,7 @@ int EVDS_Object_GetType(EVDS_OBJECT* object, char* type, size_t max_length) {
 
 
 ////////////////////////////////////////////////////////////////////////////////
-/// @brief Get object name. @evds_limited_init
+/// @brief Get object name.
 ///
 /// Returns a string no more than max_length characters long. It may not be null
 /// terminated. This is a correct way to get full name:
@@ -1757,20 +1800,17 @@ int EVDS_Object_GetType(EVDS_OBJECT* object, char* type, size_t max_length) {
 /// @retval EVDS_ERROR_BAD_PARAMETER "object" is null
 /// @retval EVDS_ERROR_BAD_PARAMETER "name" is null
 /// @retval EVDS_ERROR_INVALID_OBJECT Object was destroyed
-/// @retval EVDS_ERROR_INTERTHREAD_CALL The function can only be called from thread that is initializing the object 
-///  (or thread that has created the object before initializer was called)
 ////////////////////////////////////////////////////////////////////////////////
 int EVDS_Object_GetName(EVDS_OBJECT* object, char* name, size_t max_length) {
 	if (!object) return EVDS_ERROR_BAD_PARAMETER;
 	if (!name) return EVDS_ERROR_BAD_PARAMETER;
 #ifndef EVDS_SINGLETHREADED
 	if (object->destroyed) return EVDS_ERROR_INVALID_OBJECT;
-	if (!object->initialized &&
-		(object->create_thread != SIMC_Thread_GetUniqueID()) &&
-		(object->initialize_thread != SIMC_Thread_GetUniqueID())) return EVDS_ERROR_INTERTHREAD_CALL;
 #endif
 
-	strncpy(name,object->name,(max_length > 256 ? 256 : max_length));
+	SIMC_SRW_EnterWrite(object->name_lock);
+		strncpy(name,object->name,(max_length > 256 ? 256 : max_length));
+	SIMC_SRW_LeaveWrite(object->name_lock);
 	return EVDS_OK;
 }
 
@@ -2166,6 +2206,9 @@ int EVDS_Object_SetParent(EVDS_OBJECT* object, EVDS_OBJECT* new_parent) {
 		//FIXME: fix "parent_level" recursively in all objects
 
 	SIMC_SRW_LeaveRead(object->state_lock);
+
+	//Make sure the object has a unique name
+	EVDS_Object_SetUniqueName(object,0); //FIXME: not properly thread-protected
 
 	//Add object to new parents list
 	object->rparent_entry = SIMC_List_Append(new_parent->raw_children,object);

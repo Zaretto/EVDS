@@ -1145,8 +1145,8 @@ EVDS_API int EVDS_Object_SetCallback_OnIntegrate(EVDS_OBJECT* object, EVDS_Callb
 EVDS_API int EVDS_Object_SetType(EVDS_OBJECT* object, const char* type);
 // Set object name
 EVDS_API int EVDS_Object_SetName(EVDS_OBJECT* object, const char* name);
-// Set objects name to a unique string
-EVDS_API int EVDS_Object_SetUniqueName(EVDS_OBJECT* object);
+// Updates the objects name to be unique within its parent (or target parent)
+EVDS_API int EVDS_Object_SetUniqueName(EVDS_OBJECT* object, EVDS_OBJECT* parent);
 // Add a new variable
 EVDS_API int EVDS_Object_AddVariable(EVDS_OBJECT* object, const char* name, EVDS_VARIABLE_TYPE type, EVDS_VARIABLE** p_variable);
 // Add a new variable (floating point value, can accept 0 as p_variable)

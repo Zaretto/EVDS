@@ -181,7 +181,9 @@ int EVDS_Internal_SaveObject(EVDS_OBJECT* object, SIMC_XML_DOCUMENT* doc,
 
 	//Create entry for this object
 	EVDS_ERRCHECK(SIMC_XML_AddElement(doc,root,&element,"object"));
-	EVDS_ERRCHECK(SIMC_XML_AddAttribute(doc,element,"name",object->name));
+	SIMC_SRW_EnterRead(object->name_lock);
+		EVDS_ERRCHECK(SIMC_XML_AddAttribute(doc,element,"name",object->name));
+	SIMC_SRW_LeaveRead(object->name_lock);
 	EVDS_ERRCHECK(SIMC_XML_AddAttribute(doc,element,"type",object->type));
 	if (info && (info->flags & EVDS_OBJECT_SAVEEX_SAVE_UIDS)) {
 		EVDS_ERRCHECK(SIMC_XML_AddAttributeDouble(doc,element,"uid",object->uid));

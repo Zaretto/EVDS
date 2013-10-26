@@ -234,12 +234,19 @@ int EVDS_InternalModifier_Initialize(EVDS_SYSTEM* system, EVDS_SOLVER* solver, E
 		EVDS_Object_Store(child); //Make sure nobody deletes objects data until modifier finishes working with it
 		SIMC_List_Stop(list,entry);
 
+		//Give the child object a unique name within the parent
+		EVDS_Object_SetUniqueName(child,parent);
+
+		//Create copies of the child object
 		for (vars.i = 0; vars.i < (int)vars.vector1_count; vars.i++) {
 			for (vars.j = 0; vars.j < (int)vars.vector2_count; vars.j++) {
 				for (vars.k = 0; vars.k < (int)vars.vector3_count; vars.k++) {
-					if ((vars.i != 0) || (vars.j != 0) || (vars.k != 0)) {
+					//if ((vars.i != 0) || (vars.j != 0) || (vars.k != 0)) {
+					//if ((vars.i == 0) && (vars.j == 0) && (vars.k == 0)) {
+						//DO NOTHING
+					//} else {
 						EVDS_InternalModifier_Copy(&vars,object,parent,child);
-					}
+					//}
 				}
 			}
 		}
