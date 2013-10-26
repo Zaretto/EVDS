@@ -790,6 +790,8 @@ int EVDS_InternalObject_DestroyData(EVDS_OBJECT* object) {
 ////////////////////////////////////////////////////////////////////////////////
 /// @brief Create a new object.
 ///
+/// @todo 'system' parameter will be removed from this function before the first release.
+///
 /// After object is created, it must be initialized with an EVDS_Object_Initialize() call before 
 /// it can be used for simulation. All variables and fixed internal structures must be 
 /// created before object is initialized.
