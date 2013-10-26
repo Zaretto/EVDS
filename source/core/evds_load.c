@@ -83,6 +83,7 @@ int EVDS_Internal_LoadParameter(EVDS_OBJECT* object, EVDS_VARIABLE* parent_varia
 	char* value;
 	char* name;
 	char* vector_type;
+	char* variable_type;
 	double real_value;
 	double x,y,z,w;
 	EVDS_VARIABLE* variable;
@@ -90,7 +91,8 @@ int EVDS_Internal_LoadParameter(EVDS_OBJECT* object, EVDS_VARIABLE* parent_varia
 	SIMC_XML_ELEMENT* nested_element;
 	SIMC_XML_ATTRIBUTE* nested_attribute;
 
-	//Get name and text (value) of the parameter (variable, attribute)
+
+	//Get name, type and text (value) of the parameter (variable, attribute)
 	if (element) {
 		//Parameter/variable
 		EVDS_ERRCHECK(SIMC_XML_GetAttribute(doc,element,"name",&name));
@@ -101,6 +103,10 @@ int EVDS_Internal_LoadParameter(EVDS_OBJECT* object, EVDS_VARIABLE* parent_varia
 			EVDS_ERRCHECK(SIMC_XML_GetName(doc,element,&name));
 		}
 
+		//Get variable type
+		EVDS_ERRCHECK(SIMC_XML_GetAttribute(doc,element,"type",&variable_type));
+		if (!variable_type) variable_type = "";
+
 		//Get vector type
 		EVDS_ERRCHECK(SIMC_XML_GetAttribute(doc,element,"vector_type",&vector_type));
 		if (!vector_type) vector_type = "";
@@ -109,8 +115,10 @@ int EVDS_Internal_LoadParameter(EVDS_OBJECT* object, EVDS_VARIABLE* parent_varia
 		EVDS_ERRCHECK(SIMC_XML_GetAttributeName(doc,attribute,&name));
 		EVDS_ERRCHECK(SIMC_XML_GetAttributeText(doc,attribute,&value));
 		vector_type = "";
+		variable_type = "";
 	}
 	if (!name) name = "";
+
 
 	//Remap parameter name (to provide compatibility with old file versions)
 	for (i = 0; i < EVDS_Internal_ParameterRemappingTableCount; i++) {
@@ -130,8 +138,9 @@ int EVDS_Internal_LoadParameter(EVDS_OBJECT* object, EVDS_VARIABLE* parent_varia
 		}
 	}
 
-	//Try to guess data type based on value (FIXME: do not ignore "type" attribute)
-	if (value) {
+
+	//Try to guess data type based on value (if type is not defined)
+	if (value && (!variable_type[0])) {
 		char *end_ptr, *end_value;
 		EVDS_StringToReal(value,&end_ptr,&real_value); //Convert string to a real value
 		end_value = value + strlen(value);
@@ -159,9 +168,24 @@ int EVDS_Internal_LoadParameter(EVDS_OBJECT* object, EVDS_VARIABLE* parent_varia
 				type = EVDS_VARIABLE_TYPE_STRING; //May be string or a nested variable
 			}
 		}
+	} else {
+		if (variable_type[0]) { //Override automatically detected type
+			if (strcmp(variable_type,"function") == 0) {
+				type = EVDS_VARIABLE_TYPE_FUNCTION;
+			} else if (strcmp(variable_type,"string") == 0) {
+				type = EVDS_VARIABLE_TYPE_STRING;
+			} if (strcmp(variable_type,"float") == 0) {
+				type = EVDS_VARIABLE_TYPE_FLOAT;
+			} if (strcmp(variable_type,"vector") == 0) {
+				type = EVDS_VARIABLE_TYPE_VECTOR;
+			} if (strcmp(variable_type,"quaternion") == 0) {
+				type = EVDS_VARIABLE_TYPE_QUATERNION;
+			}
+		}
 	}
 	
-	//Check if the variable is a nested one anyway, or a function
+
+	//Check if the variable is a nested or a function anyway (can't be overriden)
 	if (element && (!nested_in_function)) {
 		//If any nested tag is present, it's a nested variable (possibly with text)
 		EVDS_ERRCHECK(SIMC_XML_GetElement(doc,element,&nested_element,0));
@@ -180,6 +204,7 @@ int EVDS_Internal_LoadParameter(EVDS_OBJECT* object, EVDS_VARIABLE* parent_varia
 		}
 	}
 
+
 	//Add variable to object or to parent variable
 	if (object) {
 		EVDS_ERRCHECK(EVDS_Object_AddVariable(object,name,type,&variable));
@@ -193,6 +218,7 @@ int EVDS_Internal_LoadParameter(EVDS_OBJECT* object, EVDS_VARIABLE* parent_varia
 	
 	//Store data into variable
 	if (type == EVDS_VARIABLE_TYPE_STRING) {
+		if (!value) value = ""; //If no value defined, give it an empty value
 		EVDS_ERRCHECK(EVDS_Variable_SetString(variable,value,strlen(value)));
 	} else if (type == EVDS_VARIABLE_TYPE_FLOAT) {
 		EVDS_ERRCHECK(EVDS_Variable_SetReal(variable,real_value));

@@ -94,6 +94,12 @@ const struct {
 	double scale_factor;
 	double offset_factor;
 } EVDS_Internal_UnitsTable[] = {
+	//Temp hack
+	{ "bar",	1e5 },
+	{ "kg/m3",	1.0 },
+	{ "lb/ft3", 16.0184634 },
+	{ "btu/(lb R)", 1054.35026444/(0.45359237*5.0/9.0) },
+	{ "btu/(ft s R)", 1054.35026444/(0.3048*5.0/9.0) },
 	//SI units
 	{ "m",		1.0 },
 	{ "kg",		1.0 },
@@ -107,12 +113,6 @@ const struct {
 	{ "lbs",	0.453592 },
 	{ "R",		5.0/9.0 },
 	{ "btu",	1054.35026444 },
-	//Temp hack
-	{ "bar",	1e5 },
-	{ "kg/m3",	1.0 },
-	{ "lb/ft3", 16.0184634 },
-	{ "btu/(lb R)", 1054.35026444/(0.45359237*5.0/9.0) },
-	{ "btu/(ft s R)", 1054.35026444/(0.3048*5.0/9.0) },
 };
 const int EVDS_Internal_UnitsTableCount = 
 	sizeof(EVDS_Internal_UnitsTable) / sizeof(EVDS_Internal_UnitsTable[0]);

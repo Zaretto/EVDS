@@ -1,44 +1,44 @@
 <EVDS>
 	<database name="material">
 		<entry name="O2" print="Oxygen" class="oxidizer">
-			<parameter name="density">1.429 kg/m3
-				<data x="90.20  K"> 1141  kg/m3</data>
-				<data x="90.20+ K"> 1.429 kg/m3</data>
+			<parameter name="density" type="function" value="1.429 kg/m3">
+				90.20  K  1141  kg/m3
+				90.20+ K  1.429 kg/m3
 			</parameter>
 			<parameter name="boiling_point">90.20 K</parameter>
 			<parameter name="melting_point">54.36 K</parameter>
 		</entry>
 		<entry name="H2" print="Hydrogen" class="fuel">
-			<parameter name="density">0.0899 kg/m3
-				<data x=" 0.00  K" >76.3    kg/m3</data>
-				<data x="13.95- K" >88.0    kg/m3</data>
-				<data x="13.95  K" >77.211 kg/m3</data>
-				<data x="14.0   K" >77.170 kg/m3</data>
-				<data x="15.0   K" >76.324 kg/m3</data>
-				<data x="16.0   K" >75.435 kg/m3</data>
-				<data x="17.0   K" >74.489 kg/m3</data>
-				<data x="18.0   K" >73.522 kg/m3</data>
-				<data x="19.0   K" >72.473 kg/m3</data>
-				<data x="20.0   K" >71.364 kg/m3</data>
-				<data x="20.28  K" >70.941 kg/m3</data>
-				<data x="20.28+ K" >0.0899 kg/m3</data>
+			<parameter name="density" type="function" value="0.0899 kg/m3">
+				 0.00  K  76.3    kg/m3
+				13.95- K  88.0    kg/m3
+				13.95  K  77.211 kg/m3
+				14.0   K  77.170 kg/m3
+				15.0   K  76.324 kg/m3
+				16.0   K  75.435 kg/m3
+				17.0   K  74.489 kg/m3
+				18.0   K  73.522 kg/m3
+				19.0   K  72.473 kg/m3
+				20.0   K  71.364 kg/m3
+				20.28  K  70.941 kg/m3
+				20.28+ K  0.0899 kg/m3
 			</parameter>
-			<parameter name="heat_capacity">
-				<data x=" 0.00  K">0.153 btu/(ft hr R)</data>
-				<data x="13.95- K">0.153 btu/(ft hr R)</data>
-				<data x="13.95  K">6891  J/(kg K)</data>
-				<data x="15.15  K">7305  J/(kg K)</data>
-				<data x="15.30  K">7347  J/(kg K)</data>
-				<data x="16.05  K">7614  J/(kg K)</data>
-				<data x="16.26  K">7687  J/(kg K)</data>
-				<data x="17.03  K">7907  J/(kg K)</data>
-				<data x="17.31  K">7991  J/(kg K)</data>
-				<data x="17.98  K">8363  J/(kg K)</data>
-				<data x="18.27  K">8510  J/(kg K)</data>
-				<data x="18.89  K">8798  J/(kg K)</data>
-				<data x="18.99  K">8966  J/(kg K)</data>
-				<data x="20.28  K">9668  J/(kg K)</data>
-				<data x="20.28+ K">14.34 J/(kg K)</data>
+			<parameter name="heat_capacity" type="function" value="14.34 J/(kg K)">
+				 0.00  K  0.153 btu/(ft hr R)
+				13.95- K  0.153 btu/(ft hr R)
+				13.95  K  6891  J/(kg K)
+				15.15  K  7305  J/(kg K)
+				15.30  K  7347  J/(kg K)
+				16.05  K  7614  J/(kg K)
+				16.26  K  7687  J/(kg K)
+				17.03  K  7907  J/(kg K)
+				17.31  K  7991  J/(kg K)
+				17.98  K  8363  J/(kg K)
+				18.27  K  8510  J/(kg K)
+				18.89  K  8798  J/(kg K)
+				18.99  K  8966  J/(kg K)
+				20.28  K  9668  J/(kg K)
+				20.28+ K  14.34 J/(kg K)
 			</parameter>
 			<parameter name="boiling_point">20.28 K</parameter>
 			<parameter name="boiling_heat">446000 J/kg</parameter>

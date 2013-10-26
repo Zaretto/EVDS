@@ -943,6 +943,23 @@ void Test_EVDS_ROCKET_ENGINE() {
 
 void Test_EVDS_WING() {
 	START_TEST("Wing (general)") {
+			ERROR_CHECK(EVDS_System_DatabaseFromString(system,
+"<EVDS>"
+"	<database name=\"airfoils\">"
+"		<entry name=\"NACA-2412\" print=\"NACA 2412\">"
+"			<parameter name=\"Cl\" interpolation=\"linear\">"
+"			</parameter>"
+"			<parameter name=\"Cd\" interpolation=\"linear\">"
+"			</parameter>"
+"			<parameter name=\"Cm\" interpolation=\"linear\">"
+"			</parameter>"
+"			<parameter name=\"geometry\" interpolation=\"linear\">"
+"			</parameter>"
+"		</entry>"
+"	</database>"
+"</EVDS>"));
+
+
 		/*ERROR_CHECK(EVDS_Object_LoadFromString(root,
 "<EVDS version=\"31\">"
 "    <object name=\"Rocket engine\" type=\"rocket_engine\">"

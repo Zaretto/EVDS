@@ -146,6 +146,7 @@ void Test_EVDS_FUNCTIONS();
 void Test_EVDS_MODIFIER();
 void Test_EVDS_GIMBAL();
 void Test_EVDS_ROCKET_ENGINE();
+void Test_EVDS_WING();
 
 //Disable annoying warnings
 #pragma warning(disable: 4101)
