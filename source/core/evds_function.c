@@ -56,6 +56,7 @@ int EVDS_InternalVariable_InitializeFunction(EVDS_VARIABLE* variable, EVDS_VARIA
 	char *ptr,*end_ptr;
 	EVDS_REAL x,value;
 	EVDS_REAL avg_value;
+	EVDS_VARIABLE* constant_var;
 	int avg_count;
 
 	//Select interpolation type
@@ -129,6 +130,9 @@ int EVDS_InternalVariable_InitializeFunction(EVDS_VARIABLE* variable, EVDS_VARIA
 	//Compute constant value
 	if (avg_count > 0) {
 		function->constant_value = avg_value / ((EVDS_REAL)avg_count);
+	}
+	if (EVDS_Variable_GetAttribute(variable,"value",&constant_var) == EVDS_OK) {
+		EVDS_Variable_GetReal(constant_var,&function->constant_value);
 	}
 
 	//Fill table with nested function entries
