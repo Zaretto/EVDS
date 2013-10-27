@@ -306,7 +306,7 @@ int EVDS_Internal_LoadObject(EVDS_OBJECT* parent, SIMC_XML_DOCUMENT* doc, SIMC_X
 	double uid;
 
 	//Create object
-	EVDS_ERRCHECK(EVDS_Object_Create(parent->system,parent,&object));
+	EVDS_ERRCHECK(EVDS_Object_Create(parent,&object));
 	if (p_object) *p_object = object;
 
 	//Set parameters

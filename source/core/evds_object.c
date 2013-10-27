@@ -538,9 +538,10 @@ void EVDS_InternalThread_Initialize_Object(EVDS_OBJECT* object) {
 ///
 /// Example of use:
 /// ~~~{.c}
-/// 	EVDS_Object_Create(system,0,&inertial_space);
-///		EVDS_Object_SetType(inertial_space,"propagator_rk4");
-///		EVDS_Object_Initialize(inertial_space,1);
+///		EVDS_System_GetRootInertialSpace(system,&root);
+///		EVDS_Object_Create(root,&propagator);
+///		EVDS_Object_SetType(propagator,"propagator_rk4");
+///		EVDS_Object_Initialize(propagator,1);
 ///		//Execution will continue only after object was initialized
 /// ~~~
 ///
@@ -790,8 +791,6 @@ int EVDS_InternalObject_DestroyData(EVDS_OBJECT* object) {
 ////////////////////////////////////////////////////////////////////////////////
 /// @brief Create a new object.
 ///
-/// @todo 'system' parameter will be removed from this function before the first release.
-///
 /// After object is created, it must be initialized with an EVDS_Object_Initialize() call before 
 /// it can be used for simulation. All variables and fixed internal structures must be 
 /// created before object is initialized.
@@ -811,7 +810,7 @@ int EVDS_InternalObject_DestroyData(EVDS_OBJECT* object) {
 /// Example of use:
 /// ~~~{.c}
 ///     EVDS_OBJECT* earth;
-///		EVDS_Object_Create(system,inertial_system,&earth);
+///		EVDS_Object_Create(inertial_system,&earth);
 ///		EVDS_Object_SetType(earth,"planet");
 ///		EVDS_Object_SetName(earth,"Earth");
 ///		EVDS_Object_AddRealVariable(earth,"mass",5.97e24,0);		//kg
@@ -820,34 +819,35 @@ int EVDS_InternalObject_DestroyData(EVDS_OBJECT* object) {
 ///		EVDS_Object_Initialize(earth,1);
 /// ~~~
 ///
+/// @note Root inertial space can be used as a parent for the first object created. See
+///	      EVDS_System_GetRootInertialSpace() for more information.
+///
 /// Children objects will be automatically initialized before parents initialization is complete.
 /// See EVDS_Object_Initialize() for more information on initialization.
 ///
-/// @param[in] system Pointer to EVDS_SYSTEM
-/// @param[in] parent Parent object. If parent is not specified, the object created
-///		as the child of the root object.
+/// @param[in] parent Parent object (see EVDS_System_GetRootInertialSpace())
 /// @param[out] p_object Pointer to the new EVDS_OBJECT structure will be written
 ///
 /// @returns Error code
 /// @retval EVDS_OK Successfully completed
-/// @retval EVDS_ERROR_BAD_PARAMETER "system" is null
+/// @retval EVDS_ERROR_BAD_PARAMETER "parent" is null
 /// @retval EVDS_ERROR_BAD_PARAMETER "p_object" is null
 /// @retval EVDS_ERROR_MEMORY Could not allocate memory for EVDS_OBJECT
 ////////////////////////////////////////////////////////////////////////////////
-int EVDS_Object_Create(EVDS_SYSTEM* system, EVDS_OBJECT* parent, EVDS_OBJECT** p_object)
-{
+int EVDS_Object_Create(EVDS_OBJECT* parent, EVDS_OBJECT** p_object) {
+	EVDS_SYSTEM* system;
 	EVDS_OBJECT* object;
-	if (!system) return EVDS_ERROR_BAD_PARAMETER;
+	if (!parent) return EVDS_ERROR_BAD_PARAMETER;
 	if (!p_object) return EVDS_ERROR_BAD_PARAMETER;
+
+	//Get parents system
+	system = parent->system;
 
 	//Create new object
 	object = (EVDS_OBJECT*)malloc(sizeof(EVDS_OBJECT));
 	*p_object = object;
 	if (!object) return EVDS_ERROR_MEMORY;
 	memset(object,0,sizeof(EVDS_OBJECT));
-
-	//If no parent defined, assume root object
-	if (!parent) parent = system->inertial_space;
 
 	//Object may be stored externally, the data it contains cannot be removed while it is still stored
 	object->system = system;
@@ -1015,8 +1015,8 @@ int EVDS_Object_MoveChildren(EVDS_OBJECT* source_parent, EVDS_OBJECT* parent) {
 /// from source object to the new object.
 ///
 /// Source and parent objects may belong to different EVDS_SYSTEM objects. It is
-/// possible to copy data between two different simulations this way. If parent is
-/// defined, the new object is created in parent objects EVDS_SYSTEM.
+/// possible to copy data between two different simulations this way. 
+///	The new object is created in parent objects EVDS_SYSTEM.
 ///
 /// The new copy of an object will not be initialized, but it may contain variables
 /// created during the initialization of the other object.
@@ -1036,32 +1036,34 @@ int EVDS_Object_MoveChildren(EVDS_OBJECT* source_parent, EVDS_OBJECT* parent) {
 ///		in an inconsitent state. There is no blocking during copy operation.
 ///
 /// @param[in] source Pointer to the source object
-/// @param[in] parent Parent object (can be null)
+/// @param[in] parent Parent object
 /// @param[out] p_object Pointer to the new EVDS_OBJECT structure will be written here
 ///
 /// @returns Error code
 /// @retval EVDS_OK Successfully completed
 /// @retval EVDS_ERROR_BAD_PARAMETER "source" is null
+/// @retval EVDS_ERROR_BAD_PARAMETER "parent" is null
 /// @retval EVDS_ERROR_MEMORY Could not allocate memory for EVDS_OBJECT
 ////////////////////////////////////////////////////////////////////////////////
 int EVDS_Object_CopySingle(EVDS_OBJECT* source, EVDS_OBJECT* parent, EVDS_OBJECT** p_object) {
 	EVDS_OBJECT* object;
 	SIMC_LIST_ENTRY* entry;
 	if (!source) return EVDS_ERROR_BAD_PARAMETER;
+	if (!parent) return EVDS_ERROR_BAD_PARAMETER;
 
-	if (parent) {
-		EVDS_Object_Create(parent->system,parent,&object);
-	} else {
-		EVDS_Object_Create(source->system,parent,&object);
-	}
+	//Create object under target parent
+	EVDS_Object_Create(parent,&object);
+
+	//Copy name, type, state
 	SIMC_SRW_EnterWrite(object->name_lock);
 	SIMC_SRW_EnterRead(source->name_lock);
 		strncpy(object->name,source->name,256);
 	SIMC_SRW_LeaveRead(source->name_lock);
 	SIMC_SRW_LeaveWrite(object->name_lock);
+
 	strncpy(object->type,source->type,256);
 
-	SIMC_SRW_EnterRead(source->state_lock); //Copy state under a lock
+	SIMC_SRW_EnterRead(source->state_lock);
 		EVDS_StateVector_Copy(&object->state,&source->state);
 	SIMC_SRW_LeaveRead(source->state_lock);
 
@@ -1144,6 +1146,7 @@ int EVDS_Object_CopySingle(EVDS_OBJECT* source, EVDS_OBJECT* parent, EVDS_OBJECT
 /// @retval EVDS_ERROR_NOT_FOUND Successfully completed (a new empty object was created)
 /// @retval EVDS_ERROR_BAD_PARAMETER "origin" is null
 /// @retval EVDS_ERROR_BAD_PARAMETER "sub_name" is null
+/// @retval EVDS_ERROR_BAD_PARAMETER "parent" is null
 /// @retval EVDS_ERROR_BAD_PARAMETER "p_object" is null
 /// @retval EVDS_ERROR_MEMORY Could not allocate memory for EVDS_OBJECT
 ////////////////////////////////////////////////////////////////////////////////
@@ -1160,7 +1163,7 @@ int EVDS_Object_CreateBy(EVDS_OBJECT* origin, const char* sub_name, EVDS_OBJECT*
 
 	//Find this object inside parent or inside the entire system, or create new one
 	if (EVDS_System_GetObjectByName(origin->system,full_name,parent,p_object) != EVDS_OK) {
-		EVDS_ERRCHECK(EVDS_Object_Create(origin->system,parent,p_object));
+		EVDS_ERRCHECK(EVDS_Object_Create(parent,p_object));
 		EVDS_ERRCHECK(EVDS_Object_SetName(*p_object,full_name));
 		return EVDS_ERROR_NOT_FOUND;
 	}

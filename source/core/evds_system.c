@@ -145,7 +145,43 @@ int EVDS_System_Create(EVDS_SYSTEM** p_system)
 	SIMC_List_Create(&system->databases,1);
 
 	//Create root inertial space
-	EVDS_Object_Create(system,0,&inertial_space);
+	//FIXME: EVDS_InternalObject_Create(system,0,&inertial_space);
+	inertial_space = (EVDS_OBJECT*)malloc(sizeof(EVDS_OBJECT));
+	if (!inertial_space) return EVDS_ERROR_MEMORY;
+	memset(inertial_space,0,sizeof(EVDS_OBJECT));
+
+	//Quick short initialization (see EVDS_Object_Create())
+	inertial_space->system = system;
+	inertial_space->parent = 0;
+	inertial_space->initialized = 0;
+#ifndef EVDS_SINGLETHREADED
+	inertial_space->initialize_thread = SIMC_THREAD_BAD_ID;
+	inertial_space->integrate_thread = SIMC_THREAD_BAD_ID;
+	inertial_space->render_thread = SIMC_THREAD_BAD_ID;
+	inertial_space->stored_counter = 1;
+	inertial_space->destroyed = 0;
+	inertial_space->create_thread = SIMC_Thread_GetUniqueID();
+	inertial_space->state_lock = SIMC_SRW_Create();
+	inertial_space->previous_state_lock = SIMC_SRW_Create();
+	inertial_space->name_lock = SIMC_SRW_Create();
+#endif
+	inertial_space->uid = 0; //Inertial space always has UID of 0
+
+	//Create lists, add to relevant lists
+	SIMC_List_Create(&inertial_space->variables,0);
+	SIMC_List_Create(&inertial_space->children,1);
+	SIMC_List_Create(&inertial_space->raw_children,1);
+	inertial_space->object_entry = SIMC_List_Append(system->objects,inertial_space);
+	inertial_space->parent_entry = 0;
+	inertial_space->rparent_entry = 0;
+	inertial_space->type_entry = 0;
+
+	//Initialize state vector to zero
+	inertial_space->parent_level = 0;
+	EVDS_StateVector_Initialize(&inertial_space->previous_state,inertial_space);
+	EVDS_StateVector_Initialize(&inertial_space->state,inertial_space);
+
+	//Initialize inertial space
 	EVDS_Object_Initialize(inertial_space,1);
 	system->inertial_space = inertial_space;
 
@@ -663,7 +699,7 @@ int EVDS_System_GetDatabaseByName(EVDS_SYSTEM* system, const char* name, EVDS_VA
 	entry = SIMC_List_GetFirst(system->databases);
 	while (entry) {
 		child = (EVDS_VARIABLE*)SIMC_List_GetData(system->databases,entry);
-		EVDS_Object_GetName(child,child_name,256);
+		EVDS_Variable_GetName(child,child_name,256);
 		if (strncmp(child_name,name,256) == 0) {
 			*p_database = child;
 			SIMC_List_Stop(system->databases,entry);

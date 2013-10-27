@@ -358,7 +358,7 @@ void EVDS_Geodetic_FromVector(EVDS_GEODETIC_COORDINATE* target, EVDS_VECTOR* sou
 ///		EVDS_GEODETIC_COORDINATE geodetic_coordinate;
 ///
 ///		//Create LVLH coordinate frame
-///		EVDS_Object_Create(system,earth,&frame);
+///		EVDS_Object_Create(earth,&frame);
 ///
 ///		//Place LVLH coordinate frame at some point on the planet
 ///		EVDS_Geodetic_Set(&geodetic_coordinate,earth,50.45,30.52,0);

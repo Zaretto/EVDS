@@ -1089,7 +1089,7 @@ EVDS_API int EVDS_Solver_Register(EVDS_SYSTEM* system, EVDS_SOLVER* solver);
 ////////////////////////////////////////////////////////////////////////////////
 
 // Create new object
-EVDS_API int EVDS_Object_Create(EVDS_SYSTEM* system, EVDS_OBJECT* parent, EVDS_OBJECT** p_object);
+EVDS_API int EVDS_Object_Create(EVDS_OBJECT* parent, EVDS_OBJECT** p_object);
 // Create new object by another object or return already existing object (used for objects created by solvers)
 EVDS_API int EVDS_Object_CreateBy(EVDS_OBJECT* origin, const char* sub_name, EVDS_OBJECT* parent, EVDS_OBJECT** p_object);
 // Load object variables from a file. Will only return first pointer of all loaded vessels (other vessels will be initialized)

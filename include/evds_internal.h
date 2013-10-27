@@ -57,7 +57,7 @@ extern "C" {
 /// ~~~{.c}
 ///		EVDS_OBJECT* object;
 ///		EVDS_VARIABLE* variable;
-///		EVDS_Object_Create(system,parent,&object);
+///		EVDS_Object_Create(parent,&object);
 ///		EVDS_Object_AddVariable(object,"center_of_mass",EVDS_VARIABLE_TYPE_VECTOR,&variable);
 ///		EVDS_Object_AddRealVariable(object,"mass",5000.0,&variable);
 /// ~~~
