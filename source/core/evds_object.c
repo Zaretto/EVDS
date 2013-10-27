@@ -1912,7 +1912,7 @@ int EVDS_Object_GetRealVariable(EVDS_OBJECT* object, const char* name, EVDS_REAL
 void EVDS_InternalObject_RecursiveBuildReference(EVDS_OBJECT* object, EVDS_OBJECT* root, char* reference, size_t max_length) {
 	char name[257];
 
-	//Recursively scan to start building reference "backwards
+	//Recursively scan to start building reference backwards
 	if (object->parent && (object->parent != root)) {
 		EVDS_InternalObject_RecursiveBuildReference(object->parent,root,reference,max_length);
 	}

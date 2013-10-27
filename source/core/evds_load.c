@@ -304,12 +304,13 @@ int EVDS_Internal_LoadObject(EVDS_OBJECT* parent, SIMC_XML_DOCUMENT* doc, SIMC_X
 	double q0,q1,q2,q3;//,time;
 	double ax,ay,az,ang_ax,ang_ay,ang_az,ang_vx,ang_vy,ang_vz;
 	double uid;
+	char *lat_text,*lon_text,*elev_text;
 
 	//Create object
 	EVDS_ERRCHECK(EVDS_Object_Create(parent,&object));
 	if (p_object) *p_object = object;
 
-	//Set parameters
+	//Get parameters from file
 	EVDS_ERRCHECK(SIMC_XML_GetAttribute(doc,root,"name",&name));
 	EVDS_ERRCHECK(SIMC_XML_GetAttribute(doc,root,"type",&type));
 	EVDS_ERRCHECK(SIMC_XML_GetAttributeDouble(doc,root,"uid",&uid));
@@ -338,7 +339,29 @@ int EVDS_Internal_LoadObject(EVDS_OBJECT* parent, SIMC_XML_DOCUMENT* doc, SIMC_X
 	EVDS_ERRCHECK(SIMC_XML_GetAttributeDouble(doc,root,"ang_vy",&ang_vy));
 	EVDS_ERRCHECK(SIMC_XML_GetAttributeDouble(doc,root,"ang_vz",&ang_vz));
 
-	EVDS_Object_SetPosition(object,parent,x,y,z);
+	EVDS_ERRCHECK(SIMC_XML_GetAttribute(doc,root,"latitude",&lat_text));
+	EVDS_ERRCHECK(SIMC_XML_GetAttribute(doc,root,"longitude",&lon_text));
+	EVDS_ERRCHECK(SIMC_XML_GetAttribute(doc,root,"elevation",&elev_text));
+
+	//Set parameters in object
+	if (lat_text[0] || lon_text[0] || elev_text[0]) { //Set position by geodetic coordinates in parent
+		double latitude,longitude,elevation;
+		EVDS_GEODETIC_COORDINATE geocoord;
+		EVDS_STATE_VECTOR vector;
+
+		//Get geodetic coordinates
+		EVDS_ERRCHECK(SIMC_XML_GetAttributeDouble(doc,root,"latitude",&latitude));
+		EVDS_ERRCHECK(SIMC_XML_GetAttributeDouble(doc,root,"longitude",&longitude));
+		EVDS_ERRCHECK(SIMC_XML_GetAttributeDouble(doc,root,"elevation",&elevation));
+		EVDS_Geodetic_Set(&geocoord, parent, latitude, longitude, elevation);
+
+		//Set position in state vector
+		EVDS_Object_GetStateVector(object,&vector);
+		EVDS_Geodetic_ToVector(&vector.position,&geocoord);
+		EVDS_Object_SetStateVector(object,&vector);
+	} else {
+		EVDS_Object_SetPosition(object,parent,x,y,z);
+	}
 	EVDS_Object_SetVelocity(object,parent,vx,vy,vz);
 	EVDS_Object_SetAngularVelocity(object,parent,ang_vx,ang_vy,ang_vz);
 	EVDS_Object_SetOrientation(object,parent,EVDS_RAD(roll),EVDS_RAD(pitch),EVDS_RAD(yaw));
