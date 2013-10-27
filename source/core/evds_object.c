@@ -482,15 +482,6 @@ void EVDS_InternalThread_Initialize_Object(EVDS_OBJECT* object) {
 
 		//Initialized successfully?
 		if (error_code == EVDS_CLAIM_OBJECT) {
-			//Post-initialization callback
-			if (system->callbacks.OnPostInitialize) {
-				error_code = system->callbacks.OnPostInitialize(system,solver,object);
-				if (error_code != EVDS_OK) { //An error has occured
-					EVDS_Object_Destroy(object);
-					return;
-				}
-			}
-
 			object->solver = solver;
 			SIMC_List_Stop(system->solvers,entry);
 			break;
@@ -517,6 +508,14 @@ void EVDS_InternalThread_Initialize_Object(EVDS_OBJECT* object) {
 	//Add to list of parent's children
 	if (object->parent) {		
 		object->parent_entry = SIMC_List_Append(object->parent->children,object);
+	}
+
+	//Post-initialization callback
+	if (system->callbacks.OnPostInitialize) {
+		if (system->callbacks.OnPostInitialize(system,object->solver,object) != EVDS_OK) {
+			EVDS_Object_Destroy(object);
+			return;
+		}
 	}
 }
 
