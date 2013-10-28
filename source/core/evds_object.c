@@ -423,6 +423,9 @@ void EVDS_InternalThread_Initialize_Object(EVDS_OBJECT* object) {
 	object->initialize_thread = SIMC_Thread_GetUniqueID();
 #endif
 
+	//Lock objects type against changes
+	SIMC_SRW_EnterRead(object->type_lock);
+
 	//Make sure the object has a unique name
 	EVDS_Object_SetUniqueName(object,0);
 
@@ -486,7 +489,8 @@ void EVDS_InternalThread_Initialize_Object(EVDS_OBJECT* object) {
 			SIMC_List_Stop(system->solvers,entry);
 			break;
 		} else if (error_code != EVDS_IGNORE_OBJECT) { 
-			//An error has occured
+			//An error has occured (FIXME: is this proper way to treat invalid initialization? do not remove the object!)
+			SIMC_SRW_LeaveRead(object->type_lock);
 			EVDS_Object_Destroy(object);
 			return;
 		}
@@ -504,6 +508,9 @@ void EVDS_InternalThread_Initialize_Object(EVDS_OBJECT* object) {
 		object->type_entry = SIMC_List_Append(objects_list,object);
 		object->type_list = objects_list;
 	}
+
+	//Unlock objects type (no longer relevant)
+	SIMC_SRW_LeaveRead(object->type_lock);
 
 	//Add to list of parent's children
 	if (object->parent) {		
@@ -778,6 +785,8 @@ int EVDS_InternalObject_DestroyData(EVDS_OBJECT* object) {
 	SIMC_List_Destroy(object->variables);
 	SIMC_List_Destroy(object->children);
 	SIMC_List_Destroy(object->raw_children);
+	SIMC_SRW_Destroy(object->name_lock);
+	SIMC_SRW_Destroy(object->type_lock);
 	SIMC_SRW_Destroy(object->state_lock);
 	SIMC_SRW_Destroy(object->previous_state_lock);
 
@@ -862,6 +871,7 @@ int EVDS_Object_Create(EVDS_OBJECT* parent, EVDS_OBJECT** p_object) {
 	object->state_lock = SIMC_SRW_Create();
 	object->previous_state_lock = SIMC_SRW_Create();
 	object->name_lock = SIMC_SRW_Create();
+	object->type_lock = SIMC_SRW_Create();
 #endif
 	object->uid = 100000+(system->uid_counter++); //FIXME: could it be more arbitrary
 
@@ -1060,7 +1070,11 @@ int EVDS_Object_CopySingle(EVDS_OBJECT* source, EVDS_OBJECT* parent, EVDS_OBJECT
 	SIMC_SRW_LeaveRead(source->name_lock);
 	SIMC_SRW_LeaveWrite(object->name_lock);
 
-	strncpy(object->type,source->type,256);
+	SIMC_SRW_EnterWrite(object->type_lock);
+	SIMC_SRW_EnterRead(source->type_lock);
+		strncpy(object->type,source->type,256);
+	SIMC_SRW_LeaveRead(source->type_lock);
+	SIMC_SRW_LeaveWrite(object->type_lock);
 
 	SIMC_SRW_EnterRead(source->state_lock);
 		EVDS_StateVector_Copy(&object->state,&source->state);
@@ -1384,7 +1398,9 @@ int EVDS_Object_SetType(EVDS_OBJECT* object, const char* type) {
 #endif
 
 	//Set type in object
-	strncpy(object->type,type,256);
+	SIMC_SRW_EnterWrite(object->type_lock);
+		strncpy(object->type,type,256);
+	SIMC_SRW_LeaveWrite(object->type_lock);
 	return EVDS_OK;
 }
 
@@ -1698,7 +1714,7 @@ int EVDS_Object_GetUID(EVDS_OBJECT* object, unsigned int* uid) {
 
 
 ////////////////////////////////////////////////////////////////////////////////
-/// @brief Check object type. @evds_limited_init
+/// @brief Check object type.
 ///
 /// Type must point to a null-terminated string, or a string of 256 characters
 /// (no null termination required then).
@@ -1725,9 +1741,6 @@ int EVDS_Object_CheckType(EVDS_OBJECT* object, const char* type) {
 	if (!type) return EVDS_ERROR_BAD_PARAMETER;
 #ifndef EVDS_SINGLETHREADED
 	if (object->destroyed) return EVDS_ERROR_INVALID_OBJECT;
-	if (!object->initialized &&
-		(object->create_thread != SIMC_Thread_GetUniqueID()) &&
-		(object->initialize_thread != SIMC_Thread_GetUniqueID())) return EVDS_ERROR_INTERTHREAD_CALL;
 #endif
 
 	//Determine maximum count to check
@@ -1737,16 +1750,19 @@ int EVDS_Object_CheckType(EVDS_OBJECT* object, const char* type) {
 	if (max_count > 256) max_count = 256;
 
 	//Check the object type
+	SIMC_SRW_EnterRead(object->type_lock);
 	if (strncmp(type,object->type,max_count) == 0) {
+		SIMC_SRW_LeaveRead(object->type_lock);
 		return EVDS_OK;
 	} else {
+		SIMC_SRW_LeaveRead(object->type_lock);
 		return EVDS_ERROR_INVALID_TYPE;
 	}
 }
 
 
 ////////////////////////////////////////////////////////////////////////////////
-/// @brief Get object type. @evds_limited_init
+/// @brief Get object type.
 ///
 /// Returns a string no more than max_length characters long. It may not be null
 /// terminated. This is a correct way to get full type name:
@@ -1774,12 +1790,11 @@ int EVDS_Object_GetType(EVDS_OBJECT* object, char* type, size_t max_length) {
 	if (!type) return EVDS_ERROR_BAD_PARAMETER;
 #ifndef EVDS_SINGLETHREADED
 	if (object->destroyed) return EVDS_ERROR_INVALID_OBJECT;
-	if (!object->initialized &&
-		(object->create_thread != SIMC_Thread_GetUniqueID()) &&
-		(object->initialize_thread != SIMC_Thread_GetUniqueID())) return EVDS_ERROR_INTERTHREAD_CALL;
 #endif
 
-	strncpy(type,object->type,(max_length > 256 ? 256 : max_length));
+	SIMC_SRW_EnterRead(object->type_lock);
+		strncpy(type,object->type,(max_length > 256 ? 256 : max_length));
+	SIMC_SRW_LeaveRead(object->type_lock);
 	return EVDS_OK;
 }
 
