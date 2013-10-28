@@ -241,12 +241,12 @@ int EVDS_InternalModifier_Initialize(EVDS_SYSTEM* system, EVDS_SOLVER* solver, E
 		for (vars.i = 0; vars.i < (int)vars.vector1_count; vars.i++) {
 			for (vars.j = 0; vars.j < (int)vars.vector2_count; vars.j++) {
 				for (vars.k = 0; vars.k < (int)vars.vector3_count; vars.k++) {
-					//if ((vars.i != 0) || (vars.j != 0) || (vars.k != 0)) {
+					if ((vars.i != 0) || (vars.j != 0) || (vars.k != 0)) {
 					//if ((vars.i == 0) && (vars.j == 0) && (vars.k == 0)) {
 						//DO NOTHING
 					//} else {
 						EVDS_InternalModifier_Copy(&vars,object,parent,child);
-					//}
+					}
 				}
 			}
 		}

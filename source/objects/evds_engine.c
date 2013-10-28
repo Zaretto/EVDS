@@ -821,8 +821,16 @@ int EVDS_InternalRocketEngine_Solve(EVDS_SYSTEM* system, EVDS_SOLVER* solver, EV
 	EVDS_Variable_GetReal(userdata->control_startup_time,	&control_startup_time);
 	EVDS_Variable_GetReal(userdata->control_shutdown_time,	&control_shutdown_time);
 
+	//Set default values
+	if (control_max_throttle == 0.0) control_max_throttle = 1.0;
+	if (control_startup_time < EVDS_EPS) control_startup_time = EVDS_EPS;
+	if (control_shutdown_time < EVDS_EPS) control_shutdown_time = EVDS_EPS;
+
 	//Get commanded values
 	EVDS_Variable_GetReal(userdata->command_throttle,&command_throttle);
+	if ((object->name[0] == 'N') && (object->name[1] == 'Z')) {
+		command_throttle = 1.0;
+	}
 
 	//Check if fuel is present for engine
 	fuel_present = (EVDS_InternalRocketEngine_CheckFuel(userdata,object,0,0) == EVDS_OK);

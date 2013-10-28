@@ -641,7 +641,7 @@ int EVDS_InternalRigidBody_Initialize(EVDS_SYSTEM* system, EVDS_SOLVER* solver, 
 
 	//Make sure the object has mass (FIXME: must make this object properly static)
 	if (EVDS_Object_GetVariable(object,"mass",&userdata->m) != EVDS_OK) {
-		is_static = 1;
+		//is_static = 1;
 		EVDS_Object_AddRealVariable(object,"mass",0.0,&userdata->m);
 	}
 
