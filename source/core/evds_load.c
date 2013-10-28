@@ -355,16 +355,19 @@ int EVDS_Internal_LoadObject(EVDS_OBJECT* parent, SIMC_XML_DOCUMENT* doc, SIMC_X
 		EVDS_ERRCHECK(SIMC_XML_GetAttributeDouble(doc,root,"elevation",&elevation));
 		EVDS_Geodetic_Set(&geocoord, parent, latitude, longitude, elevation);
 
-		//Set position in state vector
+		//Set position and orientation in LVLH frame
 		EVDS_Object_GetStateVector(object,&vector);
 		EVDS_Geodetic_ToVector(&vector.position,&geocoord);
+		EVDS_Quaternion_FromEuler(&vector.orientation,parent,EVDS_RAD(roll),EVDS_RAD(pitch),EVDS_RAD(yaw));
+		EVDS_LVLH_QuaternionFromLVLH(&vector.orientation,&vector.orientation,&geocoord);		
 		EVDS_Object_SetStateVector(object,&vector);
 	} else {
+		//Set position and orientation in normal coordinate frame
 		EVDS_Object_SetPosition(object,parent,x,y,z);
+		EVDS_Object_SetOrientation(object,parent,EVDS_RAD(roll),EVDS_RAD(pitch),EVDS_RAD(yaw));
 	}
 	EVDS_Object_SetVelocity(object,parent,vx,vy,vz);
 	EVDS_Object_SetAngularVelocity(object,parent,ang_vx,ang_vy,ang_vz);
-	EVDS_Object_SetOrientation(object,parent,EVDS_RAD(roll),EVDS_RAD(pitch),EVDS_RAD(yaw));
 
 	//Special case for specifying attitude as a quaternion
 	if ((q0 != 0.0) || (q1 != 0.0) || (q2 != 0.0) || (q3 != 0.0)) {

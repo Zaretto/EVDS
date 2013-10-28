@@ -511,8 +511,8 @@ int EVDS_InternalRigidBody_Integrate(EVDS_SYSTEM* system, EVDS_SOLVER* solver, E
 		EVDS_Vector_Cross(&force,&torque,&torque_position);
 
 		//Accumulate forces and torques
-		EVDS_Vector_Add(&cm_force,&cm_force,&force);
-		EVDS_Vector_Add(&cm_torque,&cm_torque,&torque);
+		//EVDS_Vector_Add(&cm_force,&cm_force,&force);
+		//EVDS_Vector_Add(&cm_torque,&cm_torque,&torque);
 		
 
 		entry = SIMC_List_GetNext(children,entry);
