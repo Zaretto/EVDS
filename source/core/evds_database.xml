@@ -97,22 +97,17 @@
 			<parameter name="boiling_point">  78.2 C</parameter>
 			<parameter name="melting_point">-114.1 C</parameter>
 		</entry>
-		<entry name="C12H26" print="Kerosene" class="fuel">
-			<parameter name="density">749 kg/m3</parameter>
-			<parameter name="boiling_point">216.3 C</parameter>
-			<parameter name="melting_point"> -9.6 C</parameter>
-		</entry>
 		<entry name="N2H4" print="Hydrazine" class="fuel">
 			<parameter name="density">1004 kg/m3</parameter>
 			<parameter name="boiling_point">113.5 C</parameter>
 			<parameter name="melting_point">  1.4 C</parameter>
 		</entry>
-		<entry name="CH3NHNH2" print="Methyl Hydrazine" class="fuel">
+		<entry name="MMH" print="Monomthyl Hydrazine" class="fuel">
 			<parameter name="density">866 kg/m3</parameter>
 			<parameter name="boiling_point"> 87.5 C</parameter>
 			<parameter name="melting_point">-52.4 C</parameter>
 		</entry>
-		<entry name="(CH3)2NNH2" print="Dimethyl Hydrazine" class="fuel">
+		<entry name="UDMH" print="Unsymmetrical Dimethyl Hydrazine" class="fuel">
 			<parameter name="density">791 kg/m3</parameter>
 			<parameter name="boiling_point"> 69.3 C</parameter>
 			<parameter name="melting_point">-58.0 C</parameter>
@@ -128,16 +123,16 @@
 		<entry name="aluminium" print="Aluminium" class="structural">
 			<parameter name="density">175 lb/ft3</parameter>
 			<parameter name="heat_capacity">
-				<data x="160 R">0.177 btu/(lb R)</data>
-				<data x="460 R">0.195 btu/(lb R)</data>
-				<data x="660 R">0.216 btu/(lb R)</data>
-				<data x="760 R">0.224 btu/(lb R)</data>
-				<data x="860 R">0.233 btu/(lb R)</data>
+				160 R  0.177 btu/(lb R)
+				460 R  0.195 btu/(lb R)
+				660 R  0.216 btu/(lb R)
+				760 R  0.224 btu/(lb R)
+				860 R  0.233 btu/(lb R)
 			</parameter>
 			<parameter name="thermal_conductivity">
-				<data x="300 K">250 W/(m s K)</data>
-				<data x="400 K">255 W/(m s K)</data>
-				<data x="500 K">250 W/(m s K)</data>
+				300 K  250 W/(m s K)
+				400 K  255 W/(m s K)
+				500 K  250 W/(m s K)
 			</parameter>
 			<parameter name="boiling_point">2467.0 C</parameter>
 			<parameter name="melting_point"> 660.4 C</parameter>
@@ -146,17 +141,17 @@
 		<entry name="titanium" print="Titanium" class="structural">
 			<parameter name="density">277 lb/ft3</parameter>
 			<parameter name="heat_capacity">
-				<data x="  60 R">0.012 btu/(lb R)</data>
-				<data x=" 260 R">0.096 btu/(lb R)</data>
-				<data x=" 460 R">0.125 btu/(lb R)</data>
-				<data x=" 660 R">0.136 btu/(lb R)</data>
-				<data x=" 860 R">0.138 btu/(lb R)</data>
-				<data x="1060 R">0.144 btu/(lb R)</data>
-				<data x="1260 R">0.153 btu/(lb R)</data>
-				<data x="1460 R">0.167 btu/(lb R)</data>
-				<data x="1660 R">0.182 btu/(lb R)</data>
-				<data x="1860 R">0.205 btu/(lb R)</data>
-				<data x="2060 R">0.225 btu/(lb R)</data>
+				  60 R  0.012 btu/(lb R)
+				 260 R  0.096 btu/(lb R)
+				 460 R  0.125 btu/(lb R)
+				 660 R  0.136 btu/(lb R)
+				 860 R  0.138 btu/(lb R)
+				1060 R  0.144 btu/(lb R)
+				1260 R  0.153 btu/(lb R)
+				1460 R  0.167 btu/(lb R)
+				1660 R  0.182 btu/(lb R)
+				1860 R  0.205 btu/(lb R)
+				2060 R  0.225 btu/(lb R)
 			</parameter>
 			<parameter name="thermal_conductivity">20.4 W/(m s K)</parameter>
 		</entry>	
@@ -171,34 +166,34 @@
 		<entry name="LI-900" class="thermal_soak_shielding">
 			<parameter name="density">9 lb/ft3</parameter>
 			<parameter name="heat_capacity">
-				<data x=" 210 R">0.070 btu/(lb R)</data>
-				<data x=" 310 R">0.105 btu/(lb R)</data>
-				<data x=" 460 R">0.150 btu/(lb R)</data>
-				<data x=" 710 R">0.210 btu/(lb R)</data>
-				<data x=" 960 R">0.252 btu/(lb R)</data>
-				<data x="1210 R">0.275 btu/(lb R)</data>
-				<data x="1460 R">0.288 btu/(lb R)</data>
-				<data x="1710 R">0.296 btu/(lb R)</data>
-				<data x="1960 R">0.300 btu/(lb R)</data>
-				<data x="2160 R">0.302 btu/(lb R)</data>
-				<data x="2210 R">0.303 btu/(lb R)</data>
-				<data x="3460 R">0.303 btu/(lb R)</data>
+				 210 R  0.070 btu/(lb R)
+				 310 R  0.105 btu/(lb R)
+				 460 R  0.150 btu/(lb R)
+				 710 R  0.210 btu/(lb R)
+				 960 R  0.252 btu/(lb R)
+				1210 R  0.275 btu/(lb R)
+				1460 R  0.288 btu/(lb R)
+				1710 R  0.296 btu/(lb R)
+				1960 R  0.300 btu/(lb R)
+				2160 R  0.302 btu/(lb R)
+				2210 R  0.303 btu/(lb R)
+				3460 R  0.303 btu/(lb R)
 			</parameter>
 			<parameter name="thermal_conductivity">
-				<data x=" 210 R">6.47E-6 btu/(ft s R)</data>
-				<data x=" 460 R">7.64E-6 btu/(ft s R)</data>
-				<data x=" 710 R">9.47E-6 btu/(ft s R)</data>
-				<data x=" 960 R">1.20E-5 btu/(ft s R)</data>
-				<data x="1210 R">1.48E-5 btu/(ft s R)</data>
-				<data x="1460 R">1.83E-5 btu/(ft s R)</data>
-				<data x="1710 R">2.17E-5 btu/(ft s R)</data>
-				<data x="1960 R">2.62E-5 btu/(ft s R)</data>
-				<data x="2210 R">3.13E-5 btu/(ft s R)</data>
-				<data x="2460 R">3.75E-5 btu/(ft s R)</data>
-				<data x="2760 R">4.64E-5 btu/(ft s R)</data>
-				<data x="2960 R">5.39E-5 btu/(ft s R)</data>
-				<data x="3260 R">6.72E-5 btu/(ft s R)</data>
-				<data x="3460 R">8.06E-5 btu/(ft s R)</data>
+				 210 R  6.47E-6 btu/(ft s R)
+				 460 R  7.64E-6 btu/(ft s R)
+				 710 R  9.47E-6 btu/(ft s R)
+				 960 R  1.20E-5 btu/(ft s R)
+				1210 R  1.48E-5 btu/(ft s R)
+				1460 R  1.83E-5 btu/(ft s R)
+				1710 R  2.17E-5 btu/(ft s R)
+				1960 R  2.62E-5 btu/(ft s R)
+				2210 R  3.13E-5 btu/(ft s R)
+				2460 R  3.75E-5 btu/(ft s R)
+				2760 R  4.64E-5 btu/(ft s R)
+				2960 R  5.39E-5 btu/(ft s R)
+				3260 R  6.72E-5 btu/(ft s R)
+				3460 R  8.06E-5 btu/(ft s R)
 			</parameter>
 			<parameter name="melting_point">2760 R</parameter>
 			<parameter name="thermal_expansion_ratio">5.5E-7</parameter>
@@ -210,12 +205,12 @@
 		<entry name="LI-2200" class="thermal_soak_shielding">
 			<parameter name="density">352.4 kg/m3</parameter>
 			<parameter name="heat_capacity">
-				<data x="293  K"> 840 J/(kg K)</data>
-				<data x="1000 K">1640 J/(kg K)</data>
+				293  K   840 J/(kg K)
+				1000 K  1640 J/(kg K)
 			</parameter>
 			<parameter name="thermal_conductivity">
-				<data x=" 293 K">0.066 W/(m s K)</data>
-				<data x="1073 K">0.220 W/(m s K)</data>
+				 293 K  0.066 W/(m s K)
+				1073 K  0.220 W/(m s K)
 			</parameter>
 			<parameter name="melting_point">1260 C</parameter>
 			<parameter name="thermal_expansion_ratio">5.5E-7</parameter>
@@ -240,8 +235,8 @@
 			<parameter name="thermal_conductivity">25 W/(m s K)</parameter>
 			<parameter name="melting_point">1925 K</parameter>
 			<parameter name="thermal_expansion_ratio">
-				<data x="  20 C">3E-6</data>
-				<data x="2000 C">5E-6</data>
+				  20 C  3E-6
+				2000 C  5E-6
 			</parameter>
 			<parameter name="bend_strength">100 MPa</parameter>
 			<parameter name="compressive_strength">90 MPa</parameter>
@@ -262,14 +257,14 @@
 			</information>
 			<parameter name="density">150 kg/m3</parameter>
 			<parameter name="heat_capacity">
-				<data x="293  K"> 840 J/(kg K)</data>
-				<data x="1000 K">1640 J/(kg K)</data>
+				293  K   840 J/(kg K)
+				1000 K  1640 J/(kg K)
 			</parameter>
 			<parameter name="thermal_conductivity">
-				<data x=" 293 K">0.050 W/(m s K)</data>
-				<data x=" 700 K">0.100 W/(m s K)</data>
-				<data x=" 900 K">0.140 W/(m s K)</data>
-				<data x="1300 K">0.240 W/(m s K)</data>
+				 293 K  0.050 W/(m s K)
+				 700 K  0.100 W/(m s K)
+				 900 K  0.140 W/(m s K)
+				1300 K  0.240 W/(m s K)
 			</parameter>
 			<parameter name="melting_point">1250 C</parameter>
 			<parameter name="thermal_expansion_ratio">5.5E-7</parameter>
@@ -288,12 +283,12 @@
 			</information>
 			<parameter name="density">250 kg/m3</parameter>
 			<parameter name="heat_capacity">
-				<data x="293  K"> 840 J/(kg K)</data>
-				<data x="1000 K">1640 J/(kg K)</data>
+				293  K   840 J/(kg K)
+				1000 K  1640 J/(kg K)
 			</parameter>
 			<parameter name="thermal_conductivity">
-				<data x=" 293 K">0.066 W/(m s K)</data>
-				<data x="1073 K">0.220 W/(m s K)</data>
+				 293 K  0.066 W/(m s K)
+				1073 K  0.220 W/(m s K)
 			</parameter>
 			<parameter name="melting_point">1250 C</parameter>
 			<parameter name="thermal_expansion_ratio">5.5E-7</parameter>
@@ -309,12 +304,12 @@
 			</information>
 			<parameter name="density">140 kg/m3</parameter>
 			<parameter name="heat_capacity">
-				<data x="293  K"> 840 J/(kg K)</data>
-				<data x="1000 K">1640 J/(kg K)</data>
+				293  K   840 J/(kg K)
+				1000 K  1640 J/(kg K)
 			</parameter>
 			<parameter name="thermal_conductivity">
-				<data x=" 293 K">0.062 W/(m s K)</data>
-				<data x="1073 K">0.220 W/(m s K)</data>
+				 293 K  0.062 W/(m s K)
+				1073 K  0.220 W/(m s K)
 			</parameter>
 			<parameter name="melting_point">300 C</parameter>
 		</entry>
@@ -326,12 +321,12 @@
 			</information>
 			<parameter name="density">400 kg/m3</parameter>
 			<parameter name="heat_capacity">
-				<data x="293  K"> 840 J/(kg K)</data>
-				<data x="1000 K">1640 J/(kg K)</data>
+				293  K   840 J/(kg K)
+				1000 K  1640 J/(kg K)
 			</parameter>
 			<parameter name="thermal_conductivity">
-				<data x=" 293 K">0.067 W/(m s K)</data>
-				<data x="1073 K">0.220 W/(m s K)</data>
+				 293 K  0.067 W/(m s K)
+				1073 K  0.220 W/(m s K)
 			</parameter>
 			<parameter name="melting_point">300 C</parameter>
 		</entry>
@@ -344,9 +339,9 @@
 			<parameter name="density">240 kg/m3</parameter>
 			<parameter name="heat_capacity">840 J/(kg K)</parameter>
 			<parameter name="thermal_conductivity">
-				<data x=" 293 K">0.070 W/(m s K)</data>
-				<data x=" 738 K">0.093 W/(m s K)</data>
-				<data x="1073 K">0.220 W/(m s K)</data>
+				 293 K  0.070 W/(m s K)
+				 738 K  0.093 W/(m s K)
+				1073 K  0.220 W/(m s K)
 			</parameter>
 			<parameter name="melting_point">1000 C</parameter>
 		</entry>
@@ -355,59 +350,63 @@
 		<entry name="SLA-220" class="thermal_ablative_shielding">
 			<parameter name="density">14.5 lb/ft3</parameter>
 			<parameter name="heat_capacity">
-				<data x="360 R">0.19 btu/(lb R)</data>
-				<data x="460 R">0.22 btu/(lb R)</data>
-				<data x="560 R">0.23 btu/(lb R)</data>
-				<data x="660 R">0.25 btu/(lb R)</data>
-				<data x="760 R">0.26 btu/(lb R)</data>
-				<data x="860 R">0.265 btu/(lb R)</data>
-				<data x="960 R">0.27 btu/(lb R)</data>
+				360 R  0.19 btu/(lb R)
+				460 R  0.22 btu/(lb R)
+				560 R  0.23 btu/(lb R)
+				660 R  0.25 btu/(lb R)
+				760 R  0.26 btu/(lb R)
+				860 R  0.265 btu/(lb R)
+				960 R  0.27 btu/(lb R)
 			</parameter>
 			<parameter name="thermal_conductivity">
-				<data x=" 360 R" y="1.0 atm">0.038 btu/(ft hr R)</data>
-				<data x=" 460 R" y="1.0 atm">0.043 btu/(ft hr R)</data>
-				<data x=" 560 R" y="1.0 atm">0.048 btu/(ft hr R)</data>
-				<data x=" 660 R" y="1.0 atm">0.054 btu/(ft hr R)</data>
-				<data x=" 760 R" y="1.0 atm">0.059 btu/(ft hr R)</data>
-				<data x=" 860 R" y="1.0 atm">0.065 btu/(ft hr R)</data>
-				<data x=" 960 R" y="1.0 atm">0.071 btu/(ft hr R)</data>
-				<data x="1060 R" y="1.0 atm">0.076 btu/(ft hr R)</data>
-
-				<data x=" 360 R" y="1.3E-3 atm">0.032 btu/(ft hr R)</data>
-				<data x=" 460 R" y="1.3E-3 atm">0.035 btu/(ft hr R)</data>
-				<data x=" 560 R" y="1.3E-3 atm">0.038 btu/(ft hr R)</data>
-				<data x=" 660 R" y="1.3E-3 atm">0.041 btu/(ft hr R)</data>
-				<data x=" 760 R" y="1.3E-3 atm">0.044 btu/(ft hr R)</data>
-				<data x=" 860 R" y="1.3E-3 atm">0.048 btu/(ft hr R)</data>
-				<data x=" 960 R" y="1.3E-3 atm">0.051 btu/(ft hr R)</data>
-				<data x="1060 R" y="1.3E-3 atm">0.055 btu/(ft hr R)</data>
-
-				<data x=" 360 R" y="1.3E-9 atm">0.028 btu/(ft hr R)</data>
-				<data x=" 460 R" y="1.3E-9 atm">0.031 btu/(ft hr R)</data>
-				<data x=" 560 R" y="1.3E-9 atm">0.034 btu/(ft hr R)</data>
-				<data x=" 660 R" y="1.3E-9 atm">0.037 btu/(ft hr R)</data>
-				<data x=" 760 R" y="1.3E-9 atm">0.039 btu/(ft hr R)</data>
-				<data x=" 860 R" y="1.3E-9 atm">0.042 btu/(ft hr R)</data>
-				<data x=" 960 R" y="1.3E-9 atm">0.044 btu/(ft hr R)</data>
-				<data x="1060 R" y="1.3E-9 atm">0.048 btu/(ft hr R)</data>
+				<data value="1.0 atm">
+					360 R   0.038 btu/(ft hr R)
+					460 R   0.043 btu/(ft hr R)
+					560 R   0.048 btu/(ft hr R)
+					660 R   0.054 btu/(ft hr R)
+					760 R   0.059 btu/(ft hr R)
+					860 R   0.065 btu/(ft hr R)
+					960 R   0.071 btu/(ft hr R)
+					1060 R  0.076 btu/(ft hr R)
+				</data>
+				<data value="1.3E-3 atm">
+					360 R   0.032 btu/(ft hr R)
+					460 R   0.035 btu/(ft hr R)
+					560 R   0.038 btu/(ft hr R)
+					660 R   0.041 btu/(ft hr R)
+					760 R   0.044 btu/(ft hr R)
+					860 R   0.048 btu/(ft hr R)
+					960 R   0.051 btu/(ft hr R)
+					1060 R  0.055 btu/(ft hr R)
+				</data>
+				<data value="1.3E-9 atm">
+					360 R   0.028 btu/(ft hr R)
+					460 R   0.031 btu/(ft hr R)
+					560 R   0.034 btu/(ft hr R)
+					660 R   0.037 btu/(ft hr R)
+					760 R   0.039 btu/(ft hr R)
+					860 R   0.042 btu/(ft hr R)
+					960 R   0.044 btu/(ft hr R)
+					1060 R  0.048 btu/(ft hr R)
+				</data>
 			</parameter>
 			<parameter name="tensile_strength">0.58 MPa</parameter>
 			<parameter name="thermal_expansion_ratio">10.4E-6</parameter>
 			<parameter name="emissivity">0.9</parameter>
 			<parameter name="ablation_point">1360 R</parameter>
 			<parameter name="ablation_heat">
-				<data x="6 btu/ft2">1800 btu/lb</data>
-				<data x="60 btu/ft2">6000 btu/lb</data>
+				6 btu/ft2   1800 btu/lb
+				60 btu/ft2  6000 btu/lb
 			</parameter>
 			<parameter name="ablative_char_material">SLA-220-Char</parameter>
 			<parameter name="ablative_residue_fraction">
-				<data x=" 660 R">1.00</data>
-				<data x=" 860 R">1.00</data>
-				<data x="1060 R">0.99</data>
-				<data x="1260 R">0.96</data>
-				<data x="1460 R">0.76</data>
-				<data x="1660 R">0.73</data>
-				<data x="1860 R">0.72</data>
+				 660 R  1.00
+				 860 R  1.00
+				1060 R  0.99
+				1260 R  0.96
+				1460 R  0.76
+				1660 R  0.73
+				1860 R  0.72
 			</parameter>
 		</entry>
 		<entry name="SLA-220-Char" parent="SLA-220" class="thermal_ablative_char">
@@ -417,85 +416,89 @@
 		<entry name="SLA-561" class="thermal_ablative_shielding">
 			<parameter name="density">14.5 lb/ft3</parameter>
 			<parameter name="heat_capacity">
-				<data x=" 310 R">0.211 btu/(lb R)</data>
-				<data x=" 410 R">0.250 btu/(lb R)</data>
-				<data x=" 510 R">0.275 btu/(lb R)</data>
-				<data x=" 610 R">0.289 btu/(lb R)</data>
-				<data x=" 710 R">0.299 btu/(lb R)</data>
-				<data x=" 810 R">0.301 btu/(lb R)</data>
+				310 R  0.211 btu/(lb R)
+				410 R  0.250 btu/(lb R)
+				510 R  0.275 btu/(lb R)
+				610 R  0.289 btu/(lb R)
+				710 R  0.299 btu/(lb R)
+				810 R  0.301 btu/(lb R)
 			</parameter>
 			<parameter name="thermal_conductivity">
-				<data x="510 R" y="1.0 atm">0.031 btu/(ft hr R)</data>
-				<data x="560 R" y="1.0 atm">0.032 btu/(ft hr R)</data>
-				<data x="610 R" y="1.0 atm">0.035 btu/(ft hr R)</data>
-				<data x="660 R" y="1.0 atm">0.036 btu/(ft hr R)</data>
-				<data x="710 R" y="1.0 atm">0.038 btu/(ft hr R)</data>
-				<data x="760 R" y="1.0 atm">0.040 btu/(ft hr R)</data>
-				<data x="810 R" y="1.0 atm">0.042 btu/(ft hr R)</data>
-				<data x="860 R" y="1.0 atm">0.044 btu/(ft hr R)</data>
-
-				<data x="510 R" y="1.3E-3 atm">0.026 btu/(ft hr R)</data>
-				<data x="560 R" y="1.3E-3 atm">0.026 btu/(ft hr R)</data>
-				<data x="610 R" y="1.3E-3 atm">0.027 btu/(ft hr R)</data>
-				<data x="660 R" y="1.3E-3 atm">0.027 btu/(ft hr R)</data>
-				<data x="710 R" y="1.3E-3 atm">0.027 btu/(ft hr R)</data>
-				<data x="760 R" y="1.3E-3 atm">0.028 btu/(ft hr R)</data>
-				<data x="810 R" y="1.3E-3 atm">0.028 btu/(ft hr R)</data>
-				<data x="860 R" y="1.3E-3 atm">0.029 btu/(ft hr R)</data>
-
-				<data x="510 R" y="1.0E-9 atm">0.022 btu/(ft hr R)</data>
-				<data x="560 R" y="1.0E-9 atm">0.022 btu/(ft hr R)</data>
-				<data x="610 R" y="1.0E-9 atm">0.022 btu/(ft hr R)</data>
-				<data x="660 R" y="1.0E-9 atm">0.022 btu/(ft hr R)</data>
-				<data x="710 R" y="1.0E-9 atm">0.022 btu/(ft hr R)</data>
-				<data x="760 R" y="1.0E-9 atm">0.022 btu/(ft hr R)</data>
-				<data x="810 R" y="1.0E-9 atm">0.023 btu/(ft hr R)</data>
-				<data x="860 R" y="1.0E-9 atm">0.023 btu/(ft hr R)</data>
+				<data value="1.0 atm">
+					510 R  0.031 btu/(ft hr R)
+					560 R  0.032 btu/(ft hr R)
+					610 R  0.035 btu/(ft hr R)
+					660 R  0.036 btu/(ft hr R)
+					710 R  0.038 btu/(ft hr R)
+					760 R  0.040 btu/(ft hr R)
+					810 R  0.042 btu/(ft hr R)
+					860 R  0.044 btu/(ft hr R)
+				</data>
+				<data value="1.3E-3 atm">
+					510 R  0.026 btu/(ft hr R)
+					560 R  0.026 btu/(ft hr R)
+					610 R  0.027 btu/(ft hr R)
+					660 R  0.027 btu/(ft hr R)
+					710 R  0.027 btu/(ft hr R)
+					760 R  0.028 btu/(ft hr R)
+					810 R  0.028 btu/(ft hr R)
+					860 R  0.029 btu/(ft hr R)
+				</data>
+				<data value="1.3E-9 atm">
+					510 R  0.022 btu/(ft hr R)
+					560 R  0.022 btu/(ft hr R)
+					610 R  0.022 btu/(ft hr R)
+					660 R  0.022 btu/(ft hr R)
+					710 R  0.022 btu/(ft hr R)
+					760 R  0.022 btu/(ft hr R)
+					810 R  0.023 btu/(ft hr R)
+					860 R  0.023 btu/(ft hr R)
+				</data>
 			</parameter>
 			<parameter name="emissivity">0.7</parameter>
 			<parameter name="ablation_point">1360 R</parameter>
 			<parameter name="ablation_heat">
-				<data x="6 btu/ft2">1800 btu/lb</data>
-				<data x="60 btu/ft2">6000 btu/lb</data>
+				6 btu/ft2   1800 btu/lb
+				60 btu/ft2  6000 btu/lb
 			</parameter>
 			<parameter name="ablative_char_material">SLA-561-Char</parameter>
 			<parameter name="ablative_residue_fraction">
-				<data x=" 660 R">1.000</data>
-				<data x=" 860 R">1.000</data>
-				<data x="1060 R">0.955</data>
-				<data x="1260 R">0.825</data>
-				<data x="1460 R">0.620</data>
-				<data x="1660 R">0.575</data>
-				<data x="1860 R">0.575</data>
+				 660 R  1.000
+				 860 R  1.000
+				1060 R  0.955
+				1260 R  0.825
+				1460 R  0.620
+				1660 R  0.575
+				1860 R  0.575
 			</parameter>
 		</entry>
 		<entry name="SLA-561-Char" parent="SLA-561" class="thermal_ablative_char">
 			<parameter name="density">7.98 lb/ft3</parameter>
 			<parameter name="heat_capacity">
-				<data x=" 600 R">0.195 btu/(lb R)</data>
-				<data x=" 800 R">0.231 btu/(lb R)</data>
-				<data x="1000 R">0.268 btu/(lb R)</data>
-				<data x="1200 R">0.297 btu/(lb R)</data>
-				<data x="1400 R">0.320 btu/(lb R)</data>
-				<data x="1600 R">0.343 btu/(lb R)</data>
-				<data x="1800 R">0.363 btu/(lb R)</data>
-				<data x="2000 R">0.383 btu/(lb R)</data>
-				<data x="2200 R">0.401 btu/(lb R)</data>
-				<data x="2400 R">0.413 btu/(lb R)</data>
+				 600 R  0.195 btu/(lb R)
+				 800 R  0.231 btu/(lb R)
+				1000 R  0.268 btu/(lb R)
+				1200 R  0.297 btu/(lb R)
+				1400 R  0.320 btu/(lb R)
+				1600 R  0.343 btu/(lb R)
+				1800 R  0.363 btu/(lb R)
+				2000 R  0.383 btu/(lb R)
+				2200 R  0.401 btu/(lb R)
+				2400 R  0.413 btu/(lb R)
 			</parameter>
 			<parameter name="thermal_conductivity">
-				<data x=" 400 R">0.0540 btu/(ft hr R)</data>
-				<data x="1600 R">0.0544 btu/(ft hr R)</data>
-				<data x="1800 R">0.0590 btu/(ft hr R)</data>
-				<data x="2000 R">0.0655 btu/(ft hr R)</data>
-				<data x="2200 R">0.0742 btu/(ft hr R)</data>
-				<data x="2400 R">0.0864 btu/(ft hr R)</data>
-				<data x="2600 R">0.0994 btu/(ft hr R)</data>
-				<data x="2800 R">0.114 btu/(ft hr R)</data>
-				<data x="3000 R">0.130 btu/(ft hr R)</data>
-				<data x="3200 R">0.148 btu/(ft hr R)</data>
-				<data x="3400 R">0.169 btu/(ft hr R)</data>
-				<data x="3600 R">0.195 btu/(ft hr R)</data>
+				 400 R  0.0540 btu/(ft hr R)
+				1600 R  0.0544 btu/(ft hr R)
+				1800 R  0.0590 btu/(ft hr R)
+				2000 R  0.0655 btu/(ft hr R)
+				2200 R  0.0742 btu/(ft hr R)
+				2400 R  0.0864 btu/(ft hr R)
+				2600 R  0.0994 btu/(ft hr R)
+				2800 R  0.1140 btu/(ft hr R)
+				3000 R  0.1300 btu/(ft hr R)
+				3200 R  0.1480 btu/(ft hr R)
+				3400 R  0.1690 btu/(ft hr R)
+				3600 R  0.1950 btu/(ft hr R)
 			</parameter>
 			<parameter name="emissivity">0.9</parameter>
 		</entry>
@@ -503,53 +506,53 @@
 		<entry name="ESA-3560" class="thermal_ablative_shielding">
 			<parameter name="density">30.0 lb/ft3</parameter>
 			<parameter name="heat_capacity">
-				<data x=" 260 R">0.145 btu/(lb R)</data>
-				<data x=" 310 R">0.190 btu/(lb R)</data>
-				<data x=" 360 R">0.235 btu/(lb R)</data>
-				<data x=" 410 R">0.275 btu/(lb R)</data>
-				<data x=" 460 R">0.325 btu/(lb R)</data>
-				<data x=" 510 R">0.355 btu/(lb R)</data>
-				<data x=" 560 R">0.385 btu/(lb R)</data>
-				<data x=" 610 R">0.425 btu/(lb R)</data>
-				<data x=" 660 R">0.450 btu/(lb R)</data>
-				<data x=" 710 R">0.475 btu/(lb R)</data>
-				<data x=" 760 R">0.505 btu/(lb R)</data>
-				<data x=" 810 R">0.530 btu/(lb R)</data>
-				<data x=" 860 R">0.555 btu/(lb R)</data>
-				<data x=" 910 R">0.570 btu/(lb R)</data>
-				<data x=" 960 R">0.600 btu/(lb R)</data>
+				260 R  0.145 btu/(lb R)
+				310 R  0.190 btu/(lb R)
+				360 R  0.235 btu/(lb R)
+				410 R  0.275 btu/(lb R)
+				460 R  0.325 btu/(lb R)
+				510 R  0.355 btu/(lb R)
+				560 R  0.385 btu/(lb R)
+				610 R  0.425 btu/(lb R)
+				660 R  0.450 btu/(lb R)
+				710 R  0.475 btu/(lb R)
+				760 R  0.505 btu/(lb R)
+				810 R  0.530 btu/(lb R)
+				860 R  0.555 btu/(lb R)
+				910 R  0.570 btu/(lb R)
+				960 R  0.600 btu/(lb R)
 			</parameter>
 			<parameter name="thermal_conductivity">
-				<data x=" 310 R">0.042 btu/(ft hr R)</data>
-				<data x=" 360 R">0.046 btu/(ft hr R)</data>
-				<data x=" 410 R">0.050 btu/(ft hr R)</data>
-				<data x=" 460 R">0.053 btu/(ft hr R)</data>
-				<data x=" 510 R">0.056 btu/(ft hr R)</data>
-				<data x=" 560 R">0.058 btu/(ft hr R)</data>
-				<data x=" 610 R">0.060 btu/(ft hr R)</data>
-				<data x=" 660 R">0.063 btu/(ft hr R)</data>
-				<data x=" 710 R">0.064 btu/(ft hr R)</data>
-				<data x=" 760 R">0.066 btu/(ft hr R)</data>
-				<data x=" 810 R">0.068 btu/(ft hr R)</data>
-				<data x=" 860 R">0.069 btu/(ft hr R)</data>
-				<data x=" 910 R">0.070 btu/(ft hr R)</data>
-				<data x=" 960 R">0.071 btu/(ft hr R)</data>
+				310 R  0.042 btu/(ft hr R)
+				360 R  0.046 btu/(ft hr R)
+				410 R  0.050 btu/(ft hr R)
+				460 R  0.053 btu/(ft hr R)
+				510 R  0.056 btu/(ft hr R)
+				560 R  0.058 btu/(ft hr R)
+				610 R  0.060 btu/(ft hr R)
+				660 R  0.063 btu/(ft hr R)
+				710 R  0.064 btu/(ft hr R)
+				760 R  0.066 btu/(ft hr R)
+				810 R  0.068 btu/(ft hr R)
+				860 R  0.069 btu/(ft hr R)
+				910 R  0.070 btu/(ft hr R)
+				960 R  0.071 btu/(ft hr R)
 			</parameter>
 			<parameter name="emissivity">0.7</parameter>
 			<parameter name="ablation_point">1290 R</parameter>
 			<parameter name="ablation_heat">
-				<data x="6 btu/ft2">1500 btu/lb</data>
-				<data x="60 btu/ft2">5800 btu/lb</data>
+				6 btu/ft2   1500 btu/lb
+				60 btu/ft2  5800 btu/lb
 			</parameter>
 			<parameter name="ablative_char_material">ESA-3560-Char</parameter>
 			<parameter name="ablative_residue_fraction">
-				<data x=" 660 R">1.00</data>
-				<data x=" 860 R">0.99</data>
-				<data x="1060 R">0.96</data>
-				<data x="1260 R">0.70</data>
-				<data x="1460 R">0.39</data>
-				<data x="1660 R">0.38</data>
-				<data x="2060 R">0.37</data>
+				 660 R  1.00
+				 860 R  0.99
+				1060 R  0.96
+				1260 R  0.70
+				1460 R  0.39
+				1660 R  0.38
+				2060 R  0.37
 			</parameter>
 		</entry>
 		<entry name="ESA-3560-Char" parent="ESA-3560" class="thermal_ablative_char">
@@ -559,42 +562,42 @@
 		<entry name="ESA-5500" class="thermal_ablative_shielding">
 			<parameter name="density">55.0 lb/ft3</parameter>
 			<parameter name="heat_capacity">
-				<data x=" 260 R">0.180 btu/(lb R)</data>
-				<data x=" 310 R">0.185 btu/(lb R)</data>
-				<data x=" 360 R">0.190 btu/(lb R)</data>
-				<data x=" 410 R">0.200 btu/(lb R)</data>
-				<data x=" 460 R">0.205 btu/(lb R)</data>
-				<data x=" 510 R">0.210 btu/(lb R)</data>
-				<data x=" 560 R">0.220 btu/(lb R)</data>
-				<data x=" 610 R">0.235 btu/(lb R)</data>
-				<data x=" 660 R">0.250 btu/(lb R)</data>
-				<data x=" 710 R">0.270 btu/(lb R)</data>
-				<data x=" 760 R">0.290 btu/(lb R)</data>
-				<data x=" 810 R">0.315 btu/(lb R)</data>
-				<data x=" 860 R">0.335 btu/(lb R)</data>
-				<data x=" 910 R">0.365 btu/(lb R)</data>
-				<data x=" 960 R">0.395 btu/(lb R)</data>
-				<data x="1010 R">0.425 btu/(lb R)</data>
-				<data x="1060 R">0.465 btu/(lb R)</data>
+				 260 R  0.180 btu/(lb R)
+				 310 R  0.185 btu/(lb R)
+				 360 R  0.190 btu/(lb R)
+				 410 R  0.200 btu/(lb R)
+				 460 R  0.205 btu/(lb R)
+				 510 R  0.210 btu/(lb R)
+				 560 R  0.220 btu/(lb R)
+				 610 R  0.235 btu/(lb R)
+				 660 R  0.250 btu/(lb R)
+				 710 R  0.270 btu/(lb R)
+				 760 R  0.290 btu/(lb R)
+				 810 R  0.315 btu/(lb R)
+				 860 R  0.335 btu/(lb R)
+				 910 R  0.365 btu/(lb R)
+				 960 R  0.395 btu/(lb R)
+				1010 R  0.425 btu/(lb R)
+				1060 R  0.465 btu/(lb R)
 			</parameter>
 			<parameter name="thermal_conductivity">
-				<data x=" 560 R">0.1117 btu/(ft hr R)</data>
-				<data x=" 610 R">0.1192 btu/(ft hr R)</data>
-				<data x=" 660 R">0.1250 btu/(ft hr R)</data>
-				<data x=" 710 R">0.1275 btu/(ft hr R)</data>
-				<data x=" 760 R">0.1283 btu/(ft hr R)</data>
-				<data x=" 810 R">0.1267 btu/(ft hr R)</data>
-				<data x=" 860 R">0.1242 btu/(ft hr R)</data>
-				<data x=" 910 R">0.1200 btu/(ft hr R)</data>
-				<data x=" 960 R">0.1158 btu/(ft hr R)</data>
-				<data x="1010 R">0.1108 btu/(ft hr R)</data>
-				<data x="1060 R">0.1067 btu/(ft hr R)</data>
+				 560 R  0.1117 btu/(ft hr R)
+				 610 R  0.1192 btu/(ft hr R)
+				 660 R  0.1250 btu/(ft hr R)
+				 710 R  0.1275 btu/(ft hr R)
+				 760 R  0.1283 btu/(ft hr R)
+				 810 R  0.1267 btu/(ft hr R)
+				 860 R  0.1242 btu/(ft hr R)
+				 910 R  0.1200 btu/(ft hr R)
+				 960 R  0.1158 btu/(ft hr R)
+				1010 R  0.1108 btu/(ft hr R)
+				1060 R  0.1067 btu/(ft hr R)
 			</parameter>
 			<parameter name="emissivity">0.85</parameter>
 			<parameter name="ablation_point">1290 R</parameter>
 			<parameter name="ablation_heat">
-				<data x="6 btu/ft2">1500 btu/lb</data>
-				<data x="60 btu/ft2">5800 btu/lb</data>
+				6 btu/ft2   1500 btu/lb
+				60 btu/ft2  5800 btu/lb
 			</parameter>
 		</entry>
 	</database>
