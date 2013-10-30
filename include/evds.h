@@ -32,7 +32,7 @@ extern "C" {
 ////////////////////////////////////////////////////////////////////////////////
 // Library management
 ////////////////////////////////////////////////////////////////////////////////
-#define EVDS_VERSION			35
+#define EVDS_VERSION			36
 #ifndef EVDS_DYNAMIC
 #	define EVDS_API
 #else
@@ -44,11 +44,11 @@ extern "C" {
 #endif
 
 #ifdef _DEBUG
-#define EVDS_ASSERT(what) ((what) ? ((void)0) : EVDS_AssertFailed(#what,__FILE__,__LINE__))
-#define EVDS_BREAKPOINT() _asm {int 3}
+#	define EVDS_ASSERT(what) ((what) ? ((void)0) : EVDS_AssertFailed(#what,__FILE__,__LINE__))
+#	define EVDS_BREAKPOINT() _asm {int 3}
 #else
-#define EVDS_ASSERT(nothing) ((void)0)
-#define EVDS_BREAKPOINT()
+#	define EVDS_ASSERT(nothing) ((void)0)
+#	define EVDS_BREAKPOINT()
 #endif
 
 #include "stddef.h"
