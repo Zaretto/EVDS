@@ -1,7 +1,7 @@
 <EVDS>
 	<database name="material">
 		<entry name="O2" print="Oxygen" class="oxidizer">
-			<parameter name="density" type="function" value="1.429 kg/m3">
+			<parameter name="density" type="function" constant="1141 kg/m3">
 				90.20  K  1141  kg/m3
 				90.20+ K  1.429 kg/m3
 			</parameter>
@@ -9,7 +9,7 @@
 			<parameter name="melting_point">54.36 K</parameter>
 		</entry>
 		<entry name="H2" print="Hydrogen" class="fuel">
-			<parameter name="density" type="function" value="0.0899 kg/m3">
+			<parameter name="density" type="function" constant="71.364 kg/m3">
 				 0.00  K  76.3    kg/m3
 				13.95- K  88.0    kg/m3
 				13.95  K  77.211 kg/m3
@@ -23,7 +23,7 @@
 				20.28  K  70.941 kg/m3
 				20.28+ K  0.0899 kg/m3
 			</parameter>
-			<parameter name="heat_capacity" type="function" value="14.34 J/(kg K)">
+			<parameter name="heat_capacity" type="function" constant="9668 J/(kg K)">
 				 0.00  K  0.153 btu/(ft hr R)
 				13.95- K  0.153 btu/(ft hr R)
 				13.95  K  6891  J/(kg K)
@@ -122,14 +122,14 @@
 
 		<entry name="aluminium" print="Aluminium" class="structural">
 			<parameter name="density">175 lb/ft3</parameter>
-			<parameter name="heat_capacity">
+			<parameter name="heat_capacity" type="function">
 				160 R  0.177 btu/(lb R)
 				460 R  0.195 btu/(lb R)
 				660 R  0.216 btu/(lb R)
 				760 R  0.224 btu/(lb R)
 				860 R  0.233 btu/(lb R)
 			</parameter>
-			<parameter name="thermal_conductivity">
+			<parameter name="thermal_conductivity" type="function">
 				300 K  250 W/(m s K)
 				400 K  255 W/(m s K)
 				500 K  250 W/(m s K)
@@ -140,7 +140,7 @@
 
 		<entry name="titanium" print="Titanium" class="structural">
 			<parameter name="density">277 lb/ft3</parameter>
-			<parameter name="heat_capacity">
+			<parameter name="heat_capacity" type="function">
 				  60 R  0.012 btu/(lb R)
 				 260 R  0.096 btu/(lb R)
 				 460 R  0.125 btu/(lb R)
@@ -165,7 +165,7 @@
 
 		<entry name="LI-900" class="thermal_soak_shielding">
 			<parameter name="density">9 lb/ft3</parameter>
-			<parameter name="heat_capacity">
+			<parameter name="heat_capacity" type="function">
 				 210 R  0.070 btu/(lb R)
 				 310 R  0.105 btu/(lb R)
 				 460 R  0.150 btu/(lb R)
@@ -179,7 +179,7 @@
 				2210 R  0.303 btu/(lb R)
 				3460 R  0.303 btu/(lb R)
 			</parameter>
-			<parameter name="thermal_conductivity">
+			<parameter name="thermal_conductivity" type="function">
 				 210 R  6.47E-6 btu/(ft s R)
 				 460 R  7.64E-6 btu/(ft s R)
 				 710 R  9.47E-6 btu/(ft s R)
@@ -204,11 +204,11 @@
 
 		<entry name="LI-2200" class="thermal_soak_shielding">
 			<parameter name="density">352.4 kg/m3</parameter>
-			<parameter name="heat_capacity">
+			<parameter name="heat_capacity" type="function">
 				293  K   840 J/(kg K)
 				1000 K  1640 J/(kg K)
 			</parameter>
-			<parameter name="thermal_conductivity">
+			<parameter name="thermal_conductivity" type="function">
 				 293 K  0.066 W/(m s K)
 				1073 K  0.220 W/(m s K)
 			</parameter>
@@ -234,7 +234,7 @@
 			<parameter name="heat_capacity">800 J/(kg K)</parameter>
 			<parameter name="thermal_conductivity">25 W/(m s K)</parameter>
 			<parameter name="melting_point">1925 K</parameter>
-			<parameter name="thermal_expansion_ratio">
+			<parameter name="thermal_expansion_ratio" type="function">
 				  20 C  3E-6
 				2000 C  5E-6
 			</parameter>
@@ -256,11 +256,11 @@
 				<tile_size>225 mm  325 mm  150 mm</tile_size>
 			</information>
 			<parameter name="density">150 kg/m3</parameter>
-			<parameter name="heat_capacity">
+			<parameter name="heat_capacity" type="function">
 				293  K   840 J/(kg K)
 				1000 K  1640 J/(kg K)
 			</parameter>
-			<parameter name="thermal_conductivity">
+			<parameter name="thermal_conductivity" type="function">
 				 293 K  0.050 W/(m s K)
 				 700 K  0.100 W/(m s K)
 				 900 K  0.140 W/(m s K)
@@ -282,11 +282,11 @@
 				<tile_size>225 mm  325 mm  150 mm</tile_size>
 			</information>
 			<parameter name="density">250 kg/m3</parameter>
-			<parameter name="heat_capacity">
+			<parameter name="heat_capacity" type="function">
 				293  K   840 J/(kg K)
 				1000 K  1640 J/(kg K)
 			</parameter>
-			<parameter name="thermal_conductivity">
+			<parameter name="thermal_conductivity" type="function">
 				 293 K  0.066 W/(m s K)
 				1073 K  0.220 W/(m s K)
 			</parameter>
@@ -303,11 +303,11 @@
 				<tile_size>780 mm  720 mm  20 mm</tile_size>
 			</information>
 			<parameter name="density">140 kg/m3</parameter>
-			<parameter name="heat_capacity">
+			<parameter name="heat_capacity" type="function">
 				293  K   840 J/(kg K)
 				1000 K  1640 J/(kg K)
 			</parameter>
-			<parameter name="thermal_conductivity">
+			<parameter name="thermal_conductivity" type="function">
 				 293 K  0.062 W/(m s K)
 				1073 K  0.220 W/(m s K)
 			</parameter>
@@ -320,11 +320,11 @@
 				<tile_size>780 mm  720 mm  20 mm</tile_size>
 			</information>
 			<parameter name="density">400 kg/m3</parameter>
-			<parameter name="heat_capacity">
+			<parameter name="heat_capacity" type="function">
 				293  K   840 J/(kg K)
 				1000 K  1640 J/(kg K)
 			</parameter>
-			<parameter name="thermal_conductivity">
+			<parameter name="thermal_conductivity" type="function">
 				 293 K  0.067 W/(m s K)
 				1073 K  0.220 W/(m s K)
 			</parameter>
@@ -338,7 +338,7 @@
 			</information>
 			<parameter name="density">240 kg/m3</parameter>
 			<parameter name="heat_capacity">840 J/(kg K)</parameter>
-			<parameter name="thermal_conductivity">
+			<parameter name="thermal_conductivity" type="function">
 				 293 K  0.070 W/(m s K)
 				 738 K  0.093 W/(m s K)
 				1073 K  0.220 W/(m s K)
@@ -349,7 +349,7 @@
 
 		<entry name="SLA-220" class="thermal_ablative_shielding">
 			<parameter name="density">14.5 lb/ft3</parameter>
-			<parameter name="heat_capacity">
+			<parameter name="heat_capacity" type="function">
 				360 R  0.19 btu/(lb R)
 				460 R  0.22 btu/(lb R)
 				560 R  0.23 btu/(lb R)
@@ -358,7 +358,7 @@
 				860 R  0.265 btu/(lb R)
 				960 R  0.27 btu/(lb R)
 			</parameter>
-			<parameter name="thermal_conductivity">
+			<parameter name="thermal_conductivity" type="function">
 				<data value="1.0 atm">
 					360 R   0.038 btu/(ft hr R)
 					460 R   0.043 btu/(ft hr R)
@@ -394,12 +394,12 @@
 			<parameter name="thermal_expansion_ratio">10.4E-6</parameter>
 			<parameter name="emissivity">0.9</parameter>
 			<parameter name="ablation_point">1360 R</parameter>
-			<parameter name="ablation_heat">
+			<parameter name="ablation_heat" type="function">
 				6 btu/ft2   1800 btu/lb
 				60 btu/ft2  6000 btu/lb
 			</parameter>
 			<parameter name="ablative_char_material">SLA-220-Char</parameter>
-			<parameter name="ablative_residue_fraction">
+			<parameter name="ablative_residue_fraction" type="function">
 				 660 R  1.00
 				 860 R  1.00
 				1060 R  0.99
@@ -415,7 +415,7 @@
 
 		<entry name="SLA-561" class="thermal_ablative_shielding">
 			<parameter name="density">14.5 lb/ft3</parameter>
-			<parameter name="heat_capacity">
+			<parameter name="heat_capacity" type="function">
 				310 R  0.211 btu/(lb R)
 				410 R  0.250 btu/(lb R)
 				510 R  0.275 btu/(lb R)
@@ -423,7 +423,7 @@
 				710 R  0.299 btu/(lb R)
 				810 R  0.301 btu/(lb R)
 			</parameter>
-			<parameter name="thermal_conductivity">
+			<parameter name="thermal_conductivity" type="function">
 				<data value="1.0 atm">
 					510 R  0.031 btu/(ft hr R)
 					560 R  0.032 btu/(ft hr R)
@@ -457,12 +457,12 @@
 			</parameter>
 			<parameter name="emissivity">0.7</parameter>
 			<parameter name="ablation_point">1360 R</parameter>
-			<parameter name="ablation_heat">
+			<parameter name="ablation_heat" type="function">
 				6 btu/ft2   1800 btu/lb
 				60 btu/ft2  6000 btu/lb
 			</parameter>
 			<parameter name="ablative_char_material">SLA-561-Char</parameter>
-			<parameter name="ablative_residue_fraction">
+			<parameter name="ablative_residue_fraction" type="function">
 				 660 R  1.000
 				 860 R  1.000
 				1060 R  0.955
@@ -474,7 +474,7 @@
 		</entry>
 		<entry name="SLA-561-Char" parent="SLA-561" class="thermal_ablative_char">
 			<parameter name="density">7.98 lb/ft3</parameter>
-			<parameter name="heat_capacity">
+			<parameter name="heat_capacity" type="function">
 				 600 R  0.195 btu/(lb R)
 				 800 R  0.231 btu/(lb R)
 				1000 R  0.268 btu/(lb R)
@@ -486,7 +486,7 @@
 				2200 R  0.401 btu/(lb R)
 				2400 R  0.413 btu/(lb R)
 			</parameter>
-			<parameter name="thermal_conductivity">
+			<parameter name="thermal_conductivity" type="function">
 				 400 R  0.0540 btu/(ft hr R)
 				1600 R  0.0544 btu/(ft hr R)
 				1800 R  0.0590 btu/(ft hr R)
@@ -505,7 +505,7 @@
 
 		<entry name="ESA-3560" class="thermal_ablative_shielding">
 			<parameter name="density">30.0 lb/ft3</parameter>
-			<parameter name="heat_capacity">
+			<parameter name="heat_capacity" type="function">
 				260 R  0.145 btu/(lb R)
 				310 R  0.190 btu/(lb R)
 				360 R  0.235 btu/(lb R)
@@ -522,7 +522,7 @@
 				910 R  0.570 btu/(lb R)
 				960 R  0.600 btu/(lb R)
 			</parameter>
-			<parameter name="thermal_conductivity">
+			<parameter name="thermal_conductivity" type="function">
 				310 R  0.042 btu/(ft hr R)
 				360 R  0.046 btu/(ft hr R)
 				410 R  0.050 btu/(ft hr R)
@@ -540,12 +540,12 @@
 			</parameter>
 			<parameter name="emissivity">0.7</parameter>
 			<parameter name="ablation_point">1290 R</parameter>
-			<parameter name="ablation_heat">
+			<parameter name="ablation_heat" type="function">
 				6 btu/ft2   1500 btu/lb
 				60 btu/ft2  5800 btu/lb
 			</parameter>
 			<parameter name="ablative_char_material">ESA-3560-Char</parameter>
-			<parameter name="ablative_residue_fraction">
+			<parameter name="ablative_residue_fraction" type="function">
 				 660 R  1.00
 				 860 R  0.99
 				1060 R  0.96
@@ -561,7 +561,7 @@
 
 		<entry name="ESA-5500" class="thermal_ablative_shielding">
 			<parameter name="density">55.0 lb/ft3</parameter>
-			<parameter name="heat_capacity">
+			<parameter name="heat_capacity" type="function">
 				 260 R  0.180 btu/(lb R)
 				 310 R  0.185 btu/(lb R)
 				 360 R  0.190 btu/(lb R)
@@ -580,7 +580,7 @@
 				1010 R  0.425 btu/(lb R)
 				1060 R  0.465 btu/(lb R)
 			</parameter>
-			<parameter name="thermal_conductivity">
+			<parameter name="thermal_conductivity" type="function">
 				 560 R  0.1117 btu/(ft hr R)
 				 610 R  0.1192 btu/(ft hr R)
 				 660 R  0.1250 btu/(ft hr R)
@@ -595,7 +595,7 @@
 			</parameter>
 			<parameter name="emissivity">0.85</parameter>
 			<parameter name="ablation_point">1290 R</parameter>
-			<parameter name="ablation_heat">
+			<parameter name="ablation_heat" type="function">
 				6 btu/ft2   1500 btu/lb
 				60 btu/ft2  5800 btu/lb
 			</parameter>
