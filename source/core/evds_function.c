@@ -56,7 +56,7 @@ int EVDS_InternalVariable_InitializeFunction(EVDS_VARIABLE* variable, EVDS_VARIA
 	char *ptr,*end_ptr;
 	EVDS_REAL x,value;
 	EVDS_REAL avg_value;
-	EVDS_VARIABLE* constant_var;
+	EVDS_VARIABLE* temp_var;
 	int avg_count;
 
 	//Select interpolation type
@@ -131,8 +131,8 @@ int EVDS_InternalVariable_InitializeFunction(EVDS_VARIABLE* variable, EVDS_VARIA
 	if (avg_count > 0) {
 		function->constant_value = avg_value / ((EVDS_REAL)avg_count);
 	}
-	if (EVDS_Variable_GetAttribute(variable,"value",&constant_var) == EVDS_OK) {
-		EVDS_Variable_GetReal(constant_var,&function->constant_value);
+	if (EVDS_Variable_GetAttribute(variable,"constant",&temp_var) == EVDS_OK) {
+		EVDS_Variable_GetReal(temp_var,&function->constant_value);
 	}
 
 	//Fill table with nested function entries
@@ -167,6 +167,21 @@ int EVDS_InternalVariable_InitializeFunction(EVDS_VARIABLE* variable, EVDS_VARIA
 		case EVDS_VARIABLE_FUNCTION_INTERPOLATION_SPLINE:
 			qsort(function->spline,function->data_count,sizeof(EVDS_VARIABLE_FVALUE_SPLINE),EVDS_InternalVariable_CompareEntries_Spline);
 		break;
+	}
+
+	//Read/initialize order of variables in the function
+	for (i = 0; i < 3; i++) {
+		function->variable_order[i] = i;
+	}
+	if (EVDS_Variable_GetAttribute(variable,"order",&temp_var) == EVDS_OK) {
+		char order[3] = { 0 };
+		EVDS_Variable_GetString(temp_var,order,3,0);
+
+		for (i = 0; i < 3; i++) {
+			if ((order[i] >= 'x') && (order[i] <= 'z')) {
+				function->variable_order[i] = order[i]-'x';
+			}
+		}
 	}
 	return EVDS_OK;
 }
@@ -275,6 +290,7 @@ int EVDS_InternalVariable_GetFunction_Linear(EVDS_VARIABLE_FUNCTION* function,
 /// @brief Get value from a 1D/2D/3D function
 ////////////////////////////////////////////////////////////////////////////////
 int EVDS_Variable_GetFunctionValue(EVDS_VARIABLE* variable, EVDS_REAL x, EVDS_REAL y, EVDS_REAL z, EVDS_REAL* p_value) {
+	EVDS_REAL v[3] = { 0.0 };
 	EVDS_VARIABLE_FUNCTION* function;
 	if (!variable) return EVDS_ERROR_BAD_PARAMETER;
 	if (!p_value) return EVDS_ERROR_BAD_PARAMETER;
@@ -295,13 +311,18 @@ int EVDS_Variable_GetFunctionValue(EVDS_VARIABLE* variable, EVDS_REAL x, EVDS_RE
 		return EVDS_Variable_GetReal(variable,p_value);
 	}
 
+	//Remap the parameters correctly
+	v[function->variable_order[0]] = x;
+	v[function->variable_order[1]] = y;
+	v[function->variable_order[2]] = z;
+
 	//Select the right interpolating function
 	switch (function->interpolation) {
 		case EVDS_VARIABLE_FUNCTION_INTERPOLATION_LINEAR:
-			return EVDS_InternalVariable_GetFunction_Linear(function,x,y,z,p_value);
+			return EVDS_InternalVariable_GetFunction_Linear(function,v[0],v[1],v[2],p_value);
 		case EVDS_VARIABLE_FUNCTION_INTERPOLATION_SPLINE:
 			break;
-			//return EVDS_InternalVariable_GetFunction_Spline(function,x,y,z,p_value);
+			//return EVDS_InternalVariable_GetFunction_Spline(function,v[0],v[1],v[2],p_value);
 	}
 	return EVDS_OK;
 }

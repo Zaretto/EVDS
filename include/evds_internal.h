@@ -178,6 +178,8 @@ typedef struct EVDS_VARIABLE_FUNCTION_TAG {
 
 	EVDS_REAL constant_value;				//Constant value of the function
 	int data_count;							//Size of the values table
+
+	int variable_order[3];					//Order of variables (swizzling/remapping)
 } EVDS_VARIABLE_FUNCTION;
 
 struct EVDS_VARIABLE_TAG {
