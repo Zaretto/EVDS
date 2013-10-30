@@ -19,7 +19,7 @@ void Test_EVDS_FRAMES() {
 		ERROR_CHECK(EVDS_Object_Initialize(earth,1));
 
 		/// Create coordinate frame
-		ERROR_CHECK(EVDS_Object_Create(system,earth,&frame));
+		ERROR_CHECK(EVDS_Object_Create(earth,&frame));
 
 		/// Check normal vector
 		EVDS_Geodetic_Set(&geocoord,earth,0,0,1000);

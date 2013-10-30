@@ -71,6 +71,7 @@ int RK2_Register(EVDS_SYSTEM* system) {
 
 void main() {
 	EVDS_SYSTEM* system;
+	EVDS_OBJECT* root;
 	EVDS_OBJECT* inertial_system;
 	EVDS_OBJECT* earth;
 	EVDS_OBJECT* satellite;
@@ -81,12 +82,13 @@ void main() {
 	RK2_Register(system);
 
 	//Create inertial sysetm
-	EVDS_Object_Create(system,0,&inertial_system);
+	EVDS_System_GetRootInertialSpace(system,&root);
+	EVDS_Object_Create(root,&inertial_system);
 	EVDS_Object_SetType(inertial_system,"propagator_rk2");
 	EVDS_Object_Initialize(inertial_system,1);
 
 	//Create planet Earth
-	EVDS_Object_Create(system,inertial_system,&earth);
+	EVDS_Object_Create(inertial_system,&earth);
 	EVDS_Object_SetType(earth,"planet");
 	EVDS_Object_SetName(earth,"Earth");
 	EVDS_Object_AddRealVariable(earth,"mu",3.9860044e14,0);    //m3 sec-2

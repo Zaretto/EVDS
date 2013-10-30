@@ -134,7 +134,7 @@ int Test_InList(void* ptr, SIMC_LIST* list);
 #define END_TEST EVDS_System_Destroy(system); }
 
 #define NEED_ARBITRARY_OBJECT() \
-	ERROR_CHECK(EVDS_Object_Create(system,0,&object));
+	ERROR_CHECK(EVDS_Object_Create(root,&object));
 
 
 //Various test files list

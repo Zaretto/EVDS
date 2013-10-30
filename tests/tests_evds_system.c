@@ -38,7 +38,7 @@ void Test_EVDS_SYSTEM() {
 		//EQUAL_TO(EVDS_System_QueryDatabase(0,"test",&variable), EVDS_ERROR_BAD_PARAMETER);
 		//EQUAL_TO(EVDS_System_QueryDatabase(system,0,&variable), EVDS_ERROR_BAD_PARAMETER);
 		//EQUAL_TO(EVDS_System_QueryDatabase(system,"test",0), EVDS_ERROR_BAD_PARAMETER);
-		EQUAL_TO(EVDS_System_SetCallback_OnInitialize(0,0), EVDS_ERROR_BAD_PARAMETER);
+		EQUAL_TO(EVDS_System_SetGlobalCallbacks(0,0), EVDS_ERROR_BAD_PARAMETER);
 		EQUAL_TO(EVDS_System_SetUserdata(0,0), EVDS_ERROR_BAD_PARAMETER);
 		EQUAL_TO(EVDS_System_GetUserdata(system,0), EVDS_ERROR_BAD_PARAMETER);
 		EQUAL_TO(EVDS_System_GetUserdata(0,&object), EVDS_ERROR_BAD_PARAMETER);
@@ -46,7 +46,7 @@ void Test_EVDS_SYSTEM() {
 
 
 	START_TEST("Root inertial space") {
-		ERROR_CHECK(EVDS_Object_Create(system,0,&object));
+		ERROR_CHECK(EVDS_Object_Create(root,&object));
 
 		EQUAL_TO(root->parent,0);
 		EQUAL_TO(object->parent,root);
