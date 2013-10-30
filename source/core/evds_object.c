@@ -1463,6 +1463,9 @@ int EVDS_Object_SetName(EVDS_OBJECT* object, const char* name) {
 	SIMC_SRW_EnterWrite(object->name_lock);
 		strncpy(object->name,clean_name,256);
 	SIMC_SRW_LeaveWrite(object->name_lock);
+
+	//Make sure name is unique
+	EVDS_Object_SetUniqueName(object,0);
 	return EVDS_OK;
 }
 
