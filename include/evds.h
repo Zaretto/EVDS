@@ -997,11 +997,11 @@ EVDS_API int EVDS_System_GetRootInertialSpace(EVDS_SYSTEM* system, EVDS_OBJECT**
 // Get objects by type
 EVDS_API int EVDS_System_GetObjectsByType(EVDS_SYSTEM* system, const char* type, SIMC_LIST** p_list);
 // Get object by UID (can search in children of a given object)
-EVDS_API int EVDS_System_GetObjectByUID(EVDS_SYSTEM* system, unsigned int uid, EVDS_OBJECT* parent, EVDS_OBJECT** p_object);
+EVDS_API int EVDS_System_GetObjectByUID(EVDS_SYSTEM* system, EVDS_OBJECT* parent, unsigned int uid, EVDS_OBJECT** p_object);
 // Get object by name (can search in children of a given object)
-EVDS_API int EVDS_System_GetObjectByName(EVDS_SYSTEM* system, const char* name, EVDS_OBJECT* parent, EVDS_OBJECT** p_object);
+EVDS_API int EVDS_System_GetObjectByName(EVDS_SYSTEM* system, EVDS_OBJECT* parent, const char* name, EVDS_OBJECT** p_object);
 // Query a variable/object by data reference
-EVDS_API int EVDS_System_QueryByReference(EVDS_OBJECT* root, const char* query, EVDS_VARIABLE** p_variable, EVDS_OBJECT** p_object);
+EVDS_API int EVDS_System_QueryByReference(EVDS_SYSTEM* system, EVDS_OBJECT* parent, const char* query, EVDS_VARIABLE** p_variable, EVDS_OBJECT** p_object);
 
 // Cleanup objects (multithreaded only)
 EVDS_API int EVDS_System_CleanupObjects(EVDS_SYSTEM* system);
@@ -1016,8 +1016,6 @@ EVDS_API int EVDS_System_GetDatabaseByName(EVDS_SYSTEM* system, const char* name
 EVDS_API int EVDS_System_GetDatabasesList(EVDS_SYSTEM* system, SIMC_LIST** p_list);
 // Get list of all entries in database
 EVDS_API int EVDS_System_GetDatabaseEntries(EVDS_SYSTEM* system, const char* name, SIMC_LIST** p_list);
-// Get an entry from a database by name and object name
-EVDS_API int EVDS_System_QueryDatabase(EVDS_SYSTEM* system, const char* query, EVDS_VARIABLE** p_variable);
 
 // Set global callbacks
 EVDS_API int EVDS_System_SetGlobalCallbacks(EVDS_SYSTEM* system, EVDS_GLOBAL_CALLBACKS* p_callbacks);

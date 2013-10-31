@@ -31,20 +31,20 @@
 
 
 ////////////////////////////////////////////////////////////////////////////////
-/// @brief Remove destroyed objects from memory (multithreading version only).
+/// @brief Remove destroyed objects from memory.
 ///
-/// @evds_mt Will delete objects that are not referenced anywhere, after they have been
+/// @evds_mt Will delete objects that are not referenced anywhere after they have been
 /// destroyed with EVDS_Object_Destroy(). The function will physically delete data for
 /// the deleted objects with no references.
 ///
-/// @evds_st Nothing is done, returns EVDS_OK.
+/// @evds_st No effect, returns EVDS_OK.
 ///
 /// The cleanup call can be called in its own dedicated thread, as long as objects
-/// are not used after they have been destroyed (or marked as stored with
+/// are not used after they have been destroyed (unless marked as stored with
 /// EVDS_Object_Store()).
 ///
 /// Objects which are still being initialized will not be cleaned up until the
-/// initialization has finished.
+/// initialization has been completed.
 ///
 /// System will be blocked from being destroyed with EVDS_System_Destroy() until
 /// the cleanup call finishes.
@@ -100,13 +100,18 @@ int EVDS_System_CleanupObjects(EVDS_SYSTEM* system) {
 ////////////////////////////////////////////////////////////////////////////////
 /// @brief Initialize the system and return pointer to a new EVDS_SYSTEM structure.
 ///
-/// EVDS threading system will be initialized with the first EVDS_System_Create call. At
-/// least one system must be created to make use of threading functions.
+/// EVDS threading subsystem will be initialized with the first EVDS_System_Create call. At
+/// least one system object must be created to make use of the SIMC threading functions.
 ///
-/// Example
+/// The built-in databases (materials, airfoils) will be automatically loaded when
+/// system is created.
+///
+/// Quick example:
 /// ~~~{.c}
 ///		EVDS_SYSTEM* system;
 ///		EVDS_System_Create(&system);
+///		...
+///		EVDS_System_Destroy(system);
 /// ~~~
 ///
 /// @param[out] p_system A pointer to new data structure will be written here
@@ -116,8 +121,7 @@ int EVDS_System_CleanupObjects(EVDS_SYSTEM* system) {
 /// @retval EVDS_ERROR_BAD_PARAMETER "p_system" is null
 /// @retval EVDS_ERROR_MEMORY Error while allocating a data structure
 ////////////////////////////////////////////////////////////////////////////////
-int EVDS_System_Create(EVDS_SYSTEM** p_system)
-{
+int EVDS_System_Create(EVDS_SYSTEM** p_system) {
 	EVDS_OBJECT* inertial_space;
 	EVDS_SYSTEM* system;
 	if (!p_system) return EVDS_ERROR_BAD_PARAMETER;
@@ -192,30 +196,32 @@ int EVDS_System_Create(EVDS_SYSTEM** p_system)
 
 
 ////////////////////////////////////////////////////////////////////////////////
-/// @brief Destroy/deinitialize the system.
+/// @brief Deinitialize and destroy the system.
 ///
-/// Threading system will be deinitialized with the last EVDS_System_Destroy() call.
-/// All threads which still do work on objects, related to this system must be stopped
+/// Threading subsystem will be deinitialized with the last EVDS_System_Destroy() call.
+/// All threads which still do work on objects related to this system must be stopped
 /// before system is destroyed.
 ///
-/// If any API calls are made to objects that belonged to the system destroyed, or
-/// API calls are made to the system itself, their result is undefined (most likely
-/// causing an application crash).
+/// If any API calls are made to objects that were stored in the system that was destroyed or
+/// API calls to the system itself, their result is undefined (the likely result is an
+/// application crash).
 ///
-/// All solvers will be unloaded by calling their "OnShutdown" callbacks. The pointer to
-/// the system data structure will be removed from memory as well.
+/// @todo Currently all initializing threads are aborted. This is incorrect and in future
+///		initializing threads will finish their work and block the shutdown call.
 ///
-/// This call can be blocked by EVDS_System_CleanupObjects() until the cleanup
-/// operation completes.
+/// All solvers will be unloaded with calling their "OnShutdown" callbacks. The EVDS_SYSTEM
+/// data structure itself is also freed.
 ///
-/// @param[out] system System object to be destroyed
+/// @note This call can be blocked by EVDS_System_CleanupObjects() until the cleanup
+///		operation completes.
 ///
-/// @returns Error code, pointer to system object
+/// @param[in] system System object to be destroyed
+///
+/// @returns Error code
 /// @retval EVDS_OK Everything created successfully
 /// @retval EVDS_ERROR_BAD_PARAMETER "system" is null
 ////////////////////////////////////////////////////////////////////////////////
-int EVDS_System_Destroy(EVDS_SYSTEM* system)
-{
+int EVDS_System_Destroy(EVDS_SYSTEM* system) {
 	SIMC_LIST_ENTRY* entry;
 	if (!system) return EVDS_ERROR_BAD_PARAMETER;
 
@@ -287,6 +293,23 @@ int EVDS_System_Destroy(EVDS_SYSTEM* system)
 
 ////////////////////////////////////////////////////////////////////////////////
 /// @brief Set system global time (in MJD).
+///
+/// This function sets global time as returned by EVDS_System_GetTime(). A valid input
+/// value is EVDS_REALTIME, which will cause EVDS_System_GetTime() to return current MJD
+/// time.
+///
+/// Global time is used to initialize state vectors time when object is solved or integrated.
+/// See documentation on propagators for more information.
+///
+/// If EVDS is not running realtime, the global time must be updated manually by user after
+/// each simulation step.
+///
+/// @param[in] system Pointer to system
+/// @param[in] time New MJD time
+///
+/// @returns Error code
+/// @retval EVDS_OK Everything created successfully
+/// @retval EVDS_ERROR_BAD_PARAMETER "system" is null
 ////////////////////////////////////////////////////////////////////////////////
 int EVDS_System_SetTime(EVDS_SYSTEM* system, EVDS_REAL time) {
 	if (!system) return EVDS_ERROR_BAD_PARAMETER;
@@ -297,6 +320,19 @@ int EVDS_System_SetTime(EVDS_SYSTEM* system, EVDS_REAL time) {
 
 ////////////////////////////////////////////////////////////////////////////////
 /// @brief Get system global time (in MJD).
+///
+/// This function call returns current time in the universe defined by EVDS_SYSTEM. When
+/// the propagator is called the state vectors time is set to this value.
+///
+/// Global system time can be updated by an EVDS_System_SetTime() call. It will be automatically
+/// updated if the system is set to run realtime.
+///
+/// @param[in] system Pointer to system
+/// @param[out] time Current MJD time
+///
+/// @returns Error code
+/// @retval EVDS_OK Everything created successfully
+/// @retval EVDS_ERROR_BAD_PARAMETER "system" is null
 ////////////////////////////////////////////////////////////////////////////////
 int EVDS_System_GetTime(EVDS_SYSTEM* system, EVDS_REAL* time) {
 	if (!system) return EVDS_ERROR_BAD_PARAMETER;
@@ -315,12 +351,17 @@ int EVDS_System_GetTime(EVDS_SYSTEM* system, EVDS_REAL* time) {
 ////////////////////////////////////////////////////////////////////////////////
 /// @brief Register a new solver.
 ///
-/// A pointer to a structure describing the solver must be passed into this call to
-/// register a new solver. This structure must not be destroyed until the system is.
+/// A pointer to a filled out EVDS_SOLVER structure must be passed into this call to
+/// register a new solver. This structure must not be destroyed before the EVDS_SYSTEM
+/// is destroyed.
 ///
-/// The solver will be started up and its "OnStartup" callback will be called.
+/// The solver will be start up by calling its EVDS_SOLVER::OnStartup callback. All solvers will be shut
+/// down when an EVDS_SYSTEM is destroyed using the EVDS_SOLVER::OnShutdown callback.
 ///
-/// Short example on defining a solver:
+/// @note A solver is assigned to each object on initialization. An exact criteria is
+///		determined by user. See EVDS_SOLVER for more information.
+///
+/// Short example of how a solver can be defined:
 /// ~~~{.c}
 ///		int EVDS_Solver_Test_Solve(EVDS_SYSTEM* system, EVDS_SOLVER* solver, EVDS_OBJECT* object, EVDS_REAL delta_time);
 ///		int EVDS_Solver_Test_Integrate(EVDS_SYSTEM* system, EVDS_SOLVER* solver, EVDS_OBJECT* object,
@@ -345,9 +386,9 @@ int EVDS_System_GetTime(EVDS_SYSTEM* system, EVDS_REAL* time) {
 ///		EVDS_Solver_Register(system,&EVDS_Solver_Test);
 /// ~~~
 ///
-/// Solvers must be registered before the relevant objects are initialized. The API
-/// allows adding extra solvers at any time, but in multithreading environment
-/// solvers must only be added when no objects are being initialized at the moment.
+/// Solvers must be registered before the relevant objects are initialized. It is possible
+/// to register additional solvers at any time (even in the multi-threaded environment).
+/// They will only become active after solver exists its EVDS_SOLVER::OnStartup callback.
 ///
 /// If an object is initialized before a recently added solver finishes starting up,
 /// the library will enter an undefined state.
@@ -364,9 +405,10 @@ int EVDS_Solver_Register(EVDS_SYSTEM* system, EVDS_SOLVER* solver) {
 	if (!system) return EVDS_ERROR_BAD_PARAMETER;
 	if (!solver) return EVDS_ERROR_BAD_PARAMETER;
 
+	if (solver->OnStartup) {
+		EVDS_ERRCHECK(solver->OnStartup(system,solver));
+	}
 	SIMC_List_Append(system->solvers,solver);
-	if (solver->OnStartup) solver->OnStartup(system,solver);
-
 	return EVDS_OK;
 }
 
@@ -421,7 +463,10 @@ int EVDS_System_GetObjectsByType(EVDS_SYSTEM* system, const char* type, SIMC_LIS
 
 
 ////////////////////////////////////////////////////////////////////////////////
-/// @brief Get list of all databases (see EVDS_SYSTEM).
+/// @brief Get list of all databases in the system.
+///
+/// Returns a list of all databases currently loaded. See EVDS_SYSTEM for more information
+/// on databases.
 ///
 /// @param[in] system Pointer to system
 /// @param[out] p_list Pointer to list of databases will be written here
@@ -487,33 +532,33 @@ int EVDS_System_GetUserdata(EVDS_SYSTEM* system, void** p_userdata) {
 ///
 /// @param[in] system Pointer to system
 /// @param[in] uid Unique identifier to search for
-/// @param[in] parent Object inside which search must be performed (can be null, then all objects are checked)
+/// @param[in] parent Object inside which search must be performed (can be null if system is not null)
 /// @param[out] p_object Pointer to the object will be written here
 ///
 /// @returns Error code
 /// @retval EVDS_OK Successfully completed
-/// @retval EVDS_ERROR_BAD_PARAMETER "system" is null
+/// @retval EVDS_ERROR_BAD_PARAMETER "system" and "parent" are null
 /// @retval EVDS_ERROR_BAD_PARAMETER "p_object" is null
 /// @retval EVDS_ERROR_NOT_FOUND No object with this UID was found
 ////////////////////////////////////////////////////////////////////////////////
-int EVDS_System_GetObjectByUID(EVDS_SYSTEM* system, unsigned int uid, EVDS_OBJECT* parent, EVDS_OBJECT** p_object) {
+int EVDS_System_GetObjectByUID(EVDS_SYSTEM* system, EVDS_OBJECT* parent, unsigned int uid, EVDS_OBJECT** p_object) {
 	SIMC_LIST_ENTRY* entry;
 	EVDS_OBJECT* child;
-	if (!system) return EVDS_ERROR_BAD_PARAMETER;
+	if ((!system) && (!parent)) return EVDS_ERROR_BAD_PARAMETER;
 	if (!p_object) return EVDS_ERROR_BAD_PARAMETER;
-
-	//Check if searching for the parent
-	if (parent->uid == uid) {
-		*p_object = parent;
-		return EVDS_OK;
-	}
+	if (parent && (!system)) system = parent->system;
 
 	if (parent) { 
-		//Traverse parent children
+		//Check if searching for the parent
+		if (parent->uid == uid) {
+			*p_object = parent;
+			return EVDS_OK;
+		}
+
+		//Traverse parents children
 		entry = SIMC_List_GetFirst(parent->raw_children);
 		while (entry) {
 			child = (EVDS_OBJECT*)SIMC_List_GetData(parent->raw_children,entry);
-			//if ((!child->modifier) && (child->uid == uid)) {
 			if (child->uid == uid) {
 				*p_object = child;
 				SIMC_List_Stop(parent->raw_children,entry);
@@ -526,7 +571,7 @@ int EVDS_System_GetObjectByUID(EVDS_SYSTEM* system, unsigned int uid, EVDS_OBJEC
 		entry = SIMC_List_GetFirst(parent->raw_children);
 		while (entry) {
 			child = (EVDS_OBJECT*)SIMC_List_GetData(parent->raw_children,entry);
-			if (EVDS_System_GetObjectByUID(system,uid,child,p_object) == EVDS_OK) { //Found by recursive search
+			if (EVDS_System_GetObjectByUID(system,child,uid,p_object) == EVDS_OK) { //Found by recursive search
 				SIMC_List_Stop(parent->raw_children,entry);
 				return EVDS_OK;
 			}
@@ -537,7 +582,6 @@ int EVDS_System_GetObjectByUID(EVDS_SYSTEM* system, unsigned int uid, EVDS_OBJEC
 		entry = SIMC_List_GetFirst(system->objects);
 		while (entry) {
 			child = (EVDS_OBJECT*)SIMC_List_GetData(system->objects,entry);
-			//if ((!child->modifier) && (child->uid == uid)) {
 			if (child->uid == uid) {
 				*p_object = child;
 				SIMC_List_Stop(system->objects,entry);
@@ -561,33 +605,34 @@ int EVDS_System_GetObjectByUID(EVDS_SYSTEM* system, unsigned int uid, EVDS_OBJEC
 ///
 /// @param[in] system Pointer to system
 /// @param[in] name Name to search for (null-terminated string, only first 256 characters are taken)
-/// @param[in] parent Object inside which search must be performed (can be null, then all objects are checked)
+/// @param[in] parent Object inside which search must be performed (can be null if system is not null)
 /// @param[out] p_object Pointer to the object will be written here
 ///
 /// @returns Error code
 /// @retval EVDS_OK Successfully completed
-/// @retval EVDS_ERROR_BAD_PARAMETER "system" is null
+/// @retval EVDS_ERROR_BAD_PARAMETER "system" and "parent" are null
 /// @retval EVDS_ERROR_BAD_PARAMETER "name" is null
 /// @retval EVDS_ERROR_BAD_PARAMETER "p_object" is null
 /// @retval EVDS_ERROR_NOT_FOUND No object with this name was found
 ////////////////////////////////////////////////////////////////////////////////
-int EVDS_System_GetObjectByName(EVDS_SYSTEM* system, const char* name, EVDS_OBJECT* parent, EVDS_OBJECT** p_object) {
-	char parent_name[257] = { 0 };
+int EVDS_System_GetObjectByName(EVDS_SYSTEM* system, EVDS_OBJECT* parent, const char* name, EVDS_OBJECT** p_object) {
 	char child_name[257] = { 0 };
 	SIMC_LIST_ENTRY* entry;
 	EVDS_OBJECT* child;
-	if (!system) return EVDS_ERROR_BAD_PARAMETER;
+	if ((!system) && (!parent)) return EVDS_ERROR_BAD_PARAMETER;
 	if (!name) return EVDS_ERROR_BAD_PARAMETER;
 	if (!p_object) return EVDS_ERROR_BAD_PARAMETER;
-
-	//Check if searching for the parent
-	EVDS_Object_GetName(parent,parent_name,256);
-	if (parent && (strncmp(parent_name,name,256) == 0)) {
-			*p_object = parent;
-			return EVDS_OK;
-	}
+	if (parent && (!system)) system = parent->system;
 
 	if (parent) { 
+		//Check if searching for the parent
+		char parent_name[257] = { 0 };
+		EVDS_Object_GetName(parent,parent_name,256);
+		if (strncmp(parent_name,name,256) == 0) {
+			*p_object = parent;
+			return EVDS_OK;
+		}
+
 		//Traverse parent children
 		entry = SIMC_List_GetFirst(parent->raw_children);
 		while (entry) {
@@ -605,7 +650,7 @@ int EVDS_System_GetObjectByName(EVDS_SYSTEM* system, const char* name, EVDS_OBJE
 		entry = SIMC_List_GetFirst(parent->raw_children);
 		while (entry) {
 			child = (EVDS_OBJECT*)SIMC_List_GetData(parent->raw_children,entry);
-			if (EVDS_System_GetObjectByName(system,name,child,p_object) == EVDS_OK) { //Found by recursive search
+			if (EVDS_System_GetObjectByName(system,child,name,p_object) == EVDS_OK) { //Found by recursive search
 				SIMC_List_Stop(parent->raw_children,entry);
 				return EVDS_OK;
 			}
@@ -633,7 +678,11 @@ int EVDS_System_GetObjectByName(EVDS_SYSTEM* system, const char* name, EVDS_OBJE
 /// @brief Get root inertial space object.
 ///
 /// Returns object that represents the inertial space of the EVDS universe. This object
-/// has no state vector defined and all other objects are its children.
+/// has no state vector defined and all other objects are either its children, or
+/// children of its children.
+///
+/// This object has no propagator defined, but calling EVDS_Object_Solve() on it will
+/// solve all its children.
 ///
 /// @param[in] system Pointer to system
 /// @param[out] p_object Pointer to the root object will be written here
@@ -653,12 +702,27 @@ int EVDS_System_GetRootInertialSpace(EVDS_SYSTEM* system, EVDS_OBJECT** p_object
 
 
 ////////////////////////////////////////////////////////////////////////////////
-/// @brief Load database from a file
+/// @brief Load database from a file.
+///
+/// This call is similar to EVDS_Object_LoadFromFile() but does not require an object
+/// to be passed in and does not load any objects.
+/// See EVDS_SYSTEM for more information on the databases.
+///
+/// A newly loaded database will be merged with any existing ones if required.
+/// The databases can also be loaded from normal object files, see EVDS_Object_LoadEx().
+///
+/// @param[in] system Pointer to system
+/// @param[in] filename File from which database must be loaded
+///
+/// @returns Error code
+/// @retval EVDS_OK Successfully completed
+/// @retval EVDS_ERROR_BAD_PARAMETER "system" is null
+/// @retval EVDS_ERROR_BAD_PARAMETER "filename" is null
 ////////////////////////////////////////////////////////////////////////////////
 int EVDS_System_DatabaseFromFile(EVDS_SYSTEM* system, const char* filename) {
 	EVDS_OBJECT proxy_object = { 0 };
 	EVDS_OBJECT_LOADEX info = { 0 };
-	info.flags = EVDS_OBJECT_LOADEX_NO_OBJECTS;// | EVDS_OBJECT_LOADEX_NO_MODIFIERS;
+	info.flags = EVDS_OBJECT_LOADEX_NO_OBJECTS;
 	
 	if (!system) return EVDS_ERROR_BAD_PARAMETER;
 	if (!filename) return EVDS_ERROR_BAD_PARAMETER;
@@ -669,12 +733,27 @@ int EVDS_System_DatabaseFromFile(EVDS_SYSTEM* system, const char* filename) {
 
 
 ////////////////////////////////////////////////////////////////////////////////
-/// @brief Load database from a string
+/// @brief Load database from a string.
+///
+/// This call is similar to EVDS_Object_LoadFromString() but does not require an object
+/// to be passed in and does not load any objects.
+/// See EVDS_SYSTEM for more information on the databases.
+///
+/// A newly loaded database will be merged with any existing ones if required.
+/// The databases can also be loaded from normal object files, see EVDS_Object_LoadEx().
+///
+/// @param[in] system Pointer to system
+/// @param[in] description Database description
+///
+/// @returns Error code
+/// @retval EVDS_OK Successfully completed
+/// @retval EVDS_ERROR_BAD_PARAMETER "system" is null
+/// @retval EVDS_ERROR_BAD_PARAMETER "description" is null
 ////////////////////////////////////////////////////////////////////////////////
 int EVDS_System_DatabaseFromString(EVDS_SYSTEM* system, const char* description) {
 	EVDS_OBJECT proxy_object = { 0 };
 	EVDS_OBJECT_LOADEX info = { 0 };
-	info.flags = EVDS_OBJECT_LOADEX_NO_OBJECTS;// | EVDS_OBJECT_LOADEX_NO_MODIFIERS;
+	info.flags = EVDS_OBJECT_LOADEX_NO_OBJECTS;
 	info.description = (char*)description;
 
 	if (!system) return EVDS_ERROR_BAD_PARAMETER;
@@ -686,7 +765,21 @@ int EVDS_System_DatabaseFromString(EVDS_SYSTEM* system, const char* description)
 
 
 ////////////////////////////////////////////////////////////////////////////////
-/// @brief Get database by name
+/// @brief Get database by name.
+///
+/// See EVDS_SYSTEM for more information on the databases. Returns a database
+/// by its name if it exists within the EVDS_SYSTEM.
+///
+/// @param[in] system Pointer to system
+/// @param[in] name Database name (up to 256 characters)
+/// @param[out] p_database Pointer to database will be written here
+///
+/// @returns Error code
+/// @retval EVDS_OK Successfully completed
+/// @retval EVDS_ERROR_BAD_PARAMETER "system" is null
+/// @retval EVDS_ERROR_BAD_PARAMETER "name" is null
+/// @retval EVDS_ERROR_BAD_PARAMETER "p_database" is null
+/// @retval EVDS_ERROR_NOT_FOUND Database with given name not found in the system
 ////////////////////////////////////////////////////////////////////////////////
 int EVDS_System_GetDatabaseByName(EVDS_SYSTEM* system, const char* name, EVDS_VARIABLE** p_database) {
 	char child_name[257] = { 0 };
@@ -713,7 +806,21 @@ int EVDS_System_GetDatabaseByName(EVDS_SYSTEM* system, const char* name, EVDS_VA
 
 
 ////////////////////////////////////////////////////////////////////////////////
-/// @brief Get list of all entries in database
+/// @brief Get list of all entries in database.
+///
+/// See EVDS_SYSTEM for more information on the databases. Returns a list of 
+/// all entries in the database by given name.
+///
+/// @param[in] system Pointer to system
+/// @param[in] name Database name (up to 256 characters)
+/// @param[out] p_list Pointer to list of entries in a database will be written here
+///
+/// @returns Error code
+/// @retval EVDS_OK Successfully completed
+/// @retval EVDS_ERROR_BAD_PARAMETER "system" is null
+/// @retval EVDS_ERROR_BAD_PARAMETER "name" is null
+/// @retval EVDS_ERROR_BAD_PARAMETER "p_list" is null
+/// @retval EVDS_ERROR_NOT_FOUND Database with given name not found in the system
 ////////////////////////////////////////////////////////////////////////////////
 int EVDS_System_GetDatabaseEntries(EVDS_SYSTEM* system, const char* name, SIMC_LIST** p_list) {
 	EVDS_VARIABLE* database;
@@ -727,17 +834,13 @@ int EVDS_System_GetDatabaseEntries(EVDS_SYSTEM* system, const char* name, SIMC_L
 
 
 ////////////////////////////////////////////////////////////////////////////////
-/// @brief Get an entry from a database by name and entry name
-////////////////////////////////////////////////////////////////////////////////
-int EVDS_System_QueryDatabase(EVDS_SYSTEM* system, const char* query, EVDS_VARIABLE** p_variable) {
-	return EVDS_OK;
-}
-
-
-////////////////////////////////////////////////////////////////////////////////
-/// @brief Get variable by a dataref, starting from the root object.
+/// @brief Get an object, a variable, or a database entry by a dataref.
 ///
-/// @todo FIXME
+/// This function returns an object or a variable by a given data reference string (dataref).
+/// Every object or a variable in EVDS system has a unique dataref that it can be used with.
+///
+/// Currently datarefs support using only '*' wildcard instead of an object name to match within
+/// a set of objects.
 ///
 /// Examples of various datarefs:
 /// Dataref											| Description
@@ -748,45 +851,55 @@ int EVDS_System_QueryDatabase(EVDS_SYSTEM* system, const char* query, EVDS_VARIA
 /// @c /vessel/geometry.cross_sections/section[5]	| 5th variable named "section" (a cross-section) of a vessel
 /// @c /vessel/geometry.cross_sections[5]			| 5th nested variable of a variable named "geometry.cross_sections"
 ///	@c /vessel/geometry.cross_sections[5]/offset	| Attribute of a cross-section
+/// @c [material]/N2O4								| Database entry for nitrogen tetraoxide
+/// @c [material]/H2/density						| Density function of hydrogen
+/// @c /*/object_name								| Object inside any of the children of the root object
+/// @c /*/variable_name								| Variable inside any of the children of the root object
 ///
-/// The root object must not be null. It can either be a user-created object, or the
-/// root inertial space object must be used, for example:
+/// The EVDS_SYSTEM only needs to be specified when parent object is not specified. In that case
+/// the root inertial space object will be used, for example:
 /// ~~~{.c}
-///		EVDS_OBJECT* root;
 ///		EVDS_VARIABLE* variable;
-///		EVDS_System_GetRootInertialSpace(system,&root);
-///		EVDS_Object_QueryVariable(root,"/object_name/variable_name",&variable);
+///		EVDS_Object_QueryVariable(system,0,"/object_name/variable_name",&variable,0);
+///		EVDS_Object_QueryVariable(0,object,"/variable_name",&variable,0);
 /// ~~~
 ///
-/// @param[in] root Pointer to the root object
+/// If result is a variable, the object pointer will be set to null and vice versa.
+///
+/// @param[in] system Pointer to system (can be null if parent is not null)
+/// @param[in] parent Pointer to the parent object
 /// @param[in] query Dateref that must be retrieved (null-terminated string)
-/// @param[out] p_variable Pointer to variable will be written here
+/// @param[out] p_variable Pointer to a variable will be written here
+/// @param[out] p_object Pointer to an object will be written here
 ///
 /// @returns Error code, pointer to a variable
 /// @retval EVDS_OK Successfully completed (object matches type)
-/// @retval EVDS_ERROR_BAD_PARAMETER "root" is null
+/// @retval EVDS_ERROR_BAD_PARAMETER "system" and "parent" are null
 /// @retval EVDS_ERROR_BAD_PARAMETER "query" is null
-/// @retval EVDS_ERROR_BAD_PARAMETER "p_variable" is null
-//  @retval EVDS_ERROR_NOT_FOUND Could not resolve the dataref
-/// @retval EVDS_ERROR_INVALID_OBJECT Root object was destroyed
+//  @retval EVDS_ERROR_NOT_FOUND Could not resolve the dataref (syntax error or object not found)
 ////////////////////////////////////////////////////////////////////////////////
-int EVDS_System_QueryByReference(EVDS_OBJECT* root, const char* query, EVDS_VARIABLE** p_variable, EVDS_OBJECT** p_object) {
-	EVDS_OBJECT* object = root; //Object, inside which the query is performed
+int EVDS_System_QueryByReference(EVDS_SYSTEM* system, EVDS_OBJECT* parent, const char* query, EVDS_VARIABLE** p_variable, EVDS_OBJECT** p_object) {
+	SIMC_LIST_ENTRY* entry;
+
+	EVDS_OBJECT* object = 0; //Object, inside which the query is performed
 	EVDS_VARIABLE* variable = 0; //Variable, inside which the query is performed
-	int in_variable = 0; //Is currently inside a variable
+	int in_variable = 0; //Is currently inside a variable (as opposed to searching inside an object)
+	int result_found = 0; //Was some sort of a result found
 
 	char *token_start, *token_end; //Parameters for the token word
 	size_t token_length;
-	if (!root) return EVDS_ERROR_BAD_PARAMETER;
+	if ((!system) && (!parent)) return EVDS_ERROR_BAD_PARAMETER;
 	if (!query) return EVDS_ERROR_BAD_PARAMETER;
-	//if (!p_variable) return EVDS_ERROR_BAD_PARAMETER;
+	if (parent && (!system)) system = parent->system;
 #ifndef EVDS_SINGLETHREADED
-	if (root->destroyed) return EVDS_ERROR_INVALID_OBJECT;
+	//if (parent->destroyed) return EVDS_ERROR_INVALID_OBJECT; FIXME add this to other search functions
 #endif
 
 	//Parse the query
 	token_start = (char*)query;
 	while (*token_start) {
+		char token_value[256] = { 0 };
+
 		//Find next token or fetch entire remaining string
 		token_end = strchr(token_start,'/');
 		if (token_end) {
@@ -794,71 +907,85 @@ int EVDS_System_QueryByReference(EVDS_OBJECT* root, const char* query, EVDS_VARI
 		} else {
 			token_length = strlen(token_start);
 		}
+		strncpy(token_value,token_start,(token_length < 256 ? token_length : 256));
 
-		//Parse token if it was found
-		if (token_length != 0) {
-			SIMC_LIST_ENTRY* entry;
-
-			if (!in_variable) { //Logic for searching variables inside objects
-				EVDS_OBJECT* found_object = 0;
-
-				//Check if token is an objects name
-				entry = SIMC_List_GetFirst(object->raw_children);
-				while (entry) {
-					char name[257];
-					EVDS_OBJECT* child = SIMC_List_GetData(object->raw_children,entry);
-					EVDS_Object_GetName(child,name,256); name[256] = 0;
-					if (strncmp(name,token_start,token_length) == 0) {
-						found_object = child;
-						break;
-					}	
-					entry = SIMC_List_GetNext(object->raw_children,entry);
+		//Check if this is the starting token (/ or [])
+		if (token_start == query) {
+			if (token_length == 0) {
+				if (parent) {
+					object = parent;
+				} else {
+					object = system->inertial_space;
 				}
-				SIMC_List_Stop(object->raw_children,entry);
+				token_start++;
+				continue;
+			} else if (*token_start == '[') { //Check if must search inside variable list or inside a database
+				char database_name[256] = { 0 };
+				if (!token_end) result_found = 1; //Only material database variable itself was asked for
 
-				//Check if token is a variables name
-				if (!found_object) {
-					entry = SIMC_List_GetFirst(object->variables);
-					while (entry) {
-						char name[257];
-						EVDS_VARIABLE* child_variable = SIMC_List_GetData(object->variables,entry);
-						EVDS_Variable_GetName(child_variable,name,256); name[256] = 0;
-						if (strncmp(name,token_start,token_length) == 0) {
-							variable = child_variable;
-							in_variable = 1;
+				//Get proper database name
+				strncpy(database_name,token_start+1,(token_length < 256 ? token_length : 256)-2);
 
-							if (!token_end) { //Found the correct variable
-								*p_variable = variable;
-								return EVDS_OK;
-							}
-							break;
-						}	
-						entry = SIMC_List_GetNext(object->variables,entry);
-					}
-					SIMC_List_Stop(object->variables,entry);
+				//Get variable for the database
+				object = 0;
+				if (EVDS_System_GetDatabaseByName(system,database_name,&variable) != EVDS_OK) {
+					return EVDS_ERROR_NOT_FOUND;
 				}
+				in_variable = 1;
 
-				//Move to next object or variable
-				if (found_object) {
-					object = found_object;
-				}
-			} else {
-				//FIXME
+				//Move to next token
+				token_start += token_length+1;
+				continue;
 			}
 		}
 
-		//Quit early FIXME: hack
-		if (!token_start[token_length]) {
-			if (p_object) *p_object = object;
-			return EVDS_OK;
+		//Search variables inside objects
+		if (!in_variable) {
+			EVDS_OBJECT* found_object = 0;
+			EVDS_VARIABLE* found_variable = 0;
+
+			//Check if token is an objects name or a variable name
+			if (EVDS_System_GetObjectByName(system,object,token_value,&found_object) == EVDS_OK) {
+				if (!token_end) result_found = 1; //This object was the last to be found
+
+				object = found_object; //Start searching inside this object
+				variable = 0;
+			} else if (EVDS_Object_GetVariable(object,token_value,&found_variable) == EVDS_OK) {
+				if (!token_end) result_found = 1; //This variable was the last to be found
+
+				object = 0;
+				variable = found_variable;
+				in_variable = 1;
+			} else { //Nothing was found
+				return EVDS_ERROR_NOT_FOUND;
+			}
+		} else {
+			EVDS_VARIABLE* found_variable = 0;
+
+			//Check if token is a variable name or an attribute name
+			if (EVDS_Variable_GetNested(variable,token_value,&found_variable) == EVDS_OK) {
+				if (!token_end) result_found = 1; //This variable was the last to be found
+				variable = found_variable;
+			} else if (EVDS_Variable_GetAttribute(variable,token_value,&found_variable) == EVDS_OK) {
+				if (!token_end) result_found = 1; //This attribute was the last to be found
+				variable = found_variable;
+			} else { //Nothing was found
+				return EVDS_ERROR_NOT_FOUND;
+			}
 		}
 
 		//Move to next token
 		token_start += token_length+1;
 	}
 
-	//Query failed
-	return EVDS_ERROR_NOT_FOUND;
+	//Return the results
+	if (result_found) { //Query succeeded
+		if (p_variable) *p_variable = variable;
+		if (p_object) *p_object = object;
+		return EVDS_OK;
+	} else { //Query failed	
+		return EVDS_ERROR_NOT_FOUND;
+	}
 }
 
 

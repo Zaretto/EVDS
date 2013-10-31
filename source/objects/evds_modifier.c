@@ -62,7 +62,6 @@ int EVDS_InternalModifier_Copy(EVDS_MODIFIER_VARIABLES* vars, EVDS_OBJECT* modif
 	char name[257] = { 0 }; //Null-terminate the name
 	char modifier_suffix[257] = { 0 };
 	EVDS_OBJECT* new_object;
-	EVDS_SYSTEM* system;
 	EVDS_STATE_VECTOR vector;
 	EVDS_VECTOR offset;
 
@@ -72,8 +71,7 @@ int EVDS_InternalModifier_Copy(EVDS_MODIFIER_VARIABLES* vars, EVDS_OBJECT* modif
 	strncat(name,modifier_suffix,256);
 
 	//Create a new copy of the object (or return existing copy)
-	EVDS_Object_GetSystem(object,&system);
-	if (EVDS_System_GetObjectByName(system,name,parent,&new_object) == EVDS_OK) {
+	if (EVDS_System_GetObjectByName(0,parent,name,&new_object) == EVDS_OK) {
 		return EVDS_OK;
 	} else {
 		EVDS_Object_GetStateVector(object,&vector); //Work and transform the original objects position

@@ -23,45 +23,45 @@ void Test_EVDS_MODIFIER() {
 		ERROR_CHECK(EVDS_Object_Initialize(object,1));
 
 		/// Check if original object becomes part of the modifiers children container
-		EQUAL_TO(EVDS_System_GetObjectByName(system,"Object",0,&object), EVDS_OK);
+		EQUAL_TO(EVDS_System_GetObjectByName(system,0,"Object",&object), EVDS_OK);
 		EQUAL_TO(object->parent,root);
 		EQUAL_TO(object->initialized,1);
 
 		/// Check some key objects that must be part of the container
-		EQUAL_TO(EVDS_System_GetObjectByName(system,"Object",root,&object), EVDS_OK);
+		EQUAL_TO(EVDS_System_GetObjectByName(system,root,"Object",&object), EVDS_OK);
 		EQUAL_TO(object->initialized,1);
 		VECTOR_EQUAL_TO(&object->state.position, 10+1*0, 20+2*0, 30+3*0);
 
-		EQUAL_TO(EVDS_System_GetObjectByName(system,"Object (5x1x1)",root,&object), EVDS_OK);
+		EQUAL_TO(EVDS_System_GetObjectByName(system,root,"Object (5x1x1)",&object), EVDS_OK);
 		EQUAL_TO(object->initialized,1);
 		VECTOR_EQUAL_TO(&object->state.position, 10+1*4, 20+2*0, 30+3*0);
 
-		EQUAL_TO(EVDS_System_GetObjectByName(system,"Object (1x5x1)",root,&object), EVDS_OK);
+		EQUAL_TO(EVDS_System_GetObjectByName(system,root,"Object (1x5x1)",&object), EVDS_OK);
 		EQUAL_TO(object->initialized,1);
 		VECTOR_EQUAL_TO(&object->state.position, 10+1*0, 20+2*4, 30+3*0);
 
-		EQUAL_TO(EVDS_System_GetObjectByName(system,"Object (5x5x1)",root,&object), EVDS_OK);
+		EQUAL_TO(EVDS_System_GetObjectByName(system,root,"Object (5x5x1)",&object), EVDS_OK);
 		EQUAL_TO(object->initialized,1);
 		VECTOR_EQUAL_TO(&object->state.position, 10+1*4, 20+2*4, 30+3*0);
 
-		EQUAL_TO(EVDS_System_GetObjectByName(system,"Object (1x1x5)",root,&object), EVDS_OK);
+		EQUAL_TO(EVDS_System_GetObjectByName(system,root,"Object (1x1x5)",&object), EVDS_OK);
 		EQUAL_TO(object->initialized,1);
 		VECTOR_EQUAL_TO(&object->state.position, 10+1*0, 20+2*0, 30+3*4);
 
-		EQUAL_TO(EVDS_System_GetObjectByName(system,"Object (5x1x5)",root,&object), EVDS_OK);
+		EQUAL_TO(EVDS_System_GetObjectByName(system,root,"Object (5x1x5)",&object), EVDS_OK);
 		EQUAL_TO(object->initialized,1);
 		VECTOR_EQUAL_TO(&object->state.position, 10+1*4, 20+2*0, 30+3*4);
 
-		EQUAL_TO(EVDS_System_GetObjectByName(system,"Object (1x5x5)",root,&object), EVDS_OK);
+		EQUAL_TO(EVDS_System_GetObjectByName(system,root,"Object (1x5x5)",&object), EVDS_OK);
 		EQUAL_TO(object->initialized,1);
 		VECTOR_EQUAL_TO(&object->state.position, 10+1*0, 20+2*4, 30+3*4);
 
-		EQUAL_TO(EVDS_System_GetObjectByName(system,"Object (5x5x5)",root,&object), EVDS_OK);
+		EQUAL_TO(EVDS_System_GetObjectByName(system,root,"Object (5x5x5)",&object), EVDS_OK);
 		EQUAL_TO(object->initialized,1);
 		VECTOR_EQUAL_TO(&object->state.position, 10+1*4, 20+2*4, 30+3*4);
 
 		/// Check if special pre-defined object is not overwritten by the modifier
-		EQUAL_TO(EVDS_System_GetObjectByName(system,"Object (3x3x3)",root,&object), EVDS_OK);
+		EQUAL_TO(EVDS_System_GetObjectByName(system,root,"Object (3x3x3)",&object), EVDS_OK);
 		EQUAL_TO(object->initialized,1);
 		VECTOR_EQUAL_TO(&object->state.position, 0, 0, 0);
 	} END_TEST
@@ -92,12 +92,12 @@ void Test_EVDS_MODIFIER() {
 		ERROR_CHECK(EVDS_Object_Initialize(object,1));
 
 		/// Check if original object becomes part of the modifiers children container
-		EQUAL_TO(EVDS_System_GetObjectByName(system,"Object",0,&object), EVDS_OK);
+		EQUAL_TO(EVDS_System_GetObjectByName(system,0,"Object",&object), EVDS_OK);
 		EQUAL_TO(object->parent,root);
 		EQUAL_TO(object->initialized,1);
 
 		/// Check some key objects that must be part of the container
-		EQUAL_TO(EVDS_System_GetObjectByName(system,"Object",root,&object), EVDS_OK);
+		EQUAL_TO(EVDS_System_GetObjectByName(system,root,"Object",&object), EVDS_OK);
 		EQUAL_TO(object->initialized,1);
 		VECTOR_EQUAL_TO(&object->state.position, 0,0,0);
 
@@ -110,22 +110,22 @@ void Test_EVDS_MODIFIER() {
 			char name[256] = { 0 };
 
 			sprintf(name,"Object (%dx1x1)",i+1);
-			EQUAL_TO(EVDS_System_GetObjectByName(system,name,root,&object), EVDS_OK);
+			EQUAL_TO(EVDS_System_GetObjectByName(system,root,name,&object), EVDS_OK);
 			EQUAL_TO(object->initialized,1);
 			VECTOR_EQUAL_TO(&object->state.position, 0, 1.0 - cos(EVDS_RAD(i*60.0)), -sin(EVDS_RAD(i*60.0)));
 
 			sprintf(name,"Object (%dx5x1)",i+1);
-			EQUAL_TO(EVDS_System_GetObjectByName(system,name,root,&object), EVDS_OK);
+			EQUAL_TO(EVDS_System_GetObjectByName(system,root,name,&object), EVDS_OK);
 			EQUAL_TO(object->initialized,1);
 			VECTOR_EQUAL_TO(&object->state.position, 0, 1.0 - 5*cos(EVDS_RAD(i*60.0)), -5*sin(EVDS_RAD(i*60.0)));
 
 			sprintf(name,"Object (%dx1x5)",i+1);
-			EQUAL_TO(EVDS_System_GetObjectByName(system,name,root,&object), EVDS_OK);
+			EQUAL_TO(EVDS_System_GetObjectByName(system,root,name,&object), EVDS_OK);
 			EQUAL_TO(object->initialized,1);
 			VECTOR_EQUAL_TO(&object->state.position, 4.0, 1.0 - cos(EVDS_RAD(i*60.0)), -sin(EVDS_RAD(i*60.0)));
 
 			sprintf(name,"Object (%dx5x5)",i+1);
-			EQUAL_TO(EVDS_System_GetObjectByName(system,name,root,&object), EVDS_OK);
+			EQUAL_TO(EVDS_System_GetObjectByName(system,root,name,&object), EVDS_OK);
 			EQUAL_TO(object->initialized,1);
 			VECTOR_EQUAL_TO(&object->state.position, 4.0, 1.0 - 5*cos(EVDS_RAD(i*60.0)), -5*sin(EVDS_RAD(i*60.0)));
 		}
@@ -136,7 +136,7 @@ void Test_EVDS_MODIFIER() {
 			char name[256] = { 0 };
 
 			sprintf(name,"Object (%dx1x1)",i+1);
-			EQUAL_TO(EVDS_System_GetObjectByName(system,name,root,&object), EVDS_OK);
+			EQUAL_TO(EVDS_System_GetObjectByName(system,root,name,&object), EVDS_OK);
 			EQUAL_TO(object->initialized,1);
 			
 			//Get euler angles and check them
@@ -180,7 +180,7 @@ void Test_EVDS_MODIFIER() {
 		ERROR_CHECK(EVDS_Object_Initialize(object,1));
 
 		/// Check if original object becomes part of the modifiers children container
-		EQUAL_TO(EVDS_System_GetObjectByName(system,"Object",0,&object), EVDS_OK);
+		EQUAL_TO(EVDS_System_GetObjectByName(system,0,"Object",&object), EVDS_OK);
 		EQUAL_TO(object->parent,root);
 		EQUAL_TO(object->initialized,1);
 
@@ -190,7 +190,7 @@ void Test_EVDS_MODIFIER() {
 			char name[256] = { 0 };
 
 			sprintf(name,"Object (%dx1x1)",i+1);
-			EQUAL_TO(EVDS_System_GetObjectByName(system,name,root,&object), EVDS_OK);
+			EQUAL_TO(EVDS_System_GetObjectByName(system,root,name,&object), EVDS_OK);
 			EQUAL_TO(object->initialized,1);
 			
 			//Get euler angles and check them
@@ -235,8 +235,8 @@ void Test_EVDS_GIMBAL() {
 		ERROR_CHECK(EVDS_Object_Initialize(object,1));
 
 		/// Check that platform exists, and mass of the platform equals to mass specified for gimbal object
-		EQUAL_TO(EVDS_System_GetObjectByName(system,"Gimbal (Platform)",0,&platform), EVDS_OK);
-		EQUAL_TO(EVDS_System_GetObjectByName(system,"Rocket nozzle",0,&object), EVDS_OK);
+		EQUAL_TO(EVDS_System_GetObjectByName(system,0,"Gimbal (Platform)",&platform), EVDS_OK);
+		EQUAL_TO(EVDS_System_GetObjectByName(system,0,"Rocket nozzle",&object), EVDS_OK);
 		EQUAL_TO(object->parent,platform);
 		EQUAL_TO(platform->initialized,1);
 		ERROR_CHECK(EVDS_Object_GetVariable(platform,"mass",&variable));
@@ -244,12 +244,12 @@ void Test_EVDS_GIMBAL() {
 		REAL_EQUAL_TO(real,1000.0);
 
 		/// Get variables corresponding to platform commands
-		ERROR_CHECK(EVDS_System_GetObjectByName(system,"Gimbal",0,&object));
+		ERROR_CHECK(EVDS_System_GetObjectByName(system,0,"Gimbal",&object));
 		ERROR_CHECK(EVDS_Object_GetVariable(object,"pitch.command",&pitch_command));
 		ERROR_CHECK(EVDS_Object_GetVariable(object,"yaw.command",&yaw_command));
 
 		/// Get nozzle and make sure its initialized
-		EQUAL_TO(EVDS_System_GetObjectByName(system,"Rocket nozzle",platform,&object), EVDS_OK);
+		EQUAL_TO(EVDS_System_GetObjectByName(system,platform,"Rocket nozzle",&object), EVDS_OK);
 		EQUAL_TO(object->initialized,1);
 
 		/// Check response to commands. Reset gimbal to stationary position
@@ -341,13 +341,13 @@ void Test_EVDS_GIMBAL() {
 		ERROR_CHECK(EVDS_Object_Initialize(object,1));
 
 		/// Setup all for testing
-		ERROR_CHECK(EVDS_System_GetObjectByName(system,"Gimbal (Platform)",0,&platform));
-		ERROR_CHECK(EVDS_System_GetObjectByName(system,"Gimbal",0,&object));
+		ERROR_CHECK(EVDS_System_GetObjectByName(system,0,"Gimbal (Platform)",&platform));
+		ERROR_CHECK(EVDS_System_GetObjectByName(system,0,"Gimbal",&object));
 		ERROR_CHECK(EVDS_Object_GetVariable(object,"pitch.command",&pitch_command));
 		ERROR_CHECK(EVDS_Object_GetVariable(object,"yaw.command",&yaw_command));
 		ERROR_CHECK(EVDS_Object_GetVariable(object,"pitch.current",&pitch_current));
 		ERROR_CHECK(EVDS_Object_GetVariable(object,"yaw.current",&yaw_current));
-		ERROR_CHECK(EVDS_System_GetObjectByName(system,"Rocket nozzle",0,&object));
+		ERROR_CHECK(EVDS_System_GetObjectByName(system,0,"Rocket nozzle",&object));
 
 		/// Gimbal stationary (default command)
 		ERROR_CHECK(EVDS_Object_Solve(root,0.0)); //Initialize state
@@ -662,7 +662,7 @@ void Test_EVDS_ROCKET_ENGINE() {
 "    </object>"
 "</EVDS>",&object));
 		ERROR_CHECK(EVDS_Object_Initialize(object,1));
-		ERROR_CHECK(EVDS_System_GetObjectByName(system,"Rocket engine",0,&engine));
+		ERROR_CHECK(EVDS_System_GetObjectByName(system,0,"Rocket engine",&engine));
 		ERROR_CHECK(EVDS_Object_GetVariable(engine,"command.throttle",&command_throttle));
 
 		//Check automatically detected fuel type
@@ -756,7 +756,7 @@ void Test_EVDS_ROCKET_ENGINE() {
 "    </object>"
 "</EVDS>",&object));
 		ERROR_CHECK(EVDS_Object_Initialize(object,1));
-		ERROR_CHECK(EVDS_System_GetObjectByName(system,"Rocket engine",0,&engine));
+		ERROR_CHECK(EVDS_System_GetObjectByName(system,0,"Rocket engine",&engine));
 		ERROR_CHECK(EVDS_Object_GetVariable(engine,"command.throttle",&command_throttle));
 
 		//Reset throttle
@@ -895,7 +895,7 @@ void Test_EVDS_ROCKET_ENGINE() {
 "    </object>"
 "</EVDS>",&object));
 		ERROR_CHECK(EVDS_Object_Initialize(object,1));
-		ERROR_CHECK(EVDS_System_GetObjectByName(system,"Rocket engine",0,&engine));
+		ERROR_CHECK(EVDS_System_GetObjectByName(system,0,"Rocket engine",&engine));
 		ERROR_CHECK(EVDS_Object_GetVariable(engine,"command.throttle",&command_throttle));
 
 		//Reset throttle
@@ -912,12 +912,12 @@ void Test_EVDS_ROCKET_ENGINE() {
 		//After 250 seconds, half of propellants must be remaining
 
 		//Check remaining fuel
-		ERROR_CHECK(EVDS_System_GetObjectByName(system,"Fuel",0,&object));
+		ERROR_CHECK(EVDS_System_GetObjectByName(system,0,"Fuel",&object));
 		ERROR_CHECK(EVDS_Object_GetRealVariable(object,"fuel.mass",&real,&variable));
 		REAL_EQUAL_TO_EPS(real,50.0,EVDS_EPSf);
 
 		//Check remaining oxidizer
-		ERROR_CHECK(EVDS_System_GetObjectByName(system,"Oxidizer",0,&object));
+		ERROR_CHECK(EVDS_System_GetObjectByName(system,0,"Oxidizer",&object));
 		ERROR_CHECK(EVDS_Object_GetRealVariable(object,"fuel.mass",&real,&variable));
 		REAL_EQUAL_TO_EPS(real,200.0,EVDS_EPSf);
 
@@ -927,12 +927,12 @@ void Test_EVDS_ROCKET_ENGINE() {
 		}
 
 		//Check remaining fuel
-		ERROR_CHECK(EVDS_System_GetObjectByName(system,"Fuel",0,&object));
+		ERROR_CHECK(EVDS_System_GetObjectByName(system,0,"Fuel",&object));
 		ERROR_CHECK(EVDS_Object_GetRealVariable(object,"fuel.mass",&real,&variable));
 		REAL_EQUAL_TO(real,0.0);
 
 		//Check remaining oxidizer
-		ERROR_CHECK(EVDS_System_GetObjectByName(system,"Oxidizer",0,&object));
+		ERROR_CHECK(EVDS_System_GetObjectByName(system,0,"Oxidizer",&object));
 		ERROR_CHECK(EVDS_Object_GetRealVariable(object,"fuel.mass",&real,&variable));
 		REAL_EQUAL_TO(real,0.0);
 	} END_TEST

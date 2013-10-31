@@ -1175,7 +1175,7 @@ int EVDS_Object_CreateBy(EVDS_OBJECT* origin, const char* sub_name, EVDS_OBJECT*
 	snprintf(full_name,256,"%s (%s)",origin_name,sub_name);
 
 	//Find this object inside parent or inside the entire system, or create new one
-	if (EVDS_System_GetObjectByName(origin->system,full_name,parent,p_object) != EVDS_OK) {
+	if (EVDS_System_GetObjectByName(0,parent,full_name,p_object) != EVDS_OK) {
 		EVDS_ERRCHECK(EVDS_Object_Create(parent,p_object));
 		EVDS_ERRCHECK(EVDS_Object_SetName(*p_object,full_name));
 		return EVDS_ERROR_NOT_FOUND;
@@ -1533,7 +1533,10 @@ int EVDS_Object_SetUniqueName(EVDS_OBJECT* object, EVDS_OBJECT* parent) {
 	}
 
 	//Set the objects name
-	EVDS_Object_SetName(object,name);
+	//EVDS_Object_SetName(object,name); //Avoid recursive call
+	SIMC_SRW_EnterWrite(object->name_lock);
+		strncpy(object->name,name,256);
+	SIMC_SRW_LeaveWrite(object->name_lock);
 	return EVDS_OK;
 }
 
