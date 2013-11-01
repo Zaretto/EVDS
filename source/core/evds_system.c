@@ -141,6 +141,8 @@ int EVDS_System_Create(EVDS_SYSTEM** p_system) {
 
 	//Set system to realtime by default
 	system->time = EVDS_REALTIME;
+	//Start counting objects from an arbitrary value
+	system->uid_counter = 100000;
 
 	//Data structures
 	SIMC_List_Create(&system->object_types,1);

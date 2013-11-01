@@ -873,7 +873,7 @@ int EVDS_Object_Create(EVDS_OBJECT* parent, EVDS_OBJECT** p_object) {
 	object->name_lock = SIMC_SRW_Create();
 	object->type_lock = SIMC_SRW_Create();
 #endif
-	object->uid = 100000+(system->uid_counter++); //FIXME: could it be more arbitrary
+	object->uid = system->uid_counter++;
 
 	//Variables list
 	SIMC_List_Create(&object->variables,0);

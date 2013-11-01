@@ -28,11 +28,15 @@
 extern "C" {
 #endif
 
-// Internal macro to check functions for errors
+// Internal debug macros
 #ifdef _DEBUG
 #	define EVDS_ERRCHECK(expr) { int error_code = expr; EVDS_ASSERT(error_code == EVDS_OK); if (error_code != EVDS_OK) return error_code; }
+#	define EVDS_ASSERT(what) ((what) ? ((void)0) : EVDS_Log(EVDS_ERROR,"Assert failed: %s (%s:%d)\n",#what,__FILE__,__LINE__))
+#	define EVDS_BREAKPOINT() _asm {int 3}
 #else
 #	define EVDS_ERRCHECK(expr) { int error_code = expr; if (error_code != EVDS_OK) return error_code; }
+#	define EVDS_ASSERT(nothing) ((void)0)
+#	define EVDS_BREAKPOINT()
 #endif
 
 // Compatibility with Windows systems
@@ -671,6 +675,12 @@ int EVDS_Variable_Copy(EVDS_VARIABLE* source, EVDS_VARIABLE* variable);
 int EVDS_InternalVariable_InitializeFunction(EVDS_VARIABLE* variable, EVDS_VARIABLE_FUNCTION* function, const char* data);
 // Destroy function data
 int EVDS_InternalVariable_DestroyFunction(EVDS_VARIABLE* variable, EVDS_VARIABLE_FUNCTION* function);
+
+// Global logging callback
+extern EVDS_Callback_Log* EVDS_Internal_LogCallback;
+// Log a message
+void EVDS_Log(int type, char* text, ...);
+
 
 #ifndef EVDS_SINGLETHREADED
 // Set private state vector

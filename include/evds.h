@@ -43,14 +43,6 @@ extern "C" {
 #	endif
 #endif
 
-#ifdef _DEBUG
-#	define EVDS_ASSERT(what) ((what) ? ((void)0) : EVDS_AssertFailed(#what,__FILE__,__LINE__))
-#	define EVDS_BREAKPOINT() _asm {int 3}
-#else
-#	define EVDS_ASSERT(nothing) ((void)0)
-#	define EVDS_BREAKPOINT()
-#endif
-
 #include "stddef.h"
 #include "sim_core.h"
 
@@ -104,7 +96,7 @@ typedef unsigned int EVDS_VARIABLE_TYPE;
 /// Error message
 #define EVDS_ERROR		2
 /// Information/message callback
-typedef int EVDS_Callback_Log(int type, char* text, ...);
+typedef int EVDS_Callback_Log(int type, char* message);
 
 ////////////////////////////////////////////////////////////////////////////////
 /// @}
@@ -1049,10 +1041,10 @@ EVDS_API int EVDS_System_GetUserdata(EVDS_SYSTEM* system, void** p_userdata);
 ////////////////////////////////////////////////////////////////////////////////
 // Get the library version
 EVDS_API int EVDS_Version(int* version, char* version_string);
+// Set global logging callback
+EVDS_API int EVDS_SetLogCallback(EVDS_Callback_Log* callback);
 // Convert a null-terminated string to an EVDS_REAL (parses units from input string, value is in metric units)
 EVDS_API int EVDS_StringToReal(const char* str, char** str_end, EVDS_REAL* p_value);
-// Signals that an assert has failed
-EVDS_API int EVDS_AssertFailed(const char* what, const char* filename, int line);
 ////////////////////////////////////////////////////////////////////////////////
 /// @}
 ////////////////////////////////////////////////////////////////////////////////

@@ -23,6 +23,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include <stdarg.h>
 #include "evds.h"
 
 
@@ -78,11 +79,42 @@ int EVDS_Version(int* version, char* version_string) {
 
 
 ////////////////////////////////////////////////////////////////////////////////
-/// Signals an assert has failed
+/// @brief Set global logging callback.
 ////////////////////////////////////////////////////////////////////////////////
-int EVDS_AssertFailed(const char* what, const char* filename, int line) {
-	printf("Assert failed: %s (%s:%d)\n", what, filename, line);
+EVDS_Callback_Log* EVDS_Internal_LogCallback;
+int EVDS_SetLogCallback(EVDS_Callback_Log* callback) {
+	EVDS_Internal_LogCallback = callback;
 	return EVDS_OK;
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+/// @brief Internal logging function
+////////////////////////////////////////////////////////////////////////////////
+void EVDS_Log(int type, char* message, ...) {
+	char buffer[8192];
+	va_list args;
+
+	va_start(args, message);
+	vsnprintf(buffer, 8192, message, args);
+	va_end(args);
+
+	//Print it or pass over through callback
+	if (EVDS_Internal_LogCallback) {
+		EVDS_Internal_LogCallback(type, buffer);
+	} else {
+		switch (type) {
+			case EVDS_INFO:
+				printf("EVDS: %s\n",buffer);
+			break;
+			case EVDS_WARNING:
+				printf("EVDS[W]: %s\n",buffer);
+			break;
+			case EVDS_ERROR:
+				printf("EVDS[!]: %s\n",buffer);
+			break;
+		}
+	}
 }
 
 
