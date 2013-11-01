@@ -143,6 +143,7 @@ void Test_EVDS_VECTOR();
 void Test_EVDS_QUATERNION();
 void Test_EVDS_FRAMES();
 void Test_EVDS_FUNCTIONS();
+void Test_EVDS_RIGID_BODY();
 void Test_EVDS_MODIFIER();
 void Test_EVDS_GIMBAL();
 void Test_EVDS_ROCKET_ENGINE();

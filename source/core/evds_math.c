@@ -1035,7 +1035,9 @@ void EVDS_StateVector_Derivative_MultiplyAndAdd(EVDS_STATE_VECTOR_DERIVATIVE* ta
 ////////////////////////////////////////////////////////////////////////////////
 void EVDS_StateVector_MultiplyByTimeAndAdd(EVDS_STATE_VECTOR* target, EVDS_STATE_VECTOR* source, 
 										   EVDS_STATE_VECTOR_DERIVATIVE* v, EVDS_REAL delta_time) {
-	EVDS_REAL wx,wy,wz,q0,q1,q2,q3;
+	EVDS_QUATERNION delta_quaternion;
+	EVDS_VECTOR axis;
+	EVDS_REAL magnitude;
 	if (target != source) memset(target,0,sizeof(EVDS_STATE_VECTOR)); //Terrible requirement, FIXME
 	target->time = source->time + delta_time / 86400.0;
 
@@ -1048,15 +1050,11 @@ void EVDS_StateVector_MultiplyByTimeAndAdd(EVDS_STATE_VECTOR* target, EVDS_STATE
 
 	EVDS_ASSERT(source->orientation.coordinate_system == v->angular_velocity.coordinate_system);
 	EVDS_ASSERT(source->orientation.coordinate_system == source->orientation.coordinate_system);
-	q0 = source->orientation.q[0]; q1 = source->orientation.q[1];
-	q2 = source->orientation.q[2]; q3 = source->orientation.q[3];
-	wx = v->angular_velocity.x; wy = v->angular_velocity.y; wz = v->angular_velocity.z;
 
-	target->orientation.coordinate_system = source->orientation.coordinate_system;
-	target->orientation.q[0] = q0 + delta_time*0.5*(q0*0  - q1*wx - q2*wy - q3*wz);
-	target->orientation.q[1] = q1 + delta_time*0.5*(q0*wx + q1*0  + q2*wz - q3*wy);
-	target->orientation.q[2] = q2 + delta_time*0.5*(q0*wy - q1*wz + q2*0  + q3*wx);
-	target->orientation.q[3] = q3 + delta_time*0.5*(q0*wz + q1*wy - q2*wx + q3*0 );
+	EVDS_Vector_Length(&magnitude, &v->angular_velocity);
+	EVDS_Vector_Normalize(&axis,&v->angular_velocity);
+	EVDS_Quaternion_FromVectorAngle(&delta_quaternion,&axis,magnitude*delta_time);
+	EVDS_Quaternion_Multiply(&target->orientation,&delta_quaternion,&source->orientation);
 
 	EVDS_Quaternion_Normalize(&target->orientation,&target->orientation);
 }

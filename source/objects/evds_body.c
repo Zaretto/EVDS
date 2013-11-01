@@ -499,7 +499,7 @@ int EVDS_InternalRigidBody_Integrate(EVDS_SYSTEM* system, EVDS_SOLVER* solver, E
 		// Calculate torque around current rigid bodies CM
 		//------------------------------------------------------------------
 		//Convert torque into vessel coordinates
-		EVDS_Vector_Convert(&torque,&child_derivative.torque,object);
+		/*EVDS_Vector_Convert(&torque,&child_derivative.torque,object);
 
 		//Move torque into center of mass
 		EVDS_Vector_GetPositionVector(&torque,&torque_position);
@@ -512,7 +512,7 @@ int EVDS_InternalRigidBody_Integrate(EVDS_SYSTEM* system, EVDS_SOLVER* solver, E
 
 		//Accumulate forces and torques
 		//EVDS_Vector_Add(&cm_force,&cm_force,&force);
-		//EVDS_Vector_Add(&cm_torque,&cm_torque,&torque);
+		//EVDS_Vector_Add(&cm_torque,&cm_torque,&torque);*/
 		
 
 		entry = SIMC_List_GetNext(children,entry);
@@ -582,12 +582,6 @@ int EVDS_InternalRigidBody_Integrate(EVDS_SYSTEM* system, EVDS_SOLVER* solver, E
 	//------------------------------------------------------------------
 	// Add fictious accelerations due to rotation around CM rather than body origin
 	//------------------------------------------------------------------
-	//{
-		//EVDS_REAL x,y,z;
-		//EVDS_Vector_Get(&cm,&x,&y,&z,parent_coordinates);
-		//printf("POSITION OF CM %.3f %.3f %.3f m\n",x,y,z);
-	//}
-
 	//Acceleration of bodies center of mass is zero in inertial coordinates (excluding additional forces)
 	EVDS_Vector_Set(&cm_a,EVDS_VECTOR_ACCELERATION,parent_coordinates,0,0,0);
 	EVDS_Vector_SetPositionVector(&cm_a,&cm);

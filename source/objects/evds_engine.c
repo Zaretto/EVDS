@@ -104,6 +104,7 @@ extern int EVDS_InternalRocketEngine_CheckFuel(EVDS_SOLVER_ENGINE_USERDATA* user
 ////////////////////////////////////////////////////////////////////////////////
 int EVDS_InternalRocketEngine_GenerateGeometry(EVDS_OBJECT* object) {
 	EVDS_VARIABLE* geometry;
+	EVDS_VARIABLE* variable;
 
 	//Default values
 	EVDS_REAL exit_radius = 0;
@@ -134,6 +135,14 @@ int EVDS_InternalRocketEngine_GenerateGeometry(EVDS_OBJECT* object) {
 		nozzle_length = exit_radius / tan(EVDS_RAD(divergence_angle));
 	}
 	if (area_ratio < 0.1) area_ratio = 0.1;
+
+	//Remember updated variables
+	EVDS_Object_AddVariable(object,"nozzle.length",EVDS_VARIABLE_TYPE_FLOAT,&variable);
+	EVDS_Variable_SetReal(variable,nozzle_length);
+	EVDS_Object_AddVariable(object,"nozzle.area_ratio",EVDS_VARIABLE_TYPE_FLOAT,&variable);
+	EVDS_Variable_SetReal(variable,area_ratio);
+	EVDS_Object_AddVariable(object,"nozzle.divergence_angle",EVDS_VARIABLE_TYPE_FLOAT,&variable);
+	EVDS_Variable_SetReal(variable,divergence_angle);
 
 	//Generate correct geometry
 	if (1) {

@@ -1,5 +1,59 @@
 #include "framework.h"
 
+void Test_EVDS_RIGID_BODY() {
+	START_TEST("Rigid body test") {
+		int i;
+		EVDS_OBJECT* vessel;
+		EVDS_STATE_VECTOR state_vector;
+		EVDS_REAL x,y,z;
+
+		/// This test verifies that linear modifier creates children copies,
+		/// and that these copies are named correctly and present at their correct spots.
+		ERROR_CHECK(EVDS_Object_LoadFromString(root,
+"<EVDS version=\"31\">"
+"    <object type=\"propagator_rk4\">"
+"        <object name=\"Vessel\" type=\"vessel\">"
+"            <parameter name=\"mass\">1000</parameter>"
+"            <parameter name=\"jx\">1 0 0</parameter>"
+"            <parameter name=\"jy\">0 1 0</parameter>"
+"            <parameter name=\"jz\">0 0 1</parameter>"
+"        </object>"
+"    </object>"
+"</EVDS>",&object));
+		ERROR_CHECK(EVDS_Object_Initialize(object,1));
+		ERROR_CHECK(EVDS_System_GetObjectByName(system,0,"Vessel",&vessel));
+
+		//Setup angular rotation
+		EVDS_Object_GetStateVector(vessel,&state_vector);
+		EVDS_Vector_Set(&state_vector.angular_velocity,EVDS_VECTOR_ANGULAR_VELOCITY,
+			state_vector.angular_velocity.coordinate_system,0,EVDS_RAD(90),0);
+		EVDS_Quaternion_ToEuler(&state_vector.orientation,state_vector.orientation.coordinate_system,&x,&y,&z);
+		REAL_EQUAL_TO(x,0);
+		REAL_EQUAL_TO(y,0);
+		REAL_EQUAL_TO(z,0);
+		EVDS_Object_SetStateVector(vessel,&state_vector);
+
+		//Rotate object for two seconds
+		for (i = 0; i < 20; i++) {
+			EVDS_Object_Solve(object,0.1);
+		}
+
+		//Check angles
+		EVDS_Object_GetStateVector(vessel,&state_vector);
+		EVDS_Quaternion_ToEuler(&state_vector.orientation,state_vector.orientation.coordinate_system,&x,&y,&z);
+		x = EVDS_DEG(x);
+		y = EVDS_DEG(y);
+		z = EVDS_DEG(z);
+		REAL_EQUAL_TO_EPS(x,180,EVDS_EPSf);
+		REAL_EQUAL_TO_EPS(y,0,EVDS_EPSf);
+		REAL_EQUAL_TO_EPS(z,180,EVDS_EPSf);
+	} END_TEST
+
+}
+
+
+
+
 void Test_EVDS_MODIFIER() {
 	START_TEST("Linear modifier test") {
 		/// This test verifies that linear modifier creates children copies,
