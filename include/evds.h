@@ -97,6 +97,15 @@ typedef unsigned int EVDS_VARIABLE_TYPE;
 /// Special MJD date that means EVDS system must run realtime
 #define EVDS_REALTIME -1.0
 
+/// Information message
+#define EVDS_INFO		0
+/// Warning message
+#define EVDS_WARNING	1
+/// Error message
+#define EVDS_ERROR		2
+/// Information/message callback
+typedef int EVDS_Callback_Log(int type, char* text, ...);
+
 ////////////////////////////////////////////////////////////////////////////////
 /// @}
 ////////////////////////////////////////////////////////////////////////////////
@@ -979,9 +988,6 @@ typedef int EVDS_Callback_GetRadiationData(EVDS_OBJECT* object, EVDS_VECTOR* r, 
 ///
 /// @{
 ////////////////////////////////////////////////////////////////////////////////
-// Get library version
-EVDS_API int EVDS_Version(int* version, char* version_string);
-
 // Create EVDS system
 EVDS_API int EVDS_System_Create(EVDS_SYSTEM** p_system);
 // Destroy EVDS system and all resources. All threads must be shutdown first!
@@ -1041,9 +1047,11 @@ EVDS_API int EVDS_System_GetUserdata(EVDS_SYSTEM* system, void** p_userdata);
 ///
 /// @{
 ////////////////////////////////////////////////////////////////////////////////
+// Get the library version
+EVDS_API int EVDS_Version(int* version, char* version_string);
 // Convert a null-terminated string to an EVDS_REAL (parses units from input string, value is in metric units)
 EVDS_API int EVDS_StringToReal(const char* str, char** str_end, EVDS_REAL* p_value);
-// Signals an assert has failed
+// Signals that an assert has failed
 EVDS_API int EVDS_AssertFailed(const char* what, const char* filename, int line);
 ////////////////////////////////////////////////////////////////////////////////
 /// @}

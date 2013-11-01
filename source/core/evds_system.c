@@ -879,8 +879,6 @@ int EVDS_System_GetDatabaseEntries(EVDS_SYSTEM* system, const char* name, SIMC_L
 //  @retval EVDS_ERROR_NOT_FOUND Could not resolve the dataref (syntax error or object not found)
 ////////////////////////////////////////////////////////////////////////////////
 int EVDS_System_QueryByReference(EVDS_SYSTEM* system, EVDS_OBJECT* parent, const char* query, EVDS_VARIABLE** p_variable, EVDS_OBJECT** p_object) {
-	SIMC_LIST_ENTRY* entry;
-
 	EVDS_OBJECT* object = 0; //Object, inside which the query is performed
 	EVDS_VARIABLE* variable = 0; //Variable, inside which the query is performed
 	int in_variable = 0; //Is currently inside a variable (as opposed to searching inside an object)
