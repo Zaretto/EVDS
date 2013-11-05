@@ -67,8 +67,8 @@ int EVDS_Variable_Create(EVDS_SYSTEM* system, const char* name, EVDS_VARIABLE_TY
 			variable->value = (EVDS_QUATERNION*)malloc(sizeof(EVDS_QUATERNION));
 		break;
 		case EVDS_VARIABLE_TYPE_NESTED:
-			variable->value_size = 1;
-			variable->value = (char*)malloc(sizeof(char));
+			variable->value_size = 1; //Placeholder for a string stored in a nested var
+			variable->value = (char*)malloc(sizeof(char)); //FIXME don't need to allocate it too often
 #ifndef EVDS_SINGLETHREADED
 			variable->lock = SIMC_Lock_Create();
 #endif
@@ -234,6 +234,7 @@ int EVDS_InternalVariable_DestroyData(EVDS_VARIABLE* variable) {
 			case EVDS_VARIABLE_TYPE_STRING:
 			case EVDS_VARIABLE_TYPE_VECTOR:
 			case EVDS_VARIABLE_TYPE_QUATERNION:
+			case EVDS_VARIABLE_TYPE_NESTED:
 				free(variable->value);
 			break;
 			case EVDS_VARIABLE_TYPE_DATA_PTR:

@@ -230,12 +230,23 @@ int EVDS_InternalGimbal_Initialize(EVDS_SYSTEM* system, EVDS_SOLVER* solver, EVD
 }
 
 
+////////////////////////////////////////////////////////////////////////////////
+/// @brief Deinitialize solver
+////////////////////////////////////////////////////////////////////////////////
+int EVDS_InternalGimbal_Deinitialize(EVDS_SYSTEM* system, EVDS_SOLVER* solver, EVDS_OBJECT* object) {
+	void* userdata;
+	EVDS_ERRCHECK(EVDS_Object_GetSolverdata(object,&userdata));
+	free(userdata);
+	return EVDS_OK;
+}
+
+
 
 
 ////////////////////////////////////////////////////////////////////////////////
 EVDS_SOLVER EVDS_Solver_Gimbal = {
 	EVDS_InternalGimbal_Initialize, //OnInitialize
-	0, //OnDeinitialize
+	EVDS_InternalGimbal_Deinitialize, //OnDeinitialize
 	EVDS_InternalGimbal_Solve, //OnSolve
 	EVDS_InternalGimbal_Integrate, //OnIntegrate
 	0, //OnStateSave
