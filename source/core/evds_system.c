@@ -975,7 +975,11 @@ int EVDS_System_QueryByReference(EVDS_SYSTEM* system, EVDS_OBJECT* parent, const
 		}
 
 		//Move to next token
-		token_start += token_length+1;
+		if (token_end) {
+			token_start += token_length + 1; //Skip trailing slash
+		} else {
+			token_start += token_length;
+		}
 	}
 
 	//Return the results
