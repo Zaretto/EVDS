@@ -188,7 +188,7 @@ typedef struct EVDS_VECTOR_TAG {
 /// @ingroup EVDS_MATH
 /// @brief Represents an orientation (attitude) of an object in the given coordinate system.
 ///
-/// The stored quaternion is represented as \f$q_0 + q_0 i + q_1 j + q_2 k\f$
+/// The stored quaternion is represented as \f$q_0 + q_1 i + q_2 j + q_3 k\f$
 /// where \f$q_n\f$ are members of q[] array in EVDS_QUATERNION.
 /// 
 /// Quaternion operations have special rules related to the coordinate systems,

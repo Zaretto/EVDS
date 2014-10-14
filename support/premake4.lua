@@ -65,11 +65,13 @@ project "evds"
    library()
    language "C"
    includedirs { "../include",
+				 "../private",
                  "../external/simc/include" }
    files { "../source/core/**",
            "../source/objects/**",
            "../source/propagators/**",
            "../source/models/**",
+		   "../private/**",
            "../include/**" }
    defines { "EVDS_LIBRARY", "SIMC_LIBRARY" }
    configuration { "*Dynamic*" }
