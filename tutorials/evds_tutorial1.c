@@ -13,12 +13,12 @@ void main() {
 	EVDS_Common_Register(system);
 
 	//Create inertial system
-	EVDS_Object_Create(system,0,&inertial_system);
+	EVDS_System_GetRootInertialSpace(system, &inertial_system);
 	EVDS_Object_SetType(inertial_system,"propagator_rk4");
 	EVDS_Object_Initialize(inertial_system,1);
 
 	//Create planet Earth
-	EVDS_Object_Create(system,inertial_system,&earth);
+	EVDS_Object_Create(inertial_system,&earth);
 	EVDS_Object_SetType(earth,"planet");
 	EVDS_Object_SetName(earth,"Earth");
 	EVDS_Object_AddRealVariable(earth,"mu",3.9860044e14,0);    //m3 sec-2

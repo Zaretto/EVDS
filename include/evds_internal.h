@@ -32,7 +32,11 @@ extern "C" {
 #ifdef _DEBUG
 #	define EVDS_ERRCHECK(expr) { int error_code = expr; EVDS_ASSERT(error_code == EVDS_OK); if (error_code != EVDS_OK) return error_code; }
 #	define EVDS_ASSERT(what) ((what) ? ((void)0) : EVDS_Log(EVDS_ERROR,"Assert failed: %s (%s:%d)\n",#what,__FILE__,__LINE__))
-#	define EVDS_BREAKPOINT() _asm {int 3}
+#	ifdef PLATFORM32
+#		define EVDS_BREAKPOINT() _asm {int 3}
+#	else
+#		define EVDS_BREAKPOINT() __debugbreak()
+#	endif
 #else
 #	define EVDS_ERRCHECK(expr) { int error_code = expr; if (error_code != EVDS_OK) return error_code; }
 #	define EVDS_ASSERT(nothing) ((void)0)

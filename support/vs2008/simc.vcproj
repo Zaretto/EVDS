@@ -44,7 +44,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories="..\..\external\simc\include;..\..\external\simc\external\tinyxml"
-				PreprocessorDefinitions="DEBUG;_CRT_SECURE_NO_WARNINGS;WIN32;SIMC_LIBRARY"
+				PreprocessorDefinitions="DEBUG;_CRT_SECURE_NO_WARNINGS;WIN32;PLATFORM32;SIMC_LIBRARY"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
@@ -59,7 +59,7 @@
 			/>
 			<Tool
 				Name="VCResourceCompilerTool"
-				PreprocessorDefinitions="DEBUG;_CRT_SECURE_NO_WARNINGS;WIN32;SIMC_LIBRARY"
+				PreprocessorDefinitions="DEBUG;_CRT_SECURE_NO_WARNINGS;WIN32;PLATFORM32;SIMC_LIBRARY"
 				AdditionalIncludeDirectories="..\..\external\simc\include;..\..\external\simc\external\tinyxml"
 			/>
 			<Tool
@@ -122,7 +122,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories="..\..\external\simc\include;..\..\external\simc\external\tinyxml"
-				PreprocessorDefinitions="DEBUG;_CRT_SECURE_NO_WARNINGS;WIN32;WIN64;SIMC_LIBRARY"
+				PreprocessorDefinitions="DEBUG;_CRT_SECURE_NO_WARNINGS;WIN32;WIN64;PLATFORM64;SIMC_LIBRARY"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
@@ -137,7 +137,7 @@
 			/>
 			<Tool
 				Name="VCResourceCompilerTool"
-				PreprocessorDefinitions="DEBUG;_CRT_SECURE_NO_WARNINGS;WIN32;WIN64;SIMC_LIBRARY"
+				PreprocessorDefinitions="DEBUG;_CRT_SECURE_NO_WARNINGS;WIN32;WIN64;PLATFORM64;SIMC_LIBRARY"
 				AdditionalIncludeDirectories="..\..\external\simc\include;..\..\external\simc\external\tinyxml"
 			/>
 			<Tool
@@ -199,7 +199,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="3"
 				AdditionalIncludeDirectories="..\..\external\simc\include;..\..\external\simc\external\tinyxml"
-				PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS;WIN32;SIMC_LIBRARY"
+				PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS;WIN32;PLATFORM32;SIMC_LIBRARY"
 				StringPooling="true"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
@@ -213,7 +213,7 @@
 			/>
 			<Tool
 				Name="VCResourceCompilerTool"
-				PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS;WIN32;SIMC_LIBRARY"
+				PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS;WIN32;PLATFORM32;SIMC_LIBRARY"
 				AdditionalIncludeDirectories="..\..\external\simc\include;..\..\external\simc\external\tinyxml"
 			/>
 			<Tool
@@ -276,7 +276,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="3"
 				AdditionalIncludeDirectories="..\..\external\simc\include;..\..\external\simc\external\tinyxml"
-				PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS;WIN32;WIN64;SIMC_LIBRARY"
+				PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS;WIN32;WIN64;PLATFORM64;SIMC_LIBRARY"
 				StringPooling="true"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
@@ -290,7 +290,7 @@
 			/>
 			<Tool
 				Name="VCResourceCompilerTool"
-				PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS;WIN32;WIN64;SIMC_LIBRARY"
+				PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS;WIN32;WIN64;PLATFORM64;SIMC_LIBRARY"
 				AdditionalIncludeDirectories="..\..\external\simc\include;..\..\external\simc\external\tinyxml"
 			/>
 			<Tool
@@ -352,7 +352,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories="..\..\external\simc\include;..\..\external\simc\external\tinyxml"
-				PreprocessorDefinitions="DEBUG;EVDS_DYNAMIC;IVSS_DYNAMIC;RDRS_DYNAMIC;SIMC_DYNAMIC;_CRT_SECURE_NO_WARNINGS;WIN32;SIMC_LIBRARY"
+				PreprocessorDefinitions="DEBUG;EVDS_DYNAMIC;IVSS_DYNAMIC;RDRS_DYNAMIC;SIMC_DYNAMIC;_CRT_SECURE_NO_WARNINGS;WIN32;PLATFORM32;SIMC_LIBRARY"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
@@ -367,7 +367,7 @@
 			/>
 			<Tool
 				Name="VCResourceCompilerTool"
-				PreprocessorDefinitions="DEBUG;EVDS_DYNAMIC;IVSS_DYNAMIC;RDRS_DYNAMIC;SIMC_DYNAMIC;_CRT_SECURE_NO_WARNINGS;WIN32;SIMC_LIBRARY"
+				PreprocessorDefinitions="DEBUG;EVDS_DYNAMIC;IVSS_DYNAMIC;RDRS_DYNAMIC;SIMC_DYNAMIC;_CRT_SECURE_NO_WARNINGS;WIN32;PLATFORM32;SIMC_LIBRARY"
 				AdditionalIncludeDirectories="..\..\external\simc\include;..\..\external\simc\external\tinyxml"
 			/>
 			<Tool
@@ -430,7 +430,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories="..\..\external\simc\include;..\..\external\simc\external\tinyxml"
-				PreprocessorDefinitions="DEBUG;EVDS_DYNAMIC;IVSS_DYNAMIC;RDRS_DYNAMIC;SIMC_DYNAMIC;_CRT_SECURE_NO_WARNINGS;WIN32;WIN64;SIMC_LIBRARY"
+				PreprocessorDefinitions="DEBUG;EVDS_DYNAMIC;IVSS_DYNAMIC;RDRS_DYNAMIC;SIMC_DYNAMIC;_CRT_SECURE_NO_WARNINGS;WIN32;WIN64;PLATFORM64;SIMC_LIBRARY"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
@@ -445,7 +445,7 @@
 			/>
 			<Tool
 				Name="VCResourceCompilerTool"
-				PreprocessorDefinitions="DEBUG;EVDS_DYNAMIC;IVSS_DYNAMIC;RDRS_DYNAMIC;SIMC_DYNAMIC;_CRT_SECURE_NO_WARNINGS;WIN32;WIN64;SIMC_LIBRARY"
+				PreprocessorDefinitions="DEBUG;EVDS_DYNAMIC;IVSS_DYNAMIC;RDRS_DYNAMIC;SIMC_DYNAMIC;_CRT_SECURE_NO_WARNINGS;WIN32;WIN64;PLATFORM64;SIMC_LIBRARY"
 				AdditionalIncludeDirectories="..\..\external\simc\include;..\..\external\simc\external\tinyxml"
 			/>
 			<Tool
@@ -507,7 +507,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="3"
 				AdditionalIncludeDirectories="..\..\external\simc\include;..\..\external\simc\external\tinyxml"
-				PreprocessorDefinitions="EVDS_DYNAMIC;IVSS_DYNAMIC;RDRS_DYNAMIC;SIMC_DYNAMIC;_CRT_SECURE_NO_WARNINGS;WIN32;SIMC_LIBRARY"
+				PreprocessorDefinitions="EVDS_DYNAMIC;IVSS_DYNAMIC;RDRS_DYNAMIC;SIMC_DYNAMIC;_CRT_SECURE_NO_WARNINGS;WIN32;PLATFORM32;SIMC_LIBRARY"
 				StringPooling="true"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
@@ -521,7 +521,7 @@
 			/>
 			<Tool
 				Name="VCResourceCompilerTool"
-				PreprocessorDefinitions="EVDS_DYNAMIC;IVSS_DYNAMIC;RDRS_DYNAMIC;SIMC_DYNAMIC;_CRT_SECURE_NO_WARNINGS;WIN32;SIMC_LIBRARY"
+				PreprocessorDefinitions="EVDS_DYNAMIC;IVSS_DYNAMIC;RDRS_DYNAMIC;SIMC_DYNAMIC;_CRT_SECURE_NO_WARNINGS;WIN32;PLATFORM32;SIMC_LIBRARY"
 				AdditionalIncludeDirectories="..\..\external\simc\include;..\..\external\simc\external\tinyxml"
 			/>
 			<Tool
@@ -584,7 +584,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="3"
 				AdditionalIncludeDirectories="..\..\external\simc\include;..\..\external\simc\external\tinyxml"
-				PreprocessorDefinitions="EVDS_DYNAMIC;IVSS_DYNAMIC;RDRS_DYNAMIC;SIMC_DYNAMIC;_CRT_SECURE_NO_WARNINGS;WIN32;WIN64;SIMC_LIBRARY"
+				PreprocessorDefinitions="EVDS_DYNAMIC;IVSS_DYNAMIC;RDRS_DYNAMIC;SIMC_DYNAMIC;_CRT_SECURE_NO_WARNINGS;WIN32;WIN64;PLATFORM64;SIMC_LIBRARY"
 				StringPooling="true"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
@@ -598,7 +598,7 @@
 			/>
 			<Tool
 				Name="VCResourceCompilerTool"
-				PreprocessorDefinitions="EVDS_DYNAMIC;IVSS_DYNAMIC;RDRS_DYNAMIC;SIMC_DYNAMIC;_CRT_SECURE_NO_WARNINGS;WIN32;WIN64;SIMC_LIBRARY"
+				PreprocessorDefinitions="EVDS_DYNAMIC;IVSS_DYNAMIC;RDRS_DYNAMIC;SIMC_DYNAMIC;_CRT_SECURE_NO_WARNINGS;WIN32;WIN64;PLATFORM64;SIMC_LIBRARY"
 				AdditionalIncludeDirectories="..\..\external\simc\include;..\..\external\simc\external\tinyxml"
 			/>
 			<Tool
@@ -660,7 +660,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories="..\..\external\simc\include;..\..\external\simc\external\tinyxml"
-				PreprocessorDefinitions="DEBUG;EVDS_SINGLETHREADED;IVSS_SINGLETHREADED;RDRS_SINGLETHREADED;SIMC_SINGLETHREADED;_CRT_SECURE_NO_WARNINGS;WIN32;SIMC_LIBRARY"
+				PreprocessorDefinitions="DEBUG;EVDS_SINGLETHREADED;IVSS_SINGLETHREADED;RDRS_SINGLETHREADED;SIMC_SINGLETHREADED;_CRT_SECURE_NO_WARNINGS;WIN32;PLATFORM32;SIMC_LIBRARY"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
@@ -675,7 +675,7 @@
 			/>
 			<Tool
 				Name="VCResourceCompilerTool"
-				PreprocessorDefinitions="DEBUG;EVDS_SINGLETHREADED;IVSS_SINGLETHREADED;RDRS_SINGLETHREADED;SIMC_SINGLETHREADED;_CRT_SECURE_NO_WARNINGS;WIN32;SIMC_LIBRARY"
+				PreprocessorDefinitions="DEBUG;EVDS_SINGLETHREADED;IVSS_SINGLETHREADED;RDRS_SINGLETHREADED;SIMC_SINGLETHREADED;_CRT_SECURE_NO_WARNINGS;WIN32;PLATFORM32;SIMC_LIBRARY"
 				AdditionalIncludeDirectories="..\..\external\simc\include;..\..\external\simc\external\tinyxml"
 			/>
 			<Tool
@@ -738,7 +738,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories="..\..\external\simc\include;..\..\external\simc\external\tinyxml"
-				PreprocessorDefinitions="DEBUG;EVDS_SINGLETHREADED;IVSS_SINGLETHREADED;RDRS_SINGLETHREADED;SIMC_SINGLETHREADED;_CRT_SECURE_NO_WARNINGS;WIN32;WIN64;SIMC_LIBRARY"
+				PreprocessorDefinitions="DEBUG;EVDS_SINGLETHREADED;IVSS_SINGLETHREADED;RDRS_SINGLETHREADED;SIMC_SINGLETHREADED;_CRT_SECURE_NO_WARNINGS;WIN32;WIN64;PLATFORM64;SIMC_LIBRARY"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
@@ -753,7 +753,7 @@
 			/>
 			<Tool
 				Name="VCResourceCompilerTool"
-				PreprocessorDefinitions="DEBUG;EVDS_SINGLETHREADED;IVSS_SINGLETHREADED;RDRS_SINGLETHREADED;SIMC_SINGLETHREADED;_CRT_SECURE_NO_WARNINGS;WIN32;WIN64;SIMC_LIBRARY"
+				PreprocessorDefinitions="DEBUG;EVDS_SINGLETHREADED;IVSS_SINGLETHREADED;RDRS_SINGLETHREADED;SIMC_SINGLETHREADED;_CRT_SECURE_NO_WARNINGS;WIN32;WIN64;PLATFORM64;SIMC_LIBRARY"
 				AdditionalIncludeDirectories="..\..\external\simc\include;..\..\external\simc\external\tinyxml"
 			/>
 			<Tool
@@ -815,7 +815,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="3"
 				AdditionalIncludeDirectories="..\..\external\simc\include;..\..\external\simc\external\tinyxml"
-				PreprocessorDefinitions="EVDS_SINGLETHREADED;IVSS_SINGLETHREADED;RDRS_SINGLETHREADED;SIMC_SINGLETHREADED;_CRT_SECURE_NO_WARNINGS;WIN32;SIMC_LIBRARY"
+				PreprocessorDefinitions="EVDS_SINGLETHREADED;IVSS_SINGLETHREADED;RDRS_SINGLETHREADED;SIMC_SINGLETHREADED;_CRT_SECURE_NO_WARNINGS;WIN32;PLATFORM32;SIMC_LIBRARY"
 				StringPooling="true"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
@@ -829,7 +829,7 @@
 			/>
 			<Tool
 				Name="VCResourceCompilerTool"
-				PreprocessorDefinitions="EVDS_SINGLETHREADED;IVSS_SINGLETHREADED;RDRS_SINGLETHREADED;SIMC_SINGLETHREADED;_CRT_SECURE_NO_WARNINGS;WIN32;SIMC_LIBRARY"
+				PreprocessorDefinitions="EVDS_SINGLETHREADED;IVSS_SINGLETHREADED;RDRS_SINGLETHREADED;SIMC_SINGLETHREADED;_CRT_SECURE_NO_WARNINGS;WIN32;PLATFORM32;SIMC_LIBRARY"
 				AdditionalIncludeDirectories="..\..\external\simc\include;..\..\external\simc\external\tinyxml"
 			/>
 			<Tool
@@ -892,7 +892,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="3"
 				AdditionalIncludeDirectories="..\..\external\simc\include;..\..\external\simc\external\tinyxml"
-				PreprocessorDefinitions="EVDS_SINGLETHREADED;IVSS_SINGLETHREADED;RDRS_SINGLETHREADED;SIMC_SINGLETHREADED;_CRT_SECURE_NO_WARNINGS;WIN32;WIN64;SIMC_LIBRARY"
+				PreprocessorDefinitions="EVDS_SINGLETHREADED;IVSS_SINGLETHREADED;RDRS_SINGLETHREADED;SIMC_SINGLETHREADED;_CRT_SECURE_NO_WARNINGS;WIN32;WIN64;PLATFORM64;SIMC_LIBRARY"
 				StringPooling="true"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
@@ -906,7 +906,7 @@
 			/>
 			<Tool
 				Name="VCResourceCompilerTool"
-				PreprocessorDefinitions="EVDS_SINGLETHREADED;IVSS_SINGLETHREADED;RDRS_SINGLETHREADED;SIMC_SINGLETHREADED;_CRT_SECURE_NO_WARNINGS;WIN32;WIN64;SIMC_LIBRARY"
+				PreprocessorDefinitions="EVDS_SINGLETHREADED;IVSS_SINGLETHREADED;RDRS_SINGLETHREADED;SIMC_SINGLETHREADED;_CRT_SECURE_NO_WARNINGS;WIN32;WIN64;PLATFORM64;SIMC_LIBRARY"
 				AdditionalIncludeDirectories="..\..\external\simc\include;..\..\external\simc\external\tinyxml"
 			/>
 			<Tool
@@ -968,7 +968,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories="..\..\external\simc\include;..\..\external\simc\external\tinyxml"
-				PreprocessorDefinitions="DEBUG;EVDS_DYNAMIC;IVSS_DYNAMIC;RDRS_DYNAMIC;SIMC_DYNAMIC;EVDS_SINGLETHREADED;IVSS_SINGLETHREADED;RDRS_SINGLETHREADED;SIMC_SINGLETHREADED;_CRT_SECURE_NO_WARNINGS;WIN32;SIMC_LIBRARY"
+				PreprocessorDefinitions="DEBUG;EVDS_DYNAMIC;IVSS_DYNAMIC;RDRS_DYNAMIC;SIMC_DYNAMIC;EVDS_SINGLETHREADED;IVSS_SINGLETHREADED;RDRS_SINGLETHREADED;SIMC_SINGLETHREADED;_CRT_SECURE_NO_WARNINGS;WIN32;PLATFORM32;SIMC_LIBRARY"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
@@ -983,7 +983,7 @@
 			/>
 			<Tool
 				Name="VCResourceCompilerTool"
-				PreprocessorDefinitions="DEBUG;EVDS_DYNAMIC;IVSS_DYNAMIC;RDRS_DYNAMIC;SIMC_DYNAMIC;EVDS_SINGLETHREADED;IVSS_SINGLETHREADED;RDRS_SINGLETHREADED;SIMC_SINGLETHREADED;_CRT_SECURE_NO_WARNINGS;WIN32;SIMC_LIBRARY"
+				PreprocessorDefinitions="DEBUG;EVDS_DYNAMIC;IVSS_DYNAMIC;RDRS_DYNAMIC;SIMC_DYNAMIC;EVDS_SINGLETHREADED;IVSS_SINGLETHREADED;RDRS_SINGLETHREADED;SIMC_SINGLETHREADED;_CRT_SECURE_NO_WARNINGS;WIN32;PLATFORM32;SIMC_LIBRARY"
 				AdditionalIncludeDirectories="..\..\external\simc\include;..\..\external\simc\external\tinyxml"
 			/>
 			<Tool
@@ -1046,7 +1046,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories="..\..\external\simc\include;..\..\external\simc\external\tinyxml"
-				PreprocessorDefinitions="DEBUG;EVDS_DYNAMIC;IVSS_DYNAMIC;RDRS_DYNAMIC;SIMC_DYNAMIC;EVDS_SINGLETHREADED;IVSS_SINGLETHREADED;RDRS_SINGLETHREADED;SIMC_SINGLETHREADED;_CRT_SECURE_NO_WARNINGS;WIN32;WIN64;SIMC_LIBRARY"
+				PreprocessorDefinitions="DEBUG;EVDS_DYNAMIC;IVSS_DYNAMIC;RDRS_DYNAMIC;SIMC_DYNAMIC;EVDS_SINGLETHREADED;IVSS_SINGLETHREADED;RDRS_SINGLETHREADED;SIMC_SINGLETHREADED;_CRT_SECURE_NO_WARNINGS;WIN32;WIN64;PLATFORM64;SIMC_LIBRARY"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
@@ -1061,7 +1061,7 @@
 			/>
 			<Tool
 				Name="VCResourceCompilerTool"
-				PreprocessorDefinitions="DEBUG;EVDS_DYNAMIC;IVSS_DYNAMIC;RDRS_DYNAMIC;SIMC_DYNAMIC;EVDS_SINGLETHREADED;IVSS_SINGLETHREADED;RDRS_SINGLETHREADED;SIMC_SINGLETHREADED;_CRT_SECURE_NO_WARNINGS;WIN32;WIN64;SIMC_LIBRARY"
+				PreprocessorDefinitions="DEBUG;EVDS_DYNAMIC;IVSS_DYNAMIC;RDRS_DYNAMIC;SIMC_DYNAMIC;EVDS_SINGLETHREADED;IVSS_SINGLETHREADED;RDRS_SINGLETHREADED;SIMC_SINGLETHREADED;_CRT_SECURE_NO_WARNINGS;WIN32;WIN64;PLATFORM64;SIMC_LIBRARY"
 				AdditionalIncludeDirectories="..\..\external\simc\include;..\..\external\simc\external\tinyxml"
 			/>
 			<Tool
@@ -1123,7 +1123,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="3"
 				AdditionalIncludeDirectories="..\..\external\simc\include;..\..\external\simc\external\tinyxml"
-				PreprocessorDefinitions="EVDS_DYNAMIC;IVSS_DYNAMIC;RDRS_DYNAMIC;SIMC_DYNAMIC;EVDS_SINGLETHREADED;IVSS_SINGLETHREADED;RDRS_SINGLETHREADED;SIMC_SINGLETHREADED;_CRT_SECURE_NO_WARNINGS;WIN32;SIMC_LIBRARY"
+				PreprocessorDefinitions="EVDS_DYNAMIC;IVSS_DYNAMIC;RDRS_DYNAMIC;SIMC_DYNAMIC;EVDS_SINGLETHREADED;IVSS_SINGLETHREADED;RDRS_SINGLETHREADED;SIMC_SINGLETHREADED;_CRT_SECURE_NO_WARNINGS;WIN32;PLATFORM32;SIMC_LIBRARY"
 				StringPooling="true"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
@@ -1137,7 +1137,7 @@
 			/>
 			<Tool
 				Name="VCResourceCompilerTool"
-				PreprocessorDefinitions="EVDS_DYNAMIC;IVSS_DYNAMIC;RDRS_DYNAMIC;SIMC_DYNAMIC;EVDS_SINGLETHREADED;IVSS_SINGLETHREADED;RDRS_SINGLETHREADED;SIMC_SINGLETHREADED;_CRT_SECURE_NO_WARNINGS;WIN32;SIMC_LIBRARY"
+				PreprocessorDefinitions="EVDS_DYNAMIC;IVSS_DYNAMIC;RDRS_DYNAMIC;SIMC_DYNAMIC;EVDS_SINGLETHREADED;IVSS_SINGLETHREADED;RDRS_SINGLETHREADED;SIMC_SINGLETHREADED;_CRT_SECURE_NO_WARNINGS;WIN32;PLATFORM32;SIMC_LIBRARY"
 				AdditionalIncludeDirectories="..\..\external\simc\include;..\..\external\simc\external\tinyxml"
 			/>
 			<Tool
@@ -1200,7 +1200,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="3"
 				AdditionalIncludeDirectories="..\..\external\simc\include;..\..\external\simc\external\tinyxml"
-				PreprocessorDefinitions="EVDS_DYNAMIC;IVSS_DYNAMIC;RDRS_DYNAMIC;SIMC_DYNAMIC;EVDS_SINGLETHREADED;IVSS_SINGLETHREADED;RDRS_SINGLETHREADED;SIMC_SINGLETHREADED;_CRT_SECURE_NO_WARNINGS;WIN32;WIN64;SIMC_LIBRARY"
+				PreprocessorDefinitions="EVDS_DYNAMIC;IVSS_DYNAMIC;RDRS_DYNAMIC;SIMC_DYNAMIC;EVDS_SINGLETHREADED;IVSS_SINGLETHREADED;RDRS_SINGLETHREADED;SIMC_SINGLETHREADED;_CRT_SECURE_NO_WARNINGS;WIN32;WIN64;PLATFORM64;SIMC_LIBRARY"
 				StringPooling="true"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
@@ -1214,7 +1214,7 @@
 			/>
 			<Tool
 				Name="VCResourceCompilerTool"
-				PreprocessorDefinitions="EVDS_DYNAMIC;IVSS_DYNAMIC;RDRS_DYNAMIC;SIMC_DYNAMIC;EVDS_SINGLETHREADED;IVSS_SINGLETHREADED;RDRS_SINGLETHREADED;SIMC_SINGLETHREADED;_CRT_SECURE_NO_WARNINGS;WIN32;WIN64;SIMC_LIBRARY"
+				PreprocessorDefinitions="EVDS_DYNAMIC;IVSS_DYNAMIC;RDRS_DYNAMIC;SIMC_DYNAMIC;EVDS_SINGLETHREADED;IVSS_SINGLETHREADED;RDRS_SINGLETHREADED;SIMC_SINGLETHREADED;_CRT_SECURE_NO_WARNINGS;WIN32;WIN64;PLATFORM64;SIMC_LIBRARY"
 				AdditionalIncludeDirectories="..\..\external\simc\include;..\..\external\simc\external\tinyxml"
 			/>
 			<Tool
@@ -1255,716 +1255,721 @@
 	</References>
 	<Files>
 		<Filter
-			Name="external"
+			Name="simc"
 			Filter=""
 			>
 			<Filter
-				Name="tinyxml"
+				Name="external"
+				Filter=""
+				>
+				<Filter
+					Name="tinyxml"
+					Filter=""
+					>
+					<File
+						RelativePath="..\..\external\simc\external\tinyxml\tinystr.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\external\simc\external\tinyxml\tinyxml.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\external\simc\external\tinyxml\tinyxmlerror.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\external\simc\external\tinyxml\tinyxmlparser.cpp"
+						>
+					</File>
+				</Filter>
+			</Filter>
+			<Filter
+				Name="include"
 				Filter=""
 				>
 				<File
-					RelativePath="..\..\external\simc\external\tinyxml\tinystr.cpp"
+					RelativePath="..\..\external\simc\include\sim_core.h"
 					>
 				</File>
 				<File
-					RelativePath="..\..\external\simc\external\tinyxml\tinyxml.cpp"
+					RelativePath="..\..\external\simc\include\sim_internal.h"
 					>
 				</File>
 				<File
-					RelativePath="..\..\external\simc\external\tinyxml\tinyxmlerror.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\..\external\simc\external\tinyxml\tinyxmlparser.cpp"
+					RelativePath="..\..\external\simc\include\sim_xml.h"
 					>
 				</File>
 			</Filter>
-		</Filter>
-		<Filter
-			Name="include"
-			Filter=""
-			>
-			<File
-				RelativePath="..\..\external\simc\include\sim_core.h"
+			<Filter
+				Name="source"
+				Filter=""
 				>
-			</File>
-			<File
-				RelativePath="..\..\external\simc\include\sim_internal.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\external\simc\include\sim_xml.h"
-				>
-			</File>
-		</Filter>
-		<Filter
-			Name="source"
-			Filter=""
-			>
-			<File
-				RelativePath="..\..\external\simc\source\sim_curtime.c"
-				>
-				<FileConfiguration
-					Name="Debug|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						CompileAs="1"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug|x64"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						CompileAs="1"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						CompileAs="1"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|x64"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						CompileAs="1"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="DebugDynamic|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						CompileAs="1"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="DebugDynamic|x64"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						CompileAs="1"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="ReleaseDynamic|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						CompileAs="1"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="ReleaseDynamic|x64"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						CompileAs="1"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="DebugSingleThread|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						CompileAs="1"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="DebugSingleThread|x64"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						CompileAs="1"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="ReleaseSingleThread|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						CompileAs="1"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="ReleaseSingleThread|x64"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						CompileAs="1"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="DebugSingleThreadDynamic|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						CompileAs="1"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="DebugSingleThreadDynamic|x64"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						CompileAs="1"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="ReleaseSingleThreadDynamic|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						CompileAs="1"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="ReleaseSingleThreadDynamic|x64"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						CompileAs="1"
-					/>
-				</FileConfiguration>
-			</File>
-			<File
-				RelativePath="..\..\external\simc\source\sim_linkedlist.c"
-				>
-				<FileConfiguration
-					Name="Debug|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						CompileAs="1"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug|x64"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						CompileAs="1"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						CompileAs="1"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|x64"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						CompileAs="1"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="DebugDynamic|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						CompileAs="1"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="DebugDynamic|x64"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						CompileAs="1"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="ReleaseDynamic|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						CompileAs="1"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="ReleaseDynamic|x64"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						CompileAs="1"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="DebugSingleThread|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						CompileAs="1"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="DebugSingleThread|x64"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						CompileAs="1"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="ReleaseSingleThread|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						CompileAs="1"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="ReleaseSingleThread|x64"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						CompileAs="1"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="DebugSingleThreadDynamic|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						CompileAs="1"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="DebugSingleThreadDynamic|x64"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						CompileAs="1"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="ReleaseSingleThreadDynamic|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						CompileAs="1"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="ReleaseSingleThreadDynamic|x64"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						CompileAs="1"
-					/>
-				</FileConfiguration>
-			</File>
-			<File
-				RelativePath="..\..\external\simc\source\sim_queue.c"
-				>
-				<FileConfiguration
-					Name="Debug|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						CompileAs="1"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug|x64"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						CompileAs="1"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						CompileAs="1"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|x64"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						CompileAs="1"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="DebugDynamic|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						CompileAs="1"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="DebugDynamic|x64"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						CompileAs="1"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="ReleaseDynamic|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						CompileAs="1"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="ReleaseDynamic|x64"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						CompileAs="1"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="DebugSingleThread|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						CompileAs="1"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="DebugSingleThread|x64"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						CompileAs="1"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="ReleaseSingleThread|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						CompileAs="1"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="ReleaseSingleThread|x64"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						CompileAs="1"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="DebugSingleThreadDynamic|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						CompileAs="1"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="DebugSingleThreadDynamic|x64"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						CompileAs="1"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="ReleaseSingleThreadDynamic|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						CompileAs="1"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="ReleaseSingleThreadDynamic|x64"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						CompileAs="1"
-					/>
-				</FileConfiguration>
-			</File>
-			<File
-				RelativePath="..\..\external\simc\source\sim_sarray.c"
-				>
-				<FileConfiguration
-					Name="Debug|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						CompileAs="1"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug|x64"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						CompileAs="1"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						CompileAs="1"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|x64"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						CompileAs="1"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="DebugDynamic|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						CompileAs="1"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="DebugDynamic|x64"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						CompileAs="1"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="ReleaseDynamic|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						CompileAs="1"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="ReleaseDynamic|x64"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						CompileAs="1"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="DebugSingleThread|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						CompileAs="1"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="DebugSingleThread|x64"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						CompileAs="1"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="ReleaseSingleThread|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						CompileAs="1"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="ReleaseSingleThread|x64"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						CompileAs="1"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="DebugSingleThreadDynamic|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						CompileAs="1"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="DebugSingleThreadDynamic|x64"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						CompileAs="1"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="ReleaseSingleThreadDynamic|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						CompileAs="1"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="ReleaseSingleThreadDynamic|x64"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						CompileAs="1"
-					/>
-				</FileConfiguration>
-			</File>
-			<File
-				RelativePath="..\..\external\simc\source\sim_threading.c"
-				>
-				<FileConfiguration
-					Name="Debug|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						CompileAs="1"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug|x64"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						CompileAs="1"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						CompileAs="1"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|x64"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						CompileAs="1"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="DebugDynamic|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						CompileAs="1"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="DebugDynamic|x64"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						CompileAs="1"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="ReleaseDynamic|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						CompileAs="1"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="ReleaseDynamic|x64"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						CompileAs="1"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="DebugSingleThread|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						CompileAs="1"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="DebugSingleThread|x64"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						CompileAs="1"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="ReleaseSingleThread|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						CompileAs="1"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="ReleaseSingleThread|x64"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						CompileAs="1"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="DebugSingleThreadDynamic|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						CompileAs="1"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="DebugSingleThreadDynamic|x64"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						CompileAs="1"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="ReleaseSingleThreadDynamic|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						CompileAs="1"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="ReleaseSingleThreadDynamic|x64"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						CompileAs="1"
-					/>
-				</FileConfiguration>
-			</File>
-			<File
-				RelativePath="..\..\external\simc\source\sim_xml.cpp"
-				>
-			</File>
+				<File
+					RelativePath="..\..\external\simc\source\sim_curtime.c"
+					>
+					<FileConfiguration
+						Name="Debug|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							CompileAs="1"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug|x64"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							CompileAs="1"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							CompileAs="1"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release|x64"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							CompileAs="1"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DebugDynamic|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							CompileAs="1"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DebugDynamic|x64"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							CompileAs="1"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="ReleaseDynamic|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							CompileAs="1"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="ReleaseDynamic|x64"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							CompileAs="1"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DebugSingleThread|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							CompileAs="1"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DebugSingleThread|x64"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							CompileAs="1"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="ReleaseSingleThread|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							CompileAs="1"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="ReleaseSingleThread|x64"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							CompileAs="1"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DebugSingleThreadDynamic|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							CompileAs="1"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DebugSingleThreadDynamic|x64"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							CompileAs="1"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="ReleaseSingleThreadDynamic|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							CompileAs="1"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="ReleaseSingleThreadDynamic|x64"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							CompileAs="1"
+						/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\external\simc\source\sim_linkedlist.c"
+					>
+					<FileConfiguration
+						Name="Debug|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							CompileAs="1"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug|x64"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							CompileAs="1"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							CompileAs="1"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release|x64"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							CompileAs="1"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DebugDynamic|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							CompileAs="1"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DebugDynamic|x64"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							CompileAs="1"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="ReleaseDynamic|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							CompileAs="1"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="ReleaseDynamic|x64"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							CompileAs="1"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DebugSingleThread|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							CompileAs="1"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DebugSingleThread|x64"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							CompileAs="1"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="ReleaseSingleThread|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							CompileAs="1"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="ReleaseSingleThread|x64"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							CompileAs="1"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DebugSingleThreadDynamic|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							CompileAs="1"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DebugSingleThreadDynamic|x64"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							CompileAs="1"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="ReleaseSingleThreadDynamic|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							CompileAs="1"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="ReleaseSingleThreadDynamic|x64"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							CompileAs="1"
+						/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\external\simc\source\sim_queue.c"
+					>
+					<FileConfiguration
+						Name="Debug|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							CompileAs="1"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug|x64"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							CompileAs="1"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							CompileAs="1"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release|x64"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							CompileAs="1"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DebugDynamic|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							CompileAs="1"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DebugDynamic|x64"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							CompileAs="1"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="ReleaseDynamic|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							CompileAs="1"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="ReleaseDynamic|x64"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							CompileAs="1"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DebugSingleThread|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							CompileAs="1"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DebugSingleThread|x64"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							CompileAs="1"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="ReleaseSingleThread|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							CompileAs="1"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="ReleaseSingleThread|x64"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							CompileAs="1"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DebugSingleThreadDynamic|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							CompileAs="1"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DebugSingleThreadDynamic|x64"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							CompileAs="1"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="ReleaseSingleThreadDynamic|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							CompileAs="1"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="ReleaseSingleThreadDynamic|x64"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							CompileAs="1"
+						/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\external\simc\source\sim_sarray.c"
+					>
+					<FileConfiguration
+						Name="Debug|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							CompileAs="1"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug|x64"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							CompileAs="1"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							CompileAs="1"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release|x64"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							CompileAs="1"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DebugDynamic|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							CompileAs="1"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DebugDynamic|x64"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							CompileAs="1"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="ReleaseDynamic|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							CompileAs="1"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="ReleaseDynamic|x64"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							CompileAs="1"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DebugSingleThread|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							CompileAs="1"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DebugSingleThread|x64"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							CompileAs="1"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="ReleaseSingleThread|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							CompileAs="1"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="ReleaseSingleThread|x64"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							CompileAs="1"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DebugSingleThreadDynamic|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							CompileAs="1"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DebugSingleThreadDynamic|x64"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							CompileAs="1"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="ReleaseSingleThreadDynamic|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							CompileAs="1"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="ReleaseSingleThreadDynamic|x64"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							CompileAs="1"
+						/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\external\simc\source\sim_threading.c"
+					>
+					<FileConfiguration
+						Name="Debug|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							CompileAs="1"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug|x64"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							CompileAs="1"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							CompileAs="1"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release|x64"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							CompileAs="1"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DebugDynamic|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							CompileAs="1"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DebugDynamic|x64"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							CompileAs="1"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="ReleaseDynamic|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							CompileAs="1"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="ReleaseDynamic|x64"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							CompileAs="1"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DebugSingleThread|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							CompileAs="1"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DebugSingleThread|x64"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							CompileAs="1"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="ReleaseSingleThread|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							CompileAs="1"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="ReleaseSingleThread|x64"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							CompileAs="1"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DebugSingleThreadDynamic|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							CompileAs="1"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DebugSingleThreadDynamic|x64"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							CompileAs="1"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="ReleaseSingleThreadDynamic|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							CompileAs="1"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="ReleaseSingleThreadDynamic|x64"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							CompileAs="1"
+						/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\external\simc\source\sim_xml.cpp"
+					>
+				</File>
+			</Filter>
 		</Filter>
 	</Files>
 	<Globals>

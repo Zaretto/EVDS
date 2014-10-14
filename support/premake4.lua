@@ -1,3 +1,6 @@
+-- HACK: solves a bug with generating VS2013 projects under premake4.4-beta5
+vstudio = premake.vstudio
+
 -- Create standalone solution
 if EVDS_STANDALONE ~= false then
   SIMC_STANDALONE = false

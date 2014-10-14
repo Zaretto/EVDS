@@ -1,0 +1,28 @@
+﻿Build started 14.10.2014 15:57:23.
+     1>Project "F:\Development\Metrosim\Source\EVDS\EVDS\support\vs2013\evds_tests.vcxproj" on node 4 (Build target(s)).
+     1>ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\CL.exe /c /I..\..\include /I..\..\external\simc\include /I..\..\tests /Zi /nologo /W3 /WX- /Ox /D _CRT_SECURE_NO_WARNINGS /D WIN32 /D WIN64 /D PLATFORM64 /D _MBCS /GF /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Fo"obj\x64\Release\evds_tests\\" /Fd"..\..\bin\evds_tests.pdb" /Gd /TC /errorReport:prompt ..\..\tests\framework.c ..\..\tests\tests_evds_frames.c ..\..\tests\tests_evds_functions.c ..\..\tests\tests_evds_objects.c ..\..\tests\tests_evds_quaternions.c ..\..\tests\tests_evds_system.c ..\..\tests\tests_evds_vectors.c
+         framework.c
+         tests_evds_frames.c
+         tests_evds_functions.c
+         tests_evds_objects.c
+         tests_evds_quaternions.c
+         tests_evds_system.c
+         tests_evds_vectors.c
+         Generating Code...
+       Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\link.exe /ERRORREPORT:PROMPT /OUT:"..\..\bin\evds_tests.exe" /INCREMENTAL:NO /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"..\..\bin\evds_tests.pdb" /SUBSYSTEM:CONSOLE /OPT:REF /OPT:ICF /TLBID:1 /ENTRY:"mainCRTStartup" /DYNAMICBASE /NXCOMPAT /IMPLIB:"..\..\bin\evds_tests.lib" /MACHINE:X64 obj\x64\Release\evds_tests\framework.obj
+         obj\x64\Release\evds_tests\tests_evds_frames.obj
+         obj\x64\Release\evds_tests\tests_evds_functions.obj
+         obj\x64\Release\evds_tests\tests_evds_objects.obj
+         obj\x64\Release\evds_tests\tests_evds_quaternions.obj
+         obj\x64\Release\evds_tests\tests_evds_system.obj
+         obj\x64\Release\evds_tests\tests_evds_vectors.obj
+         F:\Development\Metrosim\Source\EVDS\EVDS\bin\simc.lib
+         F:\Development\Metrosim\Source\EVDS\EVDS\bin\evds.lib
+         evds_tests.vcxproj -> F:\Development\Metrosim\Source\EVDS\EVDS\support\vs2013\..\..\bin\evds_tests.exe
+     1>Done Building Project "F:\Development\Metrosim\Source\EVDS\EVDS\support\vs2013\evds_tests.vcxproj" (Build target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:00.83

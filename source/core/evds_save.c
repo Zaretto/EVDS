@@ -71,7 +71,7 @@ int EVDS_Internal_SaveVariable(EVDS_VARIABLE* variable, SIMC_XML_DOCUMENT* doc,
 
 	//Save value
 	if (variable->type == EVDS_VARIABLE_TYPE_STRING) {
-		int buffer_length;
+		size_t buffer_length;
 		EVDS_Variable_GetString(variable,0,0,&buffer_length); //Get string length
 		buffer = alloca((buffer_length+1)*sizeof(char)); //Allocate new big buffer
 		EVDS_Variable_GetString(variable,buffer,buffer_length,0); //Read string there

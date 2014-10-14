@@ -202,7 +202,7 @@ int EVDS_Environment_GetGravitationalField(EVDS_SYSTEM* system, EVDS_VECTOR* pos
 		//Calculate radius-vector
 		EVDS_Vector_Subtract(&Gr,position,&G0);
 		EVDS_Vector_Dot(&r2,&Gr,&Gr);
-		r = sqrtf(r2);
+		r = sqrt(r2);
 
 		//Check if inside the planet itself
 		if (radius_var && (r < radius*0.9)) {

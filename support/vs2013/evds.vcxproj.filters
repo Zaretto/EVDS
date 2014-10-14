@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="core">
+      <UniqueIdentifier>{F2F8FBAE-AA6E-6F4C-B441-3BD89606F051}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="objects">
+      <UniqueIdentifier>{C8178941-5D09-0E45-BE6C-EBBF6C2959C7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="propagators">
+      <UniqueIdentifier>{47B14C83-3425-704B-AB83-E03F5B4E09B3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="models">
+      <UniqueIdentifier>{EF45D34B-3F36-9F48-9851-61E88B415071}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include">
+      <UniqueIdentifier>{FDEEB27E-9AFF-F74F-B619-1070D8C8F0D1}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\source\core\evds_database.inc">
+      <Filter>core</Filter>
+    </None>
+    <None Include="..\..\source\core\evds_database.xml">
+      <Filter>core</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\include\evds.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\evds_internal.h">
+      <Filter>include</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\source\core\evds_function.c">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\core\evds_load.c">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\core\evds_math.c">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\core\evds_mesh.c">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\core\evds_object.c">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\core\evds_save.c">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\core\evds_system.c">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\core\evds_util.c">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\core\evds_variable.c">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\objects\evds_body.c">
+      <Filter>objects</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\objects\evds_engine.c">
+      <Filter>objects</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\objects\evds_fueltank.c">
+      <Filter>objects</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\objects\evds_gimbal.c">
+      <Filter>objects</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\objects\evds_modifier.c">
+      <Filter>objects</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\objects\evds_planet.c">
+      <Filter>objects</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\objects\evds_wing.c">
+      <Filter>objects</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\objects\evds_wiring.c">
+      <Filter>objects</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\propagators\evds_prop_euler.c">
+      <Filter>propagators</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\propagators\evds_prop_heun.c">
+      <Filter>propagators</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\propagators\evds_prop_rk4.c">
+      <Filter>propagators</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\models\evds_environment.c">
+      <Filter>models</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\models\evds_frames.c">
+      <Filter>models</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\models\evds_material.c">
+      <Filter>models</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

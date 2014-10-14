@@ -1741,7 +1741,7 @@ int EVDS_Object_GetUID(EVDS_OBJECT* object, unsigned int* uid) {
 ///  (or thread that has created the object before initializer was called)
 ////////////////////////////////////////////////////////////////////////////////
 int EVDS_Object_CheckType(EVDS_OBJECT* object, const char* type) {
-	int max_count;
+	size_t max_count;
 	char* wildcard_pos;
 	if (!object) return EVDS_ERROR_BAD_PARAMETER;
 	if (!type) return EVDS_ERROR_BAD_PARAMETER;

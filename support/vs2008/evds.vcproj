@@ -6,7 +6,6 @@
 	ProjectGUID="{EE4E6F16-F056-1746-B855-ADA3599F7386}"
 	RootNamespace="evds"
 	Keyword="Win32Proj"
-	TargetFrameworkVersion="0"
 	>
 	<Platforms>
 		<Platform
@@ -45,14 +44,14 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories="..\..\include;..\..\external\simc\include"
-				PreprocessorDefinitions="DEBUG;_CRT_SECURE_NO_WARNINGS;WIN32;EVDS_LIBRARY;SIMC_LIBRARY"
+				PreprocessorDefinitions="DEBUG;_CRT_SECURE_NO_WARNINGS;WIN32;PLATFORM32;EVDS_LIBRARY;SIMC_LIBRARY"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				ProgramDataBaseFileName="$(OutDir)\evdsd32.pdb"
 				WarningLevel="3"
+				ProgramDataBaseFileName="$(OutDir)\evdsd32.pdb"
 				DebugInformationFormat="4"
 				CompileAs="1"
 			/>
@@ -61,7 +60,7 @@
 			/>
 			<Tool
 				Name="VCResourceCompilerTool"
-				PreprocessorDefinitions="DEBUG;_CRT_SECURE_NO_WARNINGS;WIN32;EVDS_LIBRARY;SIMC_LIBRARY"
+				PreprocessorDefinitions="DEBUG;_CRT_SECURE_NO_WARNINGS;WIN32;PLATFORM32;EVDS_LIBRARY;SIMC_LIBRARY"
 				AdditionalIncludeDirectories="..\..\include;..\..\external\simc\include"
 			/>
 			<Tool
@@ -69,11 +68,14 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				AdditionalOptions="/MACHINE:X86"
 				OutputFile="$(OutDir)\evdsd32.lib"
+				AdditionalOptions="/MACHINE:X86"
 			/>
 			<Tool
 				Name="VCALinkTool"
+			/>
+			<Tool
+				Name="VCManifestTool"
 			/>
 			<Tool
 				Name="VCXDCMakeTool"
@@ -83,6 +85,12 @@
 			/>
 			<Tool
 				Name="VCFxCopTool"
+			/>
+			<Tool
+				Name="VCAppVerifierTool"
+			/>
+			<Tool
+				Name="VCWebDeploymentTool"
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
@@ -115,14 +123,14 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories="..\..\include;..\..\external\simc\include"
-				PreprocessorDefinitions="DEBUG;_CRT_SECURE_NO_WARNINGS;WIN32;WIN64;EVDS_LIBRARY;SIMC_LIBRARY"
+				PreprocessorDefinitions="DEBUG;_CRT_SECURE_NO_WARNINGS;WIN32;WIN64;PLATFORM64;EVDS_LIBRARY;SIMC_LIBRARY"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				ProgramDataBaseFileName="$(OutDir)\evdsd.pdb"
 				WarningLevel="3"
+				ProgramDataBaseFileName="$(OutDir)\evdsd.pdb"
 				DebugInformationFormat="3"
 				CompileAs="1"
 			/>
@@ -131,7 +139,7 @@
 			/>
 			<Tool
 				Name="VCResourceCompilerTool"
-				PreprocessorDefinitions="DEBUG;_CRT_SECURE_NO_WARNINGS;WIN32;WIN64;EVDS_LIBRARY;SIMC_LIBRARY"
+				PreprocessorDefinitions="DEBUG;_CRT_SECURE_NO_WARNINGS;WIN32;WIN64;PLATFORM64;EVDS_LIBRARY;SIMC_LIBRARY"
 				AdditionalIncludeDirectories="..\..\include;..\..\external\simc\include"
 			/>
 			<Tool
@@ -139,11 +147,14 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				AdditionalOptions="/MACHINE:X64"
 				OutputFile="$(OutDir)\evdsd.lib"
+				AdditionalOptions="/MACHINE:X64"
 			/>
 			<Tool
 				Name="VCALinkTool"
+			/>
+			<Tool
+				Name="VCManifestTool"
 			/>
 			<Tool
 				Name="VCXDCMakeTool"
@@ -153,6 +164,12 @@
 			/>
 			<Tool
 				Name="VCFxCopTool"
+			/>
+			<Tool
+				Name="VCAppVerifierTool"
+			/>
+			<Tool
+				Name="VCWebDeploymentTool"
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
@@ -184,13 +201,13 @@
 				Name="VCCLCompilerTool"
 				Optimization="3"
 				AdditionalIncludeDirectories="..\..\include;..\..\external\simc\include"
-				PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS;WIN32;EVDS_LIBRARY;SIMC_LIBRARY"
+				PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS;WIN32;PLATFORM32;EVDS_LIBRARY;SIMC_LIBRARY"
 				StringPooling="true"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				ProgramDataBaseFileName="$(OutDir)\evds32.pdb"
 				WarningLevel="3"
+				ProgramDataBaseFileName="$(OutDir)\evds32.pdb"
 				DebugInformationFormat="3"
 				CompileAs="1"
 			/>
@@ -199,7 +216,7 @@
 			/>
 			<Tool
 				Name="VCResourceCompilerTool"
-				PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS;WIN32;EVDS_LIBRARY;SIMC_LIBRARY"
+				PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS;WIN32;PLATFORM32;EVDS_LIBRARY;SIMC_LIBRARY"
 				AdditionalIncludeDirectories="..\..\include;..\..\external\simc\include"
 			/>
 			<Tool
@@ -207,11 +224,14 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				AdditionalOptions="/MACHINE:X86"
 				OutputFile="$(OutDir)\evds32.lib"
+				AdditionalOptions="/MACHINE:X86"
 			/>
 			<Tool
 				Name="VCALinkTool"
+			/>
+			<Tool
+				Name="VCManifestTool"
 			/>
 			<Tool
 				Name="VCXDCMakeTool"
@@ -221,6 +241,12 @@
 			/>
 			<Tool
 				Name="VCFxCopTool"
+			/>
+			<Tool
+				Name="VCAppVerifierTool"
+			/>
+			<Tool
+				Name="VCWebDeploymentTool"
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
@@ -253,13 +279,13 @@
 				Name="VCCLCompilerTool"
 				Optimization="3"
 				AdditionalIncludeDirectories="..\..\include;..\..\external\simc\include"
-				PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS;WIN32;WIN64;EVDS_LIBRARY;SIMC_LIBRARY"
+				PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS;WIN32;WIN64;PLATFORM64;EVDS_LIBRARY;SIMC_LIBRARY"
 				StringPooling="true"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				ProgramDataBaseFileName="$(OutDir)\evds.pdb"
 				WarningLevel="3"
+				ProgramDataBaseFileName="$(OutDir)\evds.pdb"
 				DebugInformationFormat="3"
 				CompileAs="1"
 			/>
@@ -268,7 +294,7 @@
 			/>
 			<Tool
 				Name="VCResourceCompilerTool"
-				PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS;WIN32;WIN64;EVDS_LIBRARY;SIMC_LIBRARY"
+				PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS;WIN32;WIN64;PLATFORM64;EVDS_LIBRARY;SIMC_LIBRARY"
 				AdditionalIncludeDirectories="..\..\include;..\..\external\simc\include"
 			/>
 			<Tool
@@ -276,11 +302,14 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				AdditionalOptions="/MACHINE:X64"
 				OutputFile="$(OutDir)\evds.lib"
+				AdditionalOptions="/MACHINE:X64"
 			/>
 			<Tool
 				Name="VCALinkTool"
+			/>
+			<Tool
+				Name="VCManifestTool"
 			/>
 			<Tool
 				Name="VCXDCMakeTool"
@@ -290,6 +319,12 @@
 			/>
 			<Tool
 				Name="VCFxCopTool"
+			/>
+			<Tool
+				Name="VCAppVerifierTool"
+			/>
+			<Tool
+				Name="VCWebDeploymentTool"
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
@@ -321,14 +356,14 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories="..\..\include;..\..\external\simc\include"
-				PreprocessorDefinitions="DEBUG;EVDS_DYNAMIC;IVSS_DYNAMIC;RDRS_DYNAMIC;SIMC_DYNAMIC;_CRT_SECURE_NO_WARNINGS;WIN32;EVDS_LIBRARY;SIMC_LIBRARY"
+				PreprocessorDefinitions="DEBUG;EVDS_DYNAMIC;IVSS_DYNAMIC;RDRS_DYNAMIC;SIMC_DYNAMIC;_CRT_SECURE_NO_WARNINGS;WIN32;PLATFORM32;EVDS_LIBRARY;SIMC_LIBRARY"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				ProgramDataBaseFileName="$(OutDir)\evdsd32.pdb"
 				WarningLevel="3"
+				ProgramDataBaseFileName="$(OutDir)\evdsd32.pdb"
 				DebugInformationFormat="4"
 				CompileAs="1"
 			/>
@@ -337,7 +372,7 @@
 			/>
 			<Tool
 				Name="VCResourceCompilerTool"
-				PreprocessorDefinitions="DEBUG;EVDS_DYNAMIC;IVSS_DYNAMIC;RDRS_DYNAMIC;SIMC_DYNAMIC;_CRT_SECURE_NO_WARNINGS;WIN32;EVDS_LIBRARY;SIMC_LIBRARY"
+				PreprocessorDefinitions="DEBUG;EVDS_DYNAMIC;IVSS_DYNAMIC;RDRS_DYNAMIC;SIMC_DYNAMIC;_CRT_SECURE_NO_WARNINGS;WIN32;PLATFORM32;EVDS_LIBRARY;SIMC_LIBRARY"
 				AdditionalIncludeDirectories="..\..\include;..\..\external\simc\include"
 			/>
 			<Tool
@@ -350,6 +385,7 @@
 				LinkIncremental="2"
 				AdditionalLibraryDirectories=""
 				GenerateDebugInformation="true"
+				ProgramDataBaseFileName="$(OutDir)\evdsd32.pdb"
 				SubSystem="2"
 				ImportLibrary="..\..\bin\evdsd32.lib"
 				TargetMachine="1"
@@ -371,6 +407,9 @@
 			/>
 			<Tool
 				Name="VCAppVerifierTool"
+			/>
+			<Tool
+				Name="VCWebDeploymentTool"
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
@@ -403,14 +442,14 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories="..\..\include;..\..\external\simc\include"
-				PreprocessorDefinitions="DEBUG;EVDS_DYNAMIC;IVSS_DYNAMIC;RDRS_DYNAMIC;SIMC_DYNAMIC;_CRT_SECURE_NO_WARNINGS;WIN32;WIN64;EVDS_LIBRARY;SIMC_LIBRARY"
+				PreprocessorDefinitions="DEBUG;EVDS_DYNAMIC;IVSS_DYNAMIC;RDRS_DYNAMIC;SIMC_DYNAMIC;_CRT_SECURE_NO_WARNINGS;WIN32;WIN64;PLATFORM64;EVDS_LIBRARY;SIMC_LIBRARY"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				ProgramDataBaseFileName="$(OutDir)\evdsd.pdb"
 				WarningLevel="3"
+				ProgramDataBaseFileName="$(OutDir)\evdsd.pdb"
 				DebugInformationFormat="3"
 				CompileAs="1"
 			/>
@@ -419,7 +458,7 @@
 			/>
 			<Tool
 				Name="VCResourceCompilerTool"
-				PreprocessorDefinitions="DEBUG;EVDS_DYNAMIC;IVSS_DYNAMIC;RDRS_DYNAMIC;SIMC_DYNAMIC;_CRT_SECURE_NO_WARNINGS;WIN32;WIN64;EVDS_LIBRARY;SIMC_LIBRARY"
+				PreprocessorDefinitions="DEBUG;EVDS_DYNAMIC;IVSS_DYNAMIC;RDRS_DYNAMIC;SIMC_DYNAMIC;_CRT_SECURE_NO_WARNINGS;WIN32;WIN64;PLATFORM64;EVDS_LIBRARY;SIMC_LIBRARY"
 				AdditionalIncludeDirectories="..\..\include;..\..\external\simc\include"
 			/>
 			<Tool
@@ -432,6 +471,7 @@
 				LinkIncremental="2"
 				AdditionalLibraryDirectories=""
 				GenerateDebugInformation="true"
+				ProgramDataBaseFileName="$(OutDir)\evdsd.pdb"
 				SubSystem="2"
 				ImportLibrary="..\..\bin\evdsd.lib"
 				TargetMachine="17"
@@ -453,6 +493,9 @@
 			/>
 			<Tool
 				Name="VCAppVerifierTool"
+			/>
+			<Tool
+				Name="VCWebDeploymentTool"
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
@@ -484,13 +527,13 @@
 				Name="VCCLCompilerTool"
 				Optimization="3"
 				AdditionalIncludeDirectories="..\..\include;..\..\external\simc\include"
-				PreprocessorDefinitions="EVDS_DYNAMIC;IVSS_DYNAMIC;RDRS_DYNAMIC;SIMC_DYNAMIC;_CRT_SECURE_NO_WARNINGS;WIN32;EVDS_LIBRARY;SIMC_LIBRARY"
+				PreprocessorDefinitions="EVDS_DYNAMIC;IVSS_DYNAMIC;RDRS_DYNAMIC;SIMC_DYNAMIC;_CRT_SECURE_NO_WARNINGS;WIN32;PLATFORM32;EVDS_LIBRARY;SIMC_LIBRARY"
 				StringPooling="true"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				ProgramDataBaseFileName="$(OutDir)\evds32.pdb"
 				WarningLevel="3"
+				ProgramDataBaseFileName="$(OutDir)\evds32.pdb"
 				DebugInformationFormat="3"
 				CompileAs="1"
 			/>
@@ -499,7 +542,7 @@
 			/>
 			<Tool
 				Name="VCResourceCompilerTool"
-				PreprocessorDefinitions="EVDS_DYNAMIC;IVSS_DYNAMIC;RDRS_DYNAMIC;SIMC_DYNAMIC;_CRT_SECURE_NO_WARNINGS;WIN32;EVDS_LIBRARY;SIMC_LIBRARY"
+				PreprocessorDefinitions="EVDS_DYNAMIC;IVSS_DYNAMIC;RDRS_DYNAMIC;SIMC_DYNAMIC;_CRT_SECURE_NO_WARNINGS;WIN32;PLATFORM32;EVDS_LIBRARY;SIMC_LIBRARY"
 				AdditionalIncludeDirectories="..\..\include;..\..\external\simc\include"
 			/>
 			<Tool
@@ -512,6 +555,7 @@
 				LinkIncremental="1"
 				AdditionalLibraryDirectories=""
 				GenerateDebugInformation="true"
+				ProgramDataBaseFileName="$(OutDir)\evds32.pdb"
 				SubSystem="2"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
@@ -535,6 +579,9 @@
 			/>
 			<Tool
 				Name="VCAppVerifierTool"
+			/>
+			<Tool
+				Name="VCWebDeploymentTool"
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
@@ -567,13 +614,13 @@
 				Name="VCCLCompilerTool"
 				Optimization="3"
 				AdditionalIncludeDirectories="..\..\include;..\..\external\simc\include"
-				PreprocessorDefinitions="EVDS_DYNAMIC;IVSS_DYNAMIC;RDRS_DYNAMIC;SIMC_DYNAMIC;_CRT_SECURE_NO_WARNINGS;WIN32;WIN64;EVDS_LIBRARY;SIMC_LIBRARY"
+				PreprocessorDefinitions="EVDS_DYNAMIC;IVSS_DYNAMIC;RDRS_DYNAMIC;SIMC_DYNAMIC;_CRT_SECURE_NO_WARNINGS;WIN32;WIN64;PLATFORM64;EVDS_LIBRARY;SIMC_LIBRARY"
 				StringPooling="true"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				ProgramDataBaseFileName="$(OutDir)\evds.pdb"
 				WarningLevel="3"
+				ProgramDataBaseFileName="$(OutDir)\evds.pdb"
 				DebugInformationFormat="3"
 				CompileAs="1"
 			/>
@@ -582,7 +629,7 @@
 			/>
 			<Tool
 				Name="VCResourceCompilerTool"
-				PreprocessorDefinitions="EVDS_DYNAMIC;IVSS_DYNAMIC;RDRS_DYNAMIC;SIMC_DYNAMIC;_CRT_SECURE_NO_WARNINGS;WIN32;WIN64;EVDS_LIBRARY;SIMC_LIBRARY"
+				PreprocessorDefinitions="EVDS_DYNAMIC;IVSS_DYNAMIC;RDRS_DYNAMIC;SIMC_DYNAMIC;_CRT_SECURE_NO_WARNINGS;WIN32;WIN64;PLATFORM64;EVDS_LIBRARY;SIMC_LIBRARY"
 				AdditionalIncludeDirectories="..\..\include;..\..\external\simc\include"
 			/>
 			<Tool
@@ -595,6 +642,7 @@
 				LinkIncremental="1"
 				AdditionalLibraryDirectories=""
 				GenerateDebugInformation="true"
+				ProgramDataBaseFileName="$(OutDir)\evds.pdb"
 				SubSystem="2"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
@@ -618,6 +666,9 @@
 			/>
 			<Tool
 				Name="VCAppVerifierTool"
+			/>
+			<Tool
+				Name="VCWebDeploymentTool"
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
@@ -649,14 +700,14 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories="..\..\include;..\..\external\simc\include"
-				PreprocessorDefinitions="DEBUG;EVDS_SINGLETHREADED;IVSS_SINGLETHREADED;RDRS_SINGLETHREADED;SIMC_SINGLETHREADED;_CRT_SECURE_NO_WARNINGS;WIN32;EVDS_LIBRARY;SIMC_LIBRARY"
+				PreprocessorDefinitions="DEBUG;EVDS_SINGLETHREADED;IVSS_SINGLETHREADED;RDRS_SINGLETHREADED;SIMC_SINGLETHREADED;_CRT_SECURE_NO_WARNINGS;WIN32;PLATFORM32;EVDS_LIBRARY;SIMC_LIBRARY"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				ProgramDataBaseFileName="$(OutDir)\evds_std32.pdb"
 				WarningLevel="3"
+				ProgramDataBaseFileName="$(OutDir)\evds_std32.pdb"
 				DebugInformationFormat="4"
 				CompileAs="1"
 			/>
@@ -665,7 +716,7 @@
 			/>
 			<Tool
 				Name="VCResourceCompilerTool"
-				PreprocessorDefinitions="DEBUG;EVDS_SINGLETHREADED;IVSS_SINGLETHREADED;RDRS_SINGLETHREADED;SIMC_SINGLETHREADED;_CRT_SECURE_NO_WARNINGS;WIN32;EVDS_LIBRARY;SIMC_LIBRARY"
+				PreprocessorDefinitions="DEBUG;EVDS_SINGLETHREADED;IVSS_SINGLETHREADED;RDRS_SINGLETHREADED;SIMC_SINGLETHREADED;_CRT_SECURE_NO_WARNINGS;WIN32;PLATFORM32;EVDS_LIBRARY;SIMC_LIBRARY"
 				AdditionalIncludeDirectories="..\..\include;..\..\external\simc\include"
 			/>
 			<Tool
@@ -673,11 +724,14 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				AdditionalOptions="/MACHINE:X86"
 				OutputFile="$(OutDir)\evds_std32.lib"
+				AdditionalOptions="/MACHINE:X86"
 			/>
 			<Tool
 				Name="VCALinkTool"
+			/>
+			<Tool
+				Name="VCManifestTool"
 			/>
 			<Tool
 				Name="VCXDCMakeTool"
@@ -687,6 +741,12 @@
 			/>
 			<Tool
 				Name="VCFxCopTool"
+			/>
+			<Tool
+				Name="VCAppVerifierTool"
+			/>
+			<Tool
+				Name="VCWebDeploymentTool"
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
@@ -719,14 +779,14 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories="..\..\include;..\..\external\simc\include"
-				PreprocessorDefinitions="DEBUG;EVDS_SINGLETHREADED;IVSS_SINGLETHREADED;RDRS_SINGLETHREADED;SIMC_SINGLETHREADED;_CRT_SECURE_NO_WARNINGS;WIN32;WIN64;EVDS_LIBRARY;SIMC_LIBRARY"
+				PreprocessorDefinitions="DEBUG;EVDS_SINGLETHREADED;IVSS_SINGLETHREADED;RDRS_SINGLETHREADED;SIMC_SINGLETHREADED;_CRT_SECURE_NO_WARNINGS;WIN32;WIN64;PLATFORM64;EVDS_LIBRARY;SIMC_LIBRARY"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				ProgramDataBaseFileName="$(OutDir)\evds_std.pdb"
 				WarningLevel="3"
+				ProgramDataBaseFileName="$(OutDir)\evds_std.pdb"
 				DebugInformationFormat="3"
 				CompileAs="1"
 			/>
@@ -735,7 +795,7 @@
 			/>
 			<Tool
 				Name="VCResourceCompilerTool"
-				PreprocessorDefinitions="DEBUG;EVDS_SINGLETHREADED;IVSS_SINGLETHREADED;RDRS_SINGLETHREADED;SIMC_SINGLETHREADED;_CRT_SECURE_NO_WARNINGS;WIN32;WIN64;EVDS_LIBRARY;SIMC_LIBRARY"
+				PreprocessorDefinitions="DEBUG;EVDS_SINGLETHREADED;IVSS_SINGLETHREADED;RDRS_SINGLETHREADED;SIMC_SINGLETHREADED;_CRT_SECURE_NO_WARNINGS;WIN32;WIN64;PLATFORM64;EVDS_LIBRARY;SIMC_LIBRARY"
 				AdditionalIncludeDirectories="..\..\include;..\..\external\simc\include"
 			/>
 			<Tool
@@ -743,11 +803,14 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				AdditionalOptions="/MACHINE:X64"
 				OutputFile="$(OutDir)\evds_std.lib"
+				AdditionalOptions="/MACHINE:X64"
 			/>
 			<Tool
 				Name="VCALinkTool"
+			/>
+			<Tool
+				Name="VCManifestTool"
 			/>
 			<Tool
 				Name="VCXDCMakeTool"
@@ -757,6 +820,12 @@
 			/>
 			<Tool
 				Name="VCFxCopTool"
+			/>
+			<Tool
+				Name="VCAppVerifierTool"
+			/>
+			<Tool
+				Name="VCWebDeploymentTool"
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
@@ -788,13 +857,13 @@
 				Name="VCCLCompilerTool"
 				Optimization="3"
 				AdditionalIncludeDirectories="..\..\include;..\..\external\simc\include"
-				PreprocessorDefinitions="EVDS_SINGLETHREADED;IVSS_SINGLETHREADED;RDRS_SINGLETHREADED;SIMC_SINGLETHREADED;_CRT_SECURE_NO_WARNINGS;WIN32;EVDS_LIBRARY;SIMC_LIBRARY"
+				PreprocessorDefinitions="EVDS_SINGLETHREADED;IVSS_SINGLETHREADED;RDRS_SINGLETHREADED;SIMC_SINGLETHREADED;_CRT_SECURE_NO_WARNINGS;WIN32;PLATFORM32;EVDS_LIBRARY;SIMC_LIBRARY"
 				StringPooling="true"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				ProgramDataBaseFileName="$(OutDir)\evds_st32.pdb"
 				WarningLevel="3"
+				ProgramDataBaseFileName="$(OutDir)\evds_st32.pdb"
 				DebugInformationFormat="3"
 				CompileAs="1"
 			/>
@@ -803,7 +872,7 @@
 			/>
 			<Tool
 				Name="VCResourceCompilerTool"
-				PreprocessorDefinitions="EVDS_SINGLETHREADED;IVSS_SINGLETHREADED;RDRS_SINGLETHREADED;SIMC_SINGLETHREADED;_CRT_SECURE_NO_WARNINGS;WIN32;EVDS_LIBRARY;SIMC_LIBRARY"
+				PreprocessorDefinitions="EVDS_SINGLETHREADED;IVSS_SINGLETHREADED;RDRS_SINGLETHREADED;SIMC_SINGLETHREADED;_CRT_SECURE_NO_WARNINGS;WIN32;PLATFORM32;EVDS_LIBRARY;SIMC_LIBRARY"
 				AdditionalIncludeDirectories="..\..\include;..\..\external\simc\include"
 			/>
 			<Tool
@@ -811,11 +880,14 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				AdditionalOptions="/MACHINE:X86"
 				OutputFile="$(OutDir)\evds_st32.lib"
+				AdditionalOptions="/MACHINE:X86"
 			/>
 			<Tool
 				Name="VCALinkTool"
+			/>
+			<Tool
+				Name="VCManifestTool"
 			/>
 			<Tool
 				Name="VCXDCMakeTool"
@@ -825,6 +897,12 @@
 			/>
 			<Tool
 				Name="VCFxCopTool"
+			/>
+			<Tool
+				Name="VCAppVerifierTool"
+			/>
+			<Tool
+				Name="VCWebDeploymentTool"
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
@@ -857,13 +935,13 @@
 				Name="VCCLCompilerTool"
 				Optimization="3"
 				AdditionalIncludeDirectories="..\..\include;..\..\external\simc\include"
-				PreprocessorDefinitions="EVDS_SINGLETHREADED;IVSS_SINGLETHREADED;RDRS_SINGLETHREADED;SIMC_SINGLETHREADED;_CRT_SECURE_NO_WARNINGS;WIN32;WIN64;EVDS_LIBRARY;SIMC_LIBRARY"
+				PreprocessorDefinitions="EVDS_SINGLETHREADED;IVSS_SINGLETHREADED;RDRS_SINGLETHREADED;SIMC_SINGLETHREADED;_CRT_SECURE_NO_WARNINGS;WIN32;WIN64;PLATFORM64;EVDS_LIBRARY;SIMC_LIBRARY"
 				StringPooling="true"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				ProgramDataBaseFileName="$(OutDir)\evds_st.pdb"
 				WarningLevel="3"
+				ProgramDataBaseFileName="$(OutDir)\evds_st.pdb"
 				DebugInformationFormat="3"
 				CompileAs="1"
 			/>
@@ -872,7 +950,7 @@
 			/>
 			<Tool
 				Name="VCResourceCompilerTool"
-				PreprocessorDefinitions="EVDS_SINGLETHREADED;IVSS_SINGLETHREADED;RDRS_SINGLETHREADED;SIMC_SINGLETHREADED;_CRT_SECURE_NO_WARNINGS;WIN32;WIN64;EVDS_LIBRARY;SIMC_LIBRARY"
+				PreprocessorDefinitions="EVDS_SINGLETHREADED;IVSS_SINGLETHREADED;RDRS_SINGLETHREADED;SIMC_SINGLETHREADED;_CRT_SECURE_NO_WARNINGS;WIN32;WIN64;PLATFORM64;EVDS_LIBRARY;SIMC_LIBRARY"
 				AdditionalIncludeDirectories="..\..\include;..\..\external\simc\include"
 			/>
 			<Tool
@@ -880,11 +958,14 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				AdditionalOptions="/MACHINE:X64"
 				OutputFile="$(OutDir)\evds_st.lib"
+				AdditionalOptions="/MACHINE:X64"
 			/>
 			<Tool
 				Name="VCALinkTool"
+			/>
+			<Tool
+				Name="VCManifestTool"
 			/>
 			<Tool
 				Name="VCXDCMakeTool"
@@ -894,6 +975,12 @@
 			/>
 			<Tool
 				Name="VCFxCopTool"
+			/>
+			<Tool
+				Name="VCAppVerifierTool"
+			/>
+			<Tool
+				Name="VCWebDeploymentTool"
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
@@ -925,14 +1012,14 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories="..\..\include;..\..\external\simc\include"
-				PreprocessorDefinitions="DEBUG;EVDS_DYNAMIC;IVSS_DYNAMIC;RDRS_DYNAMIC;SIMC_DYNAMIC;EVDS_SINGLETHREADED;IVSS_SINGLETHREADED;RDRS_SINGLETHREADED;SIMC_SINGLETHREADED;_CRT_SECURE_NO_WARNINGS;WIN32;EVDS_LIBRARY;SIMC_LIBRARY"
+				PreprocessorDefinitions="DEBUG;EVDS_DYNAMIC;IVSS_DYNAMIC;RDRS_DYNAMIC;SIMC_DYNAMIC;EVDS_SINGLETHREADED;IVSS_SINGLETHREADED;RDRS_SINGLETHREADED;SIMC_SINGLETHREADED;_CRT_SECURE_NO_WARNINGS;WIN32;PLATFORM32;EVDS_LIBRARY;SIMC_LIBRARY"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				ProgramDataBaseFileName="$(OutDir)\evds_std32.pdb"
 				WarningLevel="3"
+				ProgramDataBaseFileName="$(OutDir)\evds_std32.pdb"
 				DebugInformationFormat="4"
 				CompileAs="1"
 			/>
@@ -941,7 +1028,7 @@
 			/>
 			<Tool
 				Name="VCResourceCompilerTool"
-				PreprocessorDefinitions="DEBUG;EVDS_DYNAMIC;IVSS_DYNAMIC;RDRS_DYNAMIC;SIMC_DYNAMIC;EVDS_SINGLETHREADED;IVSS_SINGLETHREADED;RDRS_SINGLETHREADED;SIMC_SINGLETHREADED;_CRT_SECURE_NO_WARNINGS;WIN32;EVDS_LIBRARY;SIMC_LIBRARY"
+				PreprocessorDefinitions="DEBUG;EVDS_DYNAMIC;IVSS_DYNAMIC;RDRS_DYNAMIC;SIMC_DYNAMIC;EVDS_SINGLETHREADED;IVSS_SINGLETHREADED;RDRS_SINGLETHREADED;SIMC_SINGLETHREADED;_CRT_SECURE_NO_WARNINGS;WIN32;PLATFORM32;EVDS_LIBRARY;SIMC_LIBRARY"
 				AdditionalIncludeDirectories="..\..\include;..\..\external\simc\include"
 			/>
 			<Tool
@@ -954,6 +1041,7 @@
 				LinkIncremental="2"
 				AdditionalLibraryDirectories=""
 				GenerateDebugInformation="true"
+				ProgramDataBaseFileName="$(OutDir)\evds_std32.pdb"
 				SubSystem="2"
 				ImportLibrary="..\..\bin\evds_std32.lib"
 				TargetMachine="1"
@@ -975,6 +1063,9 @@
 			/>
 			<Tool
 				Name="VCAppVerifierTool"
+			/>
+			<Tool
+				Name="VCWebDeploymentTool"
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
@@ -1007,14 +1098,14 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories="..\..\include;..\..\external\simc\include"
-				PreprocessorDefinitions="DEBUG;EVDS_DYNAMIC;IVSS_DYNAMIC;RDRS_DYNAMIC;SIMC_DYNAMIC;EVDS_SINGLETHREADED;IVSS_SINGLETHREADED;RDRS_SINGLETHREADED;SIMC_SINGLETHREADED;_CRT_SECURE_NO_WARNINGS;WIN32;WIN64;EVDS_LIBRARY;SIMC_LIBRARY"
+				PreprocessorDefinitions="DEBUG;EVDS_DYNAMIC;IVSS_DYNAMIC;RDRS_DYNAMIC;SIMC_DYNAMIC;EVDS_SINGLETHREADED;IVSS_SINGLETHREADED;RDRS_SINGLETHREADED;SIMC_SINGLETHREADED;_CRT_SECURE_NO_WARNINGS;WIN32;WIN64;PLATFORM64;EVDS_LIBRARY;SIMC_LIBRARY"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				ProgramDataBaseFileName="$(OutDir)\evds_std.pdb"
 				WarningLevel="3"
+				ProgramDataBaseFileName="$(OutDir)\evds_std.pdb"
 				DebugInformationFormat="3"
 				CompileAs="1"
 			/>
@@ -1023,7 +1114,7 @@
 			/>
 			<Tool
 				Name="VCResourceCompilerTool"
-				PreprocessorDefinitions="DEBUG;EVDS_DYNAMIC;IVSS_DYNAMIC;RDRS_DYNAMIC;SIMC_DYNAMIC;EVDS_SINGLETHREADED;IVSS_SINGLETHREADED;RDRS_SINGLETHREADED;SIMC_SINGLETHREADED;_CRT_SECURE_NO_WARNINGS;WIN32;WIN64;EVDS_LIBRARY;SIMC_LIBRARY"
+				PreprocessorDefinitions="DEBUG;EVDS_DYNAMIC;IVSS_DYNAMIC;RDRS_DYNAMIC;SIMC_DYNAMIC;EVDS_SINGLETHREADED;IVSS_SINGLETHREADED;RDRS_SINGLETHREADED;SIMC_SINGLETHREADED;_CRT_SECURE_NO_WARNINGS;WIN32;WIN64;PLATFORM64;EVDS_LIBRARY;SIMC_LIBRARY"
 				AdditionalIncludeDirectories="..\..\include;..\..\external\simc\include"
 			/>
 			<Tool
@@ -1036,6 +1127,7 @@
 				LinkIncremental="2"
 				AdditionalLibraryDirectories=""
 				GenerateDebugInformation="true"
+				ProgramDataBaseFileName="$(OutDir)\evds_std.pdb"
 				SubSystem="2"
 				ImportLibrary="..\..\bin\evds_std.lib"
 				TargetMachine="17"
@@ -1057,6 +1149,9 @@
 			/>
 			<Tool
 				Name="VCAppVerifierTool"
+			/>
+			<Tool
+				Name="VCWebDeploymentTool"
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
@@ -1088,13 +1183,13 @@
 				Name="VCCLCompilerTool"
 				Optimization="3"
 				AdditionalIncludeDirectories="..\..\include;..\..\external\simc\include"
-				PreprocessorDefinitions="EVDS_DYNAMIC;IVSS_DYNAMIC;RDRS_DYNAMIC;SIMC_DYNAMIC;EVDS_SINGLETHREADED;IVSS_SINGLETHREADED;RDRS_SINGLETHREADED;SIMC_SINGLETHREADED;_CRT_SECURE_NO_WARNINGS;WIN32;EVDS_LIBRARY;SIMC_LIBRARY"
+				PreprocessorDefinitions="EVDS_DYNAMIC;IVSS_DYNAMIC;RDRS_DYNAMIC;SIMC_DYNAMIC;EVDS_SINGLETHREADED;IVSS_SINGLETHREADED;RDRS_SINGLETHREADED;SIMC_SINGLETHREADED;_CRT_SECURE_NO_WARNINGS;WIN32;PLATFORM32;EVDS_LIBRARY;SIMC_LIBRARY"
 				StringPooling="true"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				ProgramDataBaseFileName="$(OutDir)\evds_st32.pdb"
 				WarningLevel="3"
+				ProgramDataBaseFileName="$(OutDir)\evds_st32.pdb"
 				DebugInformationFormat="3"
 				CompileAs="1"
 			/>
@@ -1103,7 +1198,7 @@
 			/>
 			<Tool
 				Name="VCResourceCompilerTool"
-				PreprocessorDefinitions="EVDS_DYNAMIC;IVSS_DYNAMIC;RDRS_DYNAMIC;SIMC_DYNAMIC;EVDS_SINGLETHREADED;IVSS_SINGLETHREADED;RDRS_SINGLETHREADED;SIMC_SINGLETHREADED;_CRT_SECURE_NO_WARNINGS;WIN32;EVDS_LIBRARY;SIMC_LIBRARY"
+				PreprocessorDefinitions="EVDS_DYNAMIC;IVSS_DYNAMIC;RDRS_DYNAMIC;SIMC_DYNAMIC;EVDS_SINGLETHREADED;IVSS_SINGLETHREADED;RDRS_SINGLETHREADED;SIMC_SINGLETHREADED;_CRT_SECURE_NO_WARNINGS;WIN32;PLATFORM32;EVDS_LIBRARY;SIMC_LIBRARY"
 				AdditionalIncludeDirectories="..\..\include;..\..\external\simc\include"
 			/>
 			<Tool
@@ -1116,6 +1211,7 @@
 				LinkIncremental="1"
 				AdditionalLibraryDirectories=""
 				GenerateDebugInformation="true"
+				ProgramDataBaseFileName="$(OutDir)\evds_st32.pdb"
 				SubSystem="2"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
@@ -1139,6 +1235,9 @@
 			/>
 			<Tool
 				Name="VCAppVerifierTool"
+			/>
+			<Tool
+				Name="VCWebDeploymentTool"
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
@@ -1171,13 +1270,13 @@
 				Name="VCCLCompilerTool"
 				Optimization="3"
 				AdditionalIncludeDirectories="..\..\include;..\..\external\simc\include"
-				PreprocessorDefinitions="EVDS_DYNAMIC;IVSS_DYNAMIC;RDRS_DYNAMIC;SIMC_DYNAMIC;EVDS_SINGLETHREADED;IVSS_SINGLETHREADED;RDRS_SINGLETHREADED;SIMC_SINGLETHREADED;_CRT_SECURE_NO_WARNINGS;WIN32;WIN64;EVDS_LIBRARY;SIMC_LIBRARY"
+				PreprocessorDefinitions="EVDS_DYNAMIC;IVSS_DYNAMIC;RDRS_DYNAMIC;SIMC_DYNAMIC;EVDS_SINGLETHREADED;IVSS_SINGLETHREADED;RDRS_SINGLETHREADED;SIMC_SINGLETHREADED;_CRT_SECURE_NO_WARNINGS;WIN32;WIN64;PLATFORM64;EVDS_LIBRARY;SIMC_LIBRARY"
 				StringPooling="true"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				ProgramDataBaseFileName="$(OutDir)\evds_st.pdb"
 				WarningLevel="3"
+				ProgramDataBaseFileName="$(OutDir)\evds_st.pdb"
 				DebugInformationFormat="3"
 				CompileAs="1"
 			/>
@@ -1186,7 +1285,7 @@
 			/>
 			<Tool
 				Name="VCResourceCompilerTool"
-				PreprocessorDefinitions="EVDS_DYNAMIC;IVSS_DYNAMIC;RDRS_DYNAMIC;SIMC_DYNAMIC;EVDS_SINGLETHREADED;IVSS_SINGLETHREADED;RDRS_SINGLETHREADED;SIMC_SINGLETHREADED;_CRT_SECURE_NO_WARNINGS;WIN32;WIN64;EVDS_LIBRARY;SIMC_LIBRARY"
+				PreprocessorDefinitions="EVDS_DYNAMIC;IVSS_DYNAMIC;RDRS_DYNAMIC;SIMC_DYNAMIC;EVDS_SINGLETHREADED;IVSS_SINGLETHREADED;RDRS_SINGLETHREADED;SIMC_SINGLETHREADED;_CRT_SECURE_NO_WARNINGS;WIN32;WIN64;PLATFORM64;EVDS_LIBRARY;SIMC_LIBRARY"
 				AdditionalIncludeDirectories="..\..\include;..\..\external\simc\include"
 			/>
 			<Tool
@@ -1199,6 +1298,7 @@
 				LinkIncremental="1"
 				AdditionalLibraryDirectories=""
 				GenerateDebugInformation="true"
+				ProgramDataBaseFileName="$(OutDir)\evds_st.pdb"
 				SubSystem="2"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
@@ -1224,6 +1324,9 @@
 				Name="VCAppVerifierTool"
 			/>
 			<Tool
+				Name="VCWebDeploymentTool"
+			/>
+			<Tool
 				Name="VCPostBuildEventTool"
 			/>
 		</Configuration>
@@ -1233,6 +1336,7 @@
 	<Files>
 		<Filter
 			Name="core"
+			Filter=""
 			>
 			<File
 				RelativePath="..\..\source\core\evds_database.inc"
@@ -1281,6 +1385,7 @@
 		</Filter>
 		<Filter
 			Name="include"
+			Filter=""
 			>
 			<File
 				RelativePath="..\..\include\evds.h"
@@ -1293,6 +1398,7 @@
 		</Filter>
 		<Filter
 			Name="models"
+			Filter=""
 			>
 			<File
 				RelativePath="..\..\source\models\evds_environment.c"
@@ -1309,6 +1415,7 @@
 		</Filter>
 		<Filter
 			Name="objects"
+			Filter=""
 			>
 			<File
 				RelativePath="..\..\source\objects\evds_body.c"
@@ -1345,6 +1452,7 @@
 		</Filter>
 		<Filter
 			Name="propagators"
+			Filter=""
 			>
 			<File
 				RelativePath="..\..\source\propagators\evds_prop_euler.c"

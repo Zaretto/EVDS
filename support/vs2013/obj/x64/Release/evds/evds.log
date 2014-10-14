@@ -1,0 +1,64 @@
+﻿Build started 14.10.2014 15:57:22.
+     1>Project "F:\Development\Metrosim\Source\EVDS\EVDS\support\vs2013\evds.vcxproj" on node 2 (Build target(s)).
+     1>ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\CL.exe /c /I..\..\include /I..\..\external\simc\include /Zi /nologo /W3 /WX- /Ox /D _CRT_SECURE_NO_WARNINGS /D WIN32 /D WIN64 /D PLATFORM64 /D EVDS_LIBRARY /D SIMC_LIBRARY /D _MBCS /GF /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Fo"obj\x64\Release\evds\\" /Fd"..\..\bin\evds.pdb" /Gd /TC /errorReport:prompt ..\..\source\core\evds_function.c ..\..\source\core\evds_load.c ..\..\source\core\evds_math.c ..\..\source\core\evds_mesh.c ..\..\source\core\evds_object.c ..\..\source\core\evds_save.c ..\..\source\core\evds_system.c ..\..\source\core\evds_util.c ..\..\source\core\evds_variable.c ..\..\source\objects\evds_body.c ..\..\source\objects\evds_engine.c ..\..\source\objects\evds_fueltank.c ..\..\source\objects\evds_gimbal.c ..\..\source\objects\evds_modifier.c ..\..\source\objects\evds_planet.c ..\..\source\objects\evds_wing.c ..\..\source\objects\evds_wiring.c ..\..\source\propagators\evds_prop_euler.c ..\..\source\propagators\evds_prop_heun.c ..\..\source\propagators\evds_prop_rk4.c ..\..\source\models\evds_environment.c ..\..\source\models\evds_frames.c ..\..\source\models\evds_material.c
+         evds_function.c
+         evds_load.c
+         evds_math.c
+         evds_mesh.c
+         evds_object.c
+         evds_save.c
+         evds_system.c
+         evds_util.c
+         evds_variable.c
+         evds_body.c
+     1>..\..\source\objects\evds_body.c(245): warning C4101: 'dcmx' : unreferenced local variable
+     1>..\..\source\objects\evds_body.c(245): warning C4101: 'dm' : unreferenced local variable
+     1>..\..\source\objects\evds_body.c(245): warning C4101: 'dcmy' : unreferenced local variable
+     1>..\..\source\objects\evds_body.c(245): warning C4101: 'dcmz' : unreferenced local variable
+         evds_engine.c
+         evds_fueltank.c
+         evds_gimbal.c
+         evds_modifier.c
+         evds_planet.c
+         evds_wing.c
+         evds_wiring.c
+         evds_prop_euler.c
+         evds_prop_heun.c
+         evds_prop_rk4.c
+         Generating Code...
+         Compiling...
+         evds_environment.c
+         evds_frames.c
+         evds_material.c
+         Generating Code...
+       Lib:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\Lib.exe /OUT:"..\..\bin\evds.lib" /NOLOGO /MACHINE:X64 obj\x64\Release\evds\evds_function.obj
+         obj\x64\Release\evds\evds_load.obj
+         obj\x64\Release\evds\evds_math.obj
+         obj\x64\Release\evds\evds_mesh.obj
+         obj\x64\Release\evds\evds_object.obj
+         obj\x64\Release\evds\evds_save.obj
+         obj\x64\Release\evds\evds_system.obj
+         obj\x64\Release\evds\evds_util.obj
+         obj\x64\Release\evds\evds_variable.obj
+         obj\x64\Release\evds\evds_body.obj
+         obj\x64\Release\evds\evds_engine.obj
+         obj\x64\Release\evds\evds_fueltank.obj
+         obj\x64\Release\evds\evds_gimbal.obj
+         obj\x64\Release\evds\evds_modifier.obj
+         obj\x64\Release\evds\evds_planet.obj
+         obj\x64\Release\evds\evds_wing.obj
+         obj\x64\Release\evds\evds_wiring.obj
+         obj\x64\Release\evds\evds_prop_euler.obj
+         obj\x64\Release\evds\evds_prop_heun.obj
+         obj\x64\Release\evds\evds_prop_rk4.obj
+         obj\x64\Release\evds\evds_environment.obj
+         obj\x64\Release\evds\evds_frames.obj
+         obj\x64\Release\evds\evds_material.obj
+         evds.vcxproj -> F:\Development\Metrosim\Source\EVDS\EVDS\support\vs2013\..\..\bin\evds.lib
+     1>Done Building Project "F:\Development\Metrosim\Source\EVDS\EVDS\support\vs2013\evds.vcxproj" (Build target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:01.32

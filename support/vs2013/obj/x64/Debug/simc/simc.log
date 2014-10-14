@@ -1,0 +1,34 @@
+﻿Build started 14.10.2014 15:55:33.
+     1>Project "F:\Development\Metrosim\Source\EVDS\EVDS\support\vs2013\simc.vcxproj" on node 2 (Build target(s)).
+     1>ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\CL.exe /c /I..\..\external\simc\include /I..\..\external\simc\external\tinyxml /Zi /nologo /W3 /WX- /Od /D DEBUG /D _CRT_SECURE_NO_WARNINGS /D WIN32 /D WIN64 /D PLATFORM64 /D SIMC_LIBRARY /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Fo"obj\x64\Debug\simc\\" /Fd"..\..\bin\simcd.pdb" /Gd /TC /errorReport:prompt ..\..\external\simc\source\sim_curtime.c ..\..\external\simc\source\sim_linkedlist.c ..\..\external\simc\source\sim_queue.c ..\..\external\simc\source\sim_sarray.c ..\..\external\simc\source\sim_threading.c
+         sim_threading.c
+         sim_sarray.c
+         sim_queue.c
+         sim_linkedlist.c
+         sim_curtime.c
+         Generating Code...
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\CL.exe /c /I..\..\external\simc\include /I..\..\external\simc\external\tinyxml /Zi /nologo /W3 /WX- /Od /D DEBUG /D _CRT_SECURE_NO_WARNINGS /D WIN32 /D WIN64 /D PLATFORM64 /D SIMC_LIBRARY /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Fo"obj\x64\Debug\simc\\" /Fd"..\..\bin\simcd.pdb" /Gd /TP /errorReport:prompt ..\..\external\simc\source\sim_xml.cpp ..\..\external\simc\external\tinyxml\tinystr.cpp ..\..\external\simc\external\tinyxml\tinyxml.cpp ..\..\external\simc\external\tinyxml\tinyxmlerror.cpp ..\..\external\simc\external\tinyxml\tinyxmlparser.cpp
+         tinyxmlparser.cpp
+         tinyxmlerror.cpp
+         tinyxml.cpp
+         tinystr.cpp
+         sim_xml.cpp
+         Generating Code...
+       Lib:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\Lib.exe /OUT:"..\..\bin\simcd.lib" /NOLOGO /MACHINE:X64 obj\x64\Debug\simc\sim_curtime.obj
+         obj\x64\Debug\simc\sim_linkedlist.obj
+         obj\x64\Debug\simc\sim_queue.obj
+         obj\x64\Debug\simc\sim_sarray.obj
+         obj\x64\Debug\simc\sim_threading.obj
+         obj\x64\Debug\simc\sim_xml.obj
+         obj\x64\Debug\simc\tinystr.obj
+         obj\x64\Debug\simc\tinyxml.obj
+         obj\x64\Debug\simc\tinyxmlerror.obj
+         obj\x64\Debug\simc\tinyxmlparser.obj
+         simc.vcxproj -> F:\Development\Metrosim\Source\EVDS\EVDS\support\vs2013\..\..\bin\simcd.lib
+     1>Done Building Project "F:\Development\Metrosim\Source\EVDS\EVDS\support\vs2013\simc.vcxproj" (Build target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:01.06
