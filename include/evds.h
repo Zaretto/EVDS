@@ -1001,7 +1001,7 @@ EVDS_API int EVDS_System_GetObjectByName(EVDS_SYSTEM* system, EVDS_OBJECT* paren
 // Query a variable/object by data reference
 EVDS_API int EVDS_System_QueryByReference(EVDS_SYSTEM* system, EVDS_OBJECT* parent, const char* query, EVDS_VARIABLE** p_variable, EVDS_OBJECT** p_object);
 
-// Cleanup objects (multithreaded only)
+// Cleanup objects (mandatory to call once in a while, in multithreaded environment only)
 EVDS_API int EVDS_System_CleanupObjects(EVDS_SYSTEM* system);
 
 // Load database from a file
@@ -1376,6 +1376,8 @@ EVDS_API void EVDS_Vector_Dot(EVDS_REAL* target, EVDS_VECTOR* v1, EVDS_VECTOR* v
 EVDS_API void EVDS_Vector_Normalize(EVDS_VECTOR* target, EVDS_VECTOR* v);
 // Return vector length
 EVDS_API void EVDS_Vector_Length(EVDS_REAL* target, EVDS_VECTOR* v);
+// Check if two vectors are equal
+EVDS_API int EVDS_Vector_Equal(EVDS_VECTOR* v1, EVDS_VECTOR* v2);
 
 // Multiply vector by scalar
 EVDS_API void EVDS_Vector_Multiply(EVDS_VECTOR* target, EVDS_VECTOR* v, EVDS_REAL scalar);

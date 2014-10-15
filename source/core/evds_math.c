@@ -840,10 +840,23 @@ void EVDS_Vector_Normalize(EVDS_VECTOR* target, EVDS_VECTOR* v) {
 
 
 ////////////////////////////////////////////////////////////////////////////////
-/// @brief  Return vector length
+/// @brief Return vector length
 ////////////////////////////////////////////////////////////////////////////////
 void EVDS_Vector_Length(EVDS_REAL* target, EVDS_VECTOR* v) {
 	*target = sqrt(v->x*v->x + v->y*v->y + v->z*v->z);
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+/// @brief Check if two vectors are equal to eachother
+////////////////////////////////////////////////////////////////////////////////
+int EVDS_Vector_Equal(EVDS_VECTOR* v1, EVDS_VECTOR* v2)
+{
+	EVDS_REAL distance2 = 
+		(v1->x - v2->x)*(v1->x - v2->x) +
+		(v1->y - v2->y)*(v1->y - v2->y) +
+		(v1->z - v2->z)*(v1->z - v2->z);
+	return distance2 < EVDS_EPSf;
 }
 
 
