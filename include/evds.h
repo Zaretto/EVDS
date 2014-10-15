@@ -136,7 +136,8 @@ typedef struct EVDS_MESH_INTERNAL_TAG EVDS_MESH_INTERNAL;
 /// The following vector types are currently defined:
 ///  Type								| Units		| Description
 /// ----------------------------------- | ----------|-------------
-/// @c EVDS_VECTOR_DIRECTION			| None		| Direction vector 
+/// @c EVDS_VECTOR_DIRECTION			| None		| Direction vector
+/// @c EVDS_VECTOR_DISPLACEMENT			| m			| Position displacement vector
 /// @c EVDS_VECTOR_FORCE				| N			| Force vector (same type as the direction vector)
 /// @c EVDS_VECTOR_TORQUE				| N m		| Torque vector
 /// @c EVDS_VECTOR_POSITION				| m			| Position in 3D space
@@ -492,6 +493,10 @@ typedef int EVDS_Callback_SyntaxError(EVDS_OBJECT_LOADEX* info, const char* erro
 //#define EVDS_OBJECT_LOADEX_NO_SOLVER_STATE	32
 /// Load metadata objects (FIXME: add support for this)
 #define EVDS_OBJECT_LOADEX_LOAD_METADATA		64
+/// Do not initialize objects when loading
+#define EVDS_OBJECT_LOADEX_DONT_INITIALIZE		128
+/// Use blocking initialization
+#define EVDS_OBJECT_LOADEX_BLOCKING_INITIALIZE	256
 
 /// Save only children of the object passed into EVDS_Object_SaveEx()
 #define EVDS_OBJECT_SAVEEX_ONLY_CHILDREN		1
@@ -906,6 +911,8 @@ typedef int EVDS_Callback_GetRadiationData(EVDS_OBJECT* object, EVDS_VECTOR* r, 
 
 /// Direction vector (units: \f$dimensionless\f$)
 #define EVDS_VECTOR_DIRECTION				10
+/// Position displacement vector (units: \f$m\f$)
+#define EVDS_VECTOR_DISPLACEMENT			10
 /// Force vector (units: \f$N\f$)
 #define EVDS_VECTOR_FORCE					10
 /// Torque vector (units: \f$N \cdot m\f$)

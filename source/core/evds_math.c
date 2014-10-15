@@ -34,8 +34,7 @@
 /// @brief Convert vector to target coordinates (short conversion: two vectors are
 ///  located in coordinate systems, one of which is inside another)
 ////////////////////////////////////////////////////////////////////////////////
-void EVDS_Vector_ShortConvert(EVDS_VECTOR* target, EVDS_VECTOR* vector, EVDS_OBJECT* target_coordinates)
-{
+void EVDS_Vector_ShortConvert(EVDS_VECTOR* target, EVDS_VECTOR* vector, EVDS_OBJECT* target_coordinates) {
 	int target_is_child = 0;
 	//Child and parent coordinate systems
 	EVDS_OBJECT* child_coordinates;
@@ -271,8 +270,7 @@ void EVDS_Vector_ShortConvert(EVDS_VECTOR* target, EVDS_VECTOR* vector, EVDS_OBJ
 /// @param[in] target_coordinates Target coordinates, to which the vector must be converted
 /// @returns Vector in target coordinates
 ////////////////////////////////////////////////////////////////////////////////
-void EVDS_Vector_Convert(EVDS_VECTOR* target, EVDS_VECTOR* v, EVDS_OBJECT* target_coordinates)
-{
+void EVDS_Vector_Convert(EVDS_VECTOR* target, EVDS_VECTOR* v, EVDS_OBJECT* target_coordinates) {
 	//Do not convert if already in correct coordinates
 	if (target_coordinates == v->coordinate_system) {
 		if (target != v) memcpy(target,v,sizeof(EVDS_VECTOR));
@@ -652,8 +650,7 @@ void EVDS_Vector_SetVelocityVector(EVDS_VECTOR* v, EVDS_VECTOR* velocity) {
 /// @param[in] v Vector that will be copied to target
 /// @returns Copy of the source vector
 ////////////////////////////////////////////////////////////////////////////////
-void EVDS_Vector_Copy(EVDS_VECTOR* target, EVDS_VECTOR* v)
-{
+void EVDS_Vector_Copy(EVDS_VECTOR* target, EVDS_VECTOR* v) {
 	if (v == target) return;
 	memcpy(target,v,sizeof(EVDS_VECTOR));
 }
@@ -709,10 +706,10 @@ void EVDS_StateVector_Derivative_Copy(EVDS_STATE_VECTOR_DERIVATIVE* target, EVDS
 /// @param[in] v2 Second vector
 /// @param[out] target \f$v1 + v2\f$
 ////////////////////////////////////////////////////////////////////////////////
-void EVDS_Vector_Add(EVDS_VECTOR* target, EVDS_VECTOR* v1, EVDS_VECTOR* v2)
-{
+void EVDS_Vector_Add(EVDS_VECTOR* target, EVDS_VECTOR* v1, EVDS_VECTOR* v2) {
 	EVDS_VECTOR v21;
-	EVDS_ASSERT(v1->derivative_level == v2->derivative_level);
+	EVDS_ASSERT((v1->derivative_level == v2->derivative_level) || 
+		((v1->derivative_level == EVDS_VECTOR_POSITION) && (v2->derivative_level == EVDS_VECTOR_DISPLACEMENT)));
 	EVDS_Vector_Convert(&v21,v2,v1->coordinate_system);
 
 	target->x = v1->x + v21.x;
@@ -732,10 +729,10 @@ void EVDS_Vector_Add(EVDS_VECTOR* target, EVDS_VECTOR* v1, EVDS_VECTOR* v2)
 /// @param[in] v2 Second vector
 /// @param[out] target \f$v1 - v2\f$
 ////////////////////////////////////////////////////////////////////////////////
-void EVDS_Vector_Subtract(EVDS_VECTOR* target, EVDS_VECTOR* v1, EVDS_VECTOR* v2)
-{
+void EVDS_Vector_Subtract(EVDS_VECTOR* target, EVDS_VECTOR* v1, EVDS_VECTOR* v2) {
 	EVDS_VECTOR v21;
-	EVDS_ASSERT(v1->derivative_level == v2->derivative_level);
+	EVDS_ASSERT((v1->derivative_level == v2->derivative_level) ||
+		((v1->derivative_level == EVDS_VECTOR_POSITION) && (v2->derivative_level == EVDS_VECTOR_DISPLACEMENT)));
 	EVDS_Vector_Convert(&v21,v2,v1->coordinate_system);
 
 	target->x = v1->x - v21.x;
@@ -749,8 +746,7 @@ void EVDS_Vector_Subtract(EVDS_VECTOR* target, EVDS_VECTOR* v1, EVDS_VECTOR* v2)
 ////////////////////////////////////////////////////////////////////////////////
 /// @brief Finds cross-product between vectors v1 and v2
 ////////////////////////////////////////////////////////////////////////////////
-void EVDS_Vector_Cross(EVDS_VECTOR* target, EVDS_VECTOR* v1, EVDS_VECTOR* v2)
-{
+void EVDS_Vector_Cross(EVDS_VECTOR* target, EVDS_VECTOR* v1, EVDS_VECTOR* v2) {
 	EVDS_REAL x,y,z;
 	//EVDS_ASSERT(v1->derivative_level == v2->derivative_level);
 	//EVDS_Vector_Move(v2,v2,v1);
@@ -810,8 +806,7 @@ void EVDS_Vector_Cross(EVDS_VECTOR* target, EVDS_VECTOR* v1, EVDS_VECTOR* v2)
 /// @param[in] v2 Second vector
 /// @param[out] target \f$v1 \cdot v2\f$
 ////////////////////////////////////////////////////////////////////////////////
-void EVDS_Vector_Dot(EVDS_REAL* target, EVDS_VECTOR* v1, EVDS_VECTOR* v2)
-{
+void EVDS_Vector_Dot(EVDS_REAL* target, EVDS_VECTOR* v1, EVDS_VECTOR* v2) {
 	EVDS_VECTOR v21;
 	EVDS_ASSERT(v1->derivative_level == v2->derivative_level);
 	EVDS_Vector_Convert(&v21,v2,v1->coordinate_system);
@@ -850,8 +845,8 @@ void EVDS_Vector_Length(EVDS_REAL* target, EVDS_VECTOR* v) {
 ////////////////////////////////////////////////////////////////////////////////
 /// @brief Check if two vectors are equal to eachother
 ////////////////////////////////////////////////////////////////////////////////
-int EVDS_Vector_Equal(EVDS_VECTOR* v1, EVDS_VECTOR* v2)
-{
+int EVDS_Vector_Equal(EVDS_VECTOR* v1, EVDS_VECTOR* v2) {
+	EVDS_ASSERT(v1->derivative_level == v2->derivative_level);
 	EVDS_REAL distance2 = 
 		(v1->x - v2->x)*(v1->x - v2->x) +
 		(v1->y - v2->y)*(v1->y - v2->y) +
