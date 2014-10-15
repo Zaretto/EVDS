@@ -448,7 +448,13 @@ int EVDS_Internal_LoadFile(EVDS_OBJECT* parent, SIMC_XML_DOCUMENT* doc, SIMC_XML
 					EVDS_ERRCHECK(info->OnLoadObject(info,object));
 				}
 			} else {
-				EVDS_Object_Initialize(object,0);
+				if (info->flags == 0xFFFFFFFF) {
+					EVDS_Object_Initialize(object, 1); //FIXME: should default be blocking or non-blocking?
+				} else {
+					if (!(info->flags & EVDS_OBJECT_LOADEX_DONT_INITIALIZE)) {
+						EVDS_Object_Initialize(object, info->flags & EVDS_OBJECT_LOADEX_BLOCKING_INITIALIZE);
+					}
+				}
 			}
 
 			EVDS_ERRCHECK(SIMC_XML_Iterate(doc,root,&element,"object"));

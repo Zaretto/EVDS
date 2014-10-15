@@ -44,7 +44,7 @@ int Test_InList(void* ptr, SIMC_LIST* list) {
 
 void main() {
 	//Test_EVDS_SYSTEM();
-	Test_EVDS_RIGID_BODY();
+	//Test_EVDS_RIGID_BODY();
 	//Test_EVDS_VECTOR();
 	//Test_EVDS_QUATERNION();
 	//Test_EVDS_FRAMES();
@@ -53,5 +53,29 @@ void main() {
 	//Test_EVDS_GIMBAL();
 	//Test_EVDS_ROCKET_ENGINE();
 	//Test_EVDS_WING();
+	EVDS_SYSTEM* system;
+	EVDS_OBJECT* root;
+	EVDS_System_Create(&system);
+	EVDS_RailroadSimulator_Register(system);
+	EVDS_System_GetRootInertialSpace(system, &root);
+
+	EVDS_OBJECT* object;
+	EVDS_Object_LoadFromString(root,
+		"<EVDS version=\"31\">"
+		"    <object type=\"railroad.track\">"
+		"        <parameter name=\"track.splines\">"
+		"            <spline p0=\"-10 0 0\" t0=\"10 0 0\" p1=\"0 0 0\" t1=\"10 0 0\" />"
+		"            <spline p1=\"0 10 0\" t1=\"0 10 0\" />"
+		"            <spline p1=\"10 10 0\" t1=\"10 10 0\" />"
+		"        </parameter>"
+		"    </object>"
+		"    <object type=\"railroad.track\">"
+		"        <parameter name=\"track.splines\">"
+		"            <spline p0=\"-100 -100 0\" t0=\"100 100 0\" p1=\"-10 0 0\" t1=\"10 0 0\" />"
+		"        </parameter>"
+		"    </object>"
+		"</EVDS>", &object);
+	EVDS_Object_Initialize(object, 1);
+
 	getchar();
 }
