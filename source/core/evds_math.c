@@ -1866,3 +1866,86 @@ void EVDS_StateVector_Derivative_Initialize(EVDS_STATE_VECTOR_DERIVATIVE* v, EVD
 	v->torque.coordinate_system = target_coordinates;
 	v->torque.derivative_level = EVDS_VECTOR_TORQUE;
 }
+
+
+
+
+////////////////////////////////////////////////////////////////////////////////
+/// @brief Add vector v1 to vector v2
+////////////////////////////////////////////////////////////////////////////////
+void EVDS_ShortVector_Add(EVDS_SHORT_VECTOR* target, EVDS_SHORT_VECTOR* v1, EVDS_SHORT_VECTOR* v2) {
+	target->x = v1->x + v2->x;
+	target->y = v1->y + v2->y;
+	target->z = v1->z + v2->z;
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+/// @brief Subtract vector v2 from vector v1
+////////////////////////////////////////////////////////////////////////////////
+void EVDS_ShortVector_Subtract(EVDS_SHORT_VECTOR* target, EVDS_SHORT_VECTOR* v1, EVDS_SHORT_VECTOR* v2) {
+	target->x = v1->x - v2->x;
+	target->y = v1->y - v2->y;
+	target->z = v1->z - v2->z;
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+/// @brief Finds cross-product between vectors v1 and v2
+////////////////////////////////////////////////////////////////////////////////
+void EVDS_ShortVector_Cross(EVDS_SHORT_VECTOR* target, EVDS_SHORT_VECTOR* v1, EVDS_SHORT_VECTOR* v2) {
+	EVDS_REAL x, y, z;
+
+	x = v1->y*v2->z - v1->z*v2->y;
+	y = v1->z*v2->x - v1->x*v2->z;
+	z = v1->x*v2->y - v1->y*v2->x;
+	target->x = x;
+	target->y = y;
+	target->z = z;
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+/// @brief Find dot product between vector v1 and v2 in coordinate system of vector v1
+////////////////////////////////////////////////////////////////////////////////
+void EVDS_ShortVector_Dot(EVDS_REAL* target, EVDS_SHORT_VECTOR* v1, EVDS_SHORT_VECTOR* v2) {
+	*target = v1->x*v2->x + v1->y*v2->y + v1->z*v2->z;
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+/// @brief Returns a normalized direction vector of v
+////////////////////////////////////////////////////////////////////////////////
+void EVDS_ShortVector_Normalize(EVDS_SHORT_VECTOR* target, EVDS_SHORT_VECTOR* v) {
+	EVDS_REAL mag = sqrt(v->x*v->x + v->y*v->y + v->z*v->z);
+	if (mag == 0.0) {
+		target->x = 0.0;
+		target->y = 0.0;
+		target->z = 0.0;
+	}
+	else {
+		target->x = v->x / mag;
+		target->y = v->y / mag;
+		target->z = v->z / mag;
+	}
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+/// @brief Return vector length
+////////////////////////////////////////////////////////////////////////////////
+void EVDS_ShortVector_Length(EVDS_REAL* target, EVDS_SHORT_VECTOR* v) {
+	*target = sqrt(v->x*v->x + v->y*v->y + v->z*v->z);
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+/// @brief Check if two vectors are equal to eachother
+////////////////////////////////////////////////////////////////////////////////
+int EVDS_ShortVector_Equal(EVDS_SHORT_VECTOR* v1, EVDS_SHORT_VECTOR* v2) {
+	EVDS_REAL distance2 =
+		(v1->x - v2->x)*(v1->x - v2->x) +
+		(v1->y - v2->y)*(v1->y - v2->y) +
+		(v1->z - v2->z)*(v1->z - v2->z);
+	return distance2 < EVDS_EPSf;
+}

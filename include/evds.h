@@ -187,6 +187,17 @@ typedef struct EVDS_VECTOR_TAG {
 
 ////////////////////////////////////////////////////////////////////////////////
 /// @ingroup EVDS_MATH
+/// @brief Stores a 3D vector and no references to derivative or coordinate system
+////////////////////////////////////////////////////////////////////////////////
+typedef struct EVDS_SHORT_VECTOR_TAG {
+	EVDS_REAL x;								///< X vector component
+	EVDS_REAL y;								///< Y vector component
+	EVDS_REAL z;								///< Z vector component
+} EVDS_SHORT_VECTOR;
+
+
+////////////////////////////////////////////////////////////////////////////////
+/// @ingroup EVDS_MATH
 /// @brief Represents an orientation (attitude) of an object in the given coordinate system.
 ///
 /// The stored quaternion is represented as \f$q_0 + q_1 i + q_2 j + q_3 k\f$
@@ -1452,6 +1463,22 @@ EVDS_API void EVDS_Tensor_IsSymmetric(EVDS_VECTOR* mx, EVDS_VECTOR* my, EVDS_VEC
 EVDS_API void EVDS_StateVector_Initialize(EVDS_STATE_VECTOR* v, EVDS_OBJECT* target_coordinates);
 // Create new derivative of state vector
 EVDS_API void EVDS_StateVector_Derivative_Initialize(EVDS_STATE_VECTOR_DERIVATIVE* v, EVDS_OBJECT* target_coordinates);
+
+//
+EVDS_API void EVDS_ShortVector_Add(EVDS_SHORT_VECTOR* target, EVDS_SHORT_VECTOR* v1, EVDS_SHORT_VECTOR* v2);
+//
+EVDS_API void EVDS_ShortVector_Subtract(EVDS_SHORT_VECTOR* target, EVDS_SHORT_VECTOR* v1, EVDS_SHORT_VECTOR* v2);
+//
+EVDS_API void EVDS_ShortVector_Cross(EVDS_SHORT_VECTOR* target, EVDS_SHORT_VECTOR* v1, EVDS_SHORT_VECTOR* v2);
+//
+EVDS_API void EVDS_ShortVector_Dot(EVDS_REAL* target, EVDS_SHORT_VECTOR* v1, EVDS_SHORT_VECTOR* v2);
+//
+EVDS_API void EVDS_ShortVector_Normalize(EVDS_SHORT_VECTOR* target, EVDS_SHORT_VECTOR* v);
+//
+EVDS_API void EVDS_ShortVector_Length(EVDS_REAL* target, EVDS_SHORT_VECTOR* v);
+//
+EVDS_API int EVDS_ShortVector_Equal(EVDS_SHORT_VECTOR* v1, EVDS_SHORT_VECTOR* v2);
+
 ////////////////////////////////////////////////////////////////////////////////
 /// @}
 ////////////////////////////////////////////////////////////////////////////////

@@ -115,6 +115,9 @@ void EVDS_Log(int type, char* message, ...) {
 			break;
 		}
 	}
+
+	// Breakpoint
+	EVDS_BREAKPOINT();
 }
 
 
