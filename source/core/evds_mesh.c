@@ -888,12 +888,12 @@ int EVDS_Mesh_GenerateEx(EVDS_OBJECT* object, EVDS_MESH** p_mesh, EVDS_MESH_GENE
 	}
 
 	//Set invalid bounding box
-	mesh->bbox_min.x =  1.0f/EVDS_EPSf;
-	mesh->bbox_min.y =  1.0f/EVDS_EPSf;
-	mesh->bbox_min.z =  1.0f/EVDS_EPSf;
-	mesh->bbox_max.x = -1.0f/EVDS_EPSf;
-	mesh->bbox_max.y = -1.0f/EVDS_EPSf;
-	mesh->bbox_max.z = -1.0f/EVDS_EPSf;
+	mesh->bbox_min.x =  EVDS_INFINITYf;
+	mesh->bbox_min.y =  EVDS_INFINITYf;
+	mesh->bbox_min.z =  EVDS_INFINITYf;
+	mesh->bbox_max.x = -EVDS_INFINITYf;
+	mesh->bbox_max.y = -EVDS_INFINITYf;
+	mesh->bbox_max.z = -EVDS_INFINITYf;
 
 	//Create internal mesh information
 	mesh->internal = (EVDS_MESH_INTERNAL*)malloc(sizeof(EVDS_MESH_INTERNAL));

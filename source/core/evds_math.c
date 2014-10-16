@@ -843,6 +843,22 @@ void EVDS_Vector_Length(EVDS_REAL* target, EVDS_VECTOR* v) {
 
 
 ////////////////////////////////////////////////////////////////////////////////
+/// @brief Return distance between two vectors
+////////////////////////////////////////////////////////////////////////////////
+void EVDS_Vector_Distance(EVDS_REAL* target, EVDS_VECTOR* v1, EVDS_VECTOR* v2)
+{
+	EVDS_VECTOR v21;
+	EVDS_ASSERT(v1->derivative_level == v2->derivative_level);
+	EVDS_Vector_Convert(&v21, v2, v1->coordinate_system);
+
+	*target = sqrt(
+		(v1->x - v21.x)*(v1->x - v21.x) +
+		(v1->y - v21.y)*(v1->y - v21.y) +
+		(v1->z - v21.z)*(v1->z - v21.z));
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
 /// @brief Check if two vectors are equal to eachother
 ////////////////////////////////////////////////////////////////////////////////
 int EVDS_Vector_Equal(EVDS_VECTOR* v1, EVDS_VECTOR* v2) {
@@ -1936,6 +1952,18 @@ void EVDS_ShortVector_Normalize(EVDS_SHORT_VECTOR* target, EVDS_SHORT_VECTOR* v)
 ////////////////////////////////////////////////////////////////////////////////
 void EVDS_ShortVector_Length(EVDS_REAL* target, EVDS_SHORT_VECTOR* v) {
 	*target = sqrt(v->x*v->x + v->y*v->y + v->z*v->z);
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+/// @brief
+////////////////////////////////////////////////////////////////////////////////
+void EVDS_ShortVector_Distance(EVDS_REAL* target, EVDS_SHORT_VECTOR* v1, EVDS_SHORT_VECTOR* v2)
+{
+	*target = sqrt(
+		(v1->x - v2->x)*(v1->x - v2->x) +
+		(v1->y - v2->y)*(v1->y - v2->y) +
+		(v1->z - v2->z)*(v1->z - v2->z));
 }
 
 

@@ -206,7 +206,7 @@ int EVDS_Internal_LoadParameter(EVDS_OBJECT* object, EVDS_VARIABLE* parent_varia
 
 
 	//Add variable to object or to parent variable
-	if (object) {
+	if (!parent_variable) {
 		EVDS_ERRCHECK(EVDS_Object_AddVariable(object,name,type,&variable));
 	} else {
 		if (element) {
@@ -252,40 +252,40 @@ int EVDS_Internal_LoadParameter(EVDS_OBJECT* object, EVDS_VARIABLE* parent_varia
 		EVDS_VARIABLE_FUNCTION* function = (EVDS_VARIABLE_FUNCTION*)variable->value;
 
 		//Read all nested data entries
-		EVDS_ERRCHECK(SIMC_XML_GetElement(doc,element,&nested_element,0));
+		EVDS_ERRCHECK(SIMC_XML_GetElement(doc, element, &nested_element, 0));;
 		while (nested_element) {
-			EVDS_ERRCHECK(EVDS_Internal_LoadParameter(0,variable,doc,nested_element,0,info,1));
-			EVDS_ERRCHECK(SIMC_XML_Iterate(doc,element,&nested_element,0));
+			EVDS_ERRCHECK(EVDS_Internal_LoadParameter(0, variable, doc, nested_element, 0, info, 1));;
+			EVDS_ERRCHECK(SIMC_XML_Iterate(doc, element, &nested_element, 0));;
 		}
 
 		//Load all nested attributes
-		EVDS_ERRCHECK(SIMC_XML_GetFirstAttribute(doc,element,&nested_attribute));
+		EVDS_ERRCHECK(SIMC_XML_GetFirstAttribute(doc, element, &nested_attribute));;
 		while (nested_attribute) {
-			EVDS_ERRCHECK(EVDS_Internal_LoadParameter(0,variable,doc,0,nested_attribute,info,1));
+			EVDS_ERRCHECK(EVDS_Internal_LoadParameter(object, variable, doc, 0, nested_attribute, info, 1));
 			EVDS_ERRCHECK(SIMC_XML_IterateAttributes(doc,nested_attribute,&nested_attribute));
 		}
 
 		//Initialize function table
 		function->constant_value = 0.0;
-		EVDS_ERRCHECK(EVDS_InternalVariable_InitializeFunction(variable,function,value));
+		EVDS_ERRCHECK(EVDS_InternalVariable_InitializeFunction(variable, function, value));;
 	} else if (element) {
 		//Save text value of the nested element
 		if (value) {
-			EVDS_ERRCHECK(EVDS_Variable_SetString(variable,value,strlen(value)));
+			EVDS_ERRCHECK(EVDS_Variable_SetString(variable, value, strlen(value)));;
 		}
 
 		//Load all nested parameters
-		EVDS_ERRCHECK(SIMC_XML_GetElement(doc,element,&nested_element,0));
+		EVDS_ERRCHECK(SIMC_XML_GetElement(doc, element, &nested_element, 0));;
 		while (nested_element) {
-			EVDS_ERRCHECK(EVDS_Internal_LoadParameter(0,variable,doc,nested_element,0,info,nested_in_function));
-			EVDS_ERRCHECK(SIMC_XML_Iterate(doc,element,&nested_element,0));
+			EVDS_ERRCHECK(EVDS_Internal_LoadParameter(object, variable, doc, nested_element, 0, info, nested_in_function));
+			EVDS_ERRCHECK(SIMC_XML_Iterate(doc, element, &nested_element, 0));;
 		}
 
 		//Load all nested attributes
 		EVDS_ERRCHECK(SIMC_XML_GetFirstAttribute(doc,element,&nested_attribute));
 		while (nested_attribute) {
-			EVDS_ERRCHECK(EVDS_Internal_LoadParameter(0,variable,doc,0,nested_attribute,info,nested_in_function));
-			EVDS_ERRCHECK(SIMC_XML_IterateAttributes(doc,nested_attribute,&nested_attribute));
+			EVDS_ERRCHECK(EVDS_Internal_LoadParameter(object, variable, doc, 0, nested_attribute, info, nested_in_function));;
+			EVDS_ERRCHECK(SIMC_XML_IterateAttributes(doc, nested_attribute, &nested_attribute));;
 		}
 	}
 	return EVDS_OK;

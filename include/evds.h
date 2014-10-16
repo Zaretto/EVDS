@@ -1394,6 +1394,8 @@ EVDS_API void EVDS_Vector_Dot(EVDS_REAL* target, EVDS_VECTOR* v1, EVDS_VECTOR* v
 EVDS_API void EVDS_Vector_Normalize(EVDS_VECTOR* target, EVDS_VECTOR* v);
 // Return vector length
 EVDS_API void EVDS_Vector_Length(EVDS_REAL* target, EVDS_VECTOR* v);
+// Return distance between two vectors
+EVDS_API void EVDS_Vector_Distance(EVDS_REAL* target, EVDS_VECTOR* v1, EVDS_VECTOR* v2);
 // Check if two vectors are equal
 EVDS_API int EVDS_Vector_Equal(EVDS_VECTOR* v1, EVDS_VECTOR* v2);
 
@@ -1476,6 +1478,8 @@ EVDS_API void EVDS_ShortVector_Dot(EVDS_REAL* target, EVDS_SHORT_VECTOR* v1, EVD
 EVDS_API void EVDS_ShortVector_Normalize(EVDS_SHORT_VECTOR* target, EVDS_SHORT_VECTOR* v);
 //
 EVDS_API void EVDS_ShortVector_Length(EVDS_REAL* target, EVDS_SHORT_VECTOR* v);
+//
+EVDS_API void EVDS_ShortVector_Distance(EVDS_REAL* target, EVDS_SHORT_VECTOR* v1, EVDS_SHORT_VECTOR* v2);
 //
 EVDS_API int EVDS_ShortVector_Equal(EVDS_SHORT_VECTOR* v1, EVDS_SHORT_VECTOR* v2);
 
