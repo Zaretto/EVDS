@@ -644,6 +644,64 @@ void EVDS_Vector_SetVelocityVector(EVDS_VECTOR* v, EVDS_VECTOR* velocity) {
 
 
 ////////////////////////////////////////////////////////////////////////////////
+/// @brief Change position where force is applied
+////////////////////////////////////////////////////////////////////////////////
+void EVDS_Vector_MoveForceToPosition(EVDS_VECTOR* force, EVDS_VECTOR* torque, EVDS_VECTOR* new_position) {
+	EVDS_VECTOR force_position;
+	EVDS_ASSERT(force->derivative_level == EVDS_VECTOR_FORCE);
+	EVDS_ASSERT(new_position->derivative_level == EVDS_VECTOR_POSITION);
+
+	//Move force into target position
+	EVDS_Vector_GetPositionVector(force, &force_position); //Get force position
+	if (!force_position.coordinate_system) EVDS_Vector_Copy(&force_position, new_position);
+	EVDS_Vector_SetPositionVector(force, new_position); //Put force into center of mass
+	EVDS_Vector_Subtract(&force_position, &force_position, new_position); //Find moment arm
+
+	//Compute torque relative to center of mass
+	EVDS_Vector_Cross(torque, &force_position, force);
+	EVDS_Vector_SetPositionVector(torque, new_position);
+
+	//Make sure this returns correct vector
+	torque->pcoordinate_system = 0;
+	torque->vcoordinate_system = 0;
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+/// @brief Change position where torque is applied
+////////////////////////////////////////////////////////////////////////////////
+void EVDS_Vector_MoveTorqueToPosition(EVDS_VECTOR* force, EVDS_VECTOR* torque, EVDS_VECTOR* new_position) {
+	EVDS_VECTOR torque_position;
+	EVDS_ASSERT(torque->derivative_level == EVDS_VECTOR_TORQUE);
+	EVDS_ASSERT(new_position->derivative_level == EVDS_VECTOR_POSITION);
+
+	//Move torque into target position
+	EVDS_Vector_GetPositionVector(torque, &torque_position); //Get force position
+	if (!torque_position.coordinate_system) EVDS_Vector_Copy(&torque_position, new_position);
+	EVDS_Vector_SetPositionVector(torque, new_position); //Put force into center of mass
+	EVDS_Vector_Subtract(&torque_position, &torque_position, new_position); //Find moment arm
+
+	//Compute torque relative to center of mass
+	EVDS_Vector_Cross(force, torque, &torque_position);
+	EVDS_Vector_SetPositionVector(force, new_position);
+
+	//Make sure this returns correct vector (FIXME apply this to all operations!)
+	force->pcoordinate_system = 0;
+	force->vcoordinate_system = 0;
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+/// @brief Nullify the vector velocity and position
+///
+/// This function will set position and velocity vectors of the target vector to zero
+////////////////////////////////////////////////////////////////////////////////
+void EVDS_Vector_NullifyPositionAndVelocity(EVDS_VECTOR* v) {
+	//FIXME
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
 /// @brief Copies data from source vector to target vector.
 ///
 /// @param[out] target Target vector

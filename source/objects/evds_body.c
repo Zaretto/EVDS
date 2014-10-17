@@ -478,19 +478,13 @@ int EVDS_InternalRigidBody_Integrate(EVDS_SYSTEM* system, EVDS_SOLVER* solver, E
 		//------------------------------------------------------------------
 		// Calculate force around current rigid bodies CM
 		//------------------------------------------------------------------
-		//Convert force into vessel coordinates
+		// Convert force into vessel coordinates
 		EVDS_Vector_Convert(&force,&child_derivative.force,object);
 
-		//Move force into center of mass, compute position relative to center of mass
-		EVDS_Vector_GetPositionVector(&force,&force_position); //Get force position
-		if (!force_position.coordinate_system) EVDS_Vector_Copy(&force_position,&cm);
-		EVDS_Vector_SetPositionVector(&force,&cm); //Put force into center of mass
-		EVDS_Vector_Subtract(&force_position,&force_position,&cm); //Find moment arm
+		// Move this force vector into center of mass (and calculate new torque that corresponds to this change)
+		EVDS_Vector_MoveForceToPosition(&force, &torque, &cm);
 
-		//Compute torque relative to center of mass
-		EVDS_Vector_Cross(&torque,&force_position,&force);
-
-		//Accumulate forces and torques
+		// Accumulate forces and torques
 		EVDS_Vector_Add(&cm_force,&cm_force,&force);
 		EVDS_Vector_Add(&cm_torque,&cm_torque,&torque);
 
@@ -522,19 +516,31 @@ int EVDS_InternalRigidBody_Integrate(EVDS_SYSTEM* system, EVDS_SOLVER* solver, E
 	//------------------------------------------------------------------
 	// Convert force into acceleration
 	//------------------------------------------------------------------
-	//Store force (as force in center of mass) in the derivative
+	// Store force (as force in center of mass) in the derivative
 	EVDS_Vector_Copy(&derivative->force,&cm_force);
 	EVDS_Vector_SetPositionVector(&derivative->force,&cm);
 
-	//Convert force to linear acceleration (a = F/m)
-	EVDS_Vector_Multiply(&cm_a,&cm_force,1/mass); //Apply scalar scale (1/m)
-	cm_a.derivative_level = EVDS_VECTOR_ACCELERATION; //Force-change to acceleration vector
-	EVDS_Vector_SetPositionVector(&cm_a,&cm); //Acceleration located in CM of rigid body
+	// Convert force to linear acceleration (a = F/m)
+	/*EVDS_Vector_Multiply(&cm_a, &cm_force, 1 / mass); // Apply scalar scale (1/m)
+	cm_a.derivative_level = EVDS_VECTOR_ACCELERATION; // Force-change to acceleration vector
+	EVDS_Vector_SetPositionVector(&cm_a, 0); // Assume it is acceleration of the origin point for the conversion
 
-	//Convert acceleration from body coordinates to inertial coordinates
+	// Convert acceleration from body coordinates to inertial coordinates.
+	// Because we assume this acceleration is in origin point, there will be no fictious components
+	EVDS_Vector_Convert(&cm_a, &cm_a, parent_coordinates);
+
+	//Apply acceleration to the object
+	EVDS_Vector_Add(&derivative->acceleration, &derivative->acceleration, &cm_a);*/
+
+	// Convert force to linear acceleration (a = F/m)
+	EVDS_Vector_Multiply(&cm_a,&cm_force,1/mass); // Apply scalar scale (1/m)
+	cm_a.derivative_level = EVDS_VECTOR_ACCELERATION; // Force-change to acceleration vector
+	EVDS_Vector_SetPositionVector(&cm_a,&cm); // Acceleration is located in CM of rigid body
+
+	// Convert acceleration from body coordinates to inertial coordinates
 	EVDS_Vector_Convert(&cm_a,&cm_a,parent_coordinates);
-	//At this point acceleration contains extra components due to motion of CM frame
-	//an rotation of CM point in body frame. The will be removed later
+	// At this point acceleration contains extra components due to motion of CM frame
+	// and rotation of CM point in body frame. The will be removed later
 
 	//Apply acceleration to the object
 	EVDS_Vector_Add(&derivative->acceleration,&derivative->acceleration,&cm_a);

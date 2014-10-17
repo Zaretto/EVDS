@@ -32,7 +32,7 @@ extern "C" {
 ////////////////////////////////////////////////////////////////////////////////
 // Library management
 ////////////////////////////////////////////////////////////////////////////////
-#define EVDS_VERSION			36
+#define EVDS_VERSION			37
 #ifndef EVDS_DYNAMIC
 #	define EVDS_API
 #else
@@ -1372,6 +1372,13 @@ EVDS_API void EVDS_Vector_SetVelocity(EVDS_VECTOR* target, EVDS_OBJECT* target_c
 EVDS_API void EVDS_Vector_GetVelocityVector(EVDS_VECTOR* v, EVDS_VECTOR* velocity);
 // Shortcut to set velocity by vector
 EVDS_API void EVDS_Vector_SetVelocityVector(EVDS_VECTOR* v, EVDS_VECTOR* velocity);
+
+// Change position where force is applied
+EVDS_API void EVDS_Vector_MoveForceToPosition(EVDS_VECTOR* force, EVDS_VECTOR* torque, EVDS_VECTOR* new_position);
+// Change position where torque is applied
+EVDS_API void EVDS_Vector_MoveTorqueToPosition(EVDS_VECTOR* force, EVDS_VECTOR* torque, EVDS_VECTOR* new_position);
+// Nullify the vector velocity and position
+EVDS_API void EVDS_Vector_NullifyPositionAndVelocity(EVDS_VECTOR* v);
 
 // Copy one vector into another
 EVDS_API void EVDS_Vector_Copy(EVDS_VECTOR* target, EVDS_VECTOR* v);
