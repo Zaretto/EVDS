@@ -2305,6 +2305,13 @@ int EVDS_Object_GetStateVector(EVDS_OBJECT* object, EVDS_STATE_VECTOR* vector) {
 	if (object->destroyed) return EVDS_ERROR_INVALID_OBJECT;
 #endif
 
+	// If object is being integrated, return private state vector instead
+#ifndef EVDS_SINGLETHREADED
+	if (SIMC_Thread_GetUniqueID() == object->integrate_thread) {
+		return EVDS_InternalObject_GetPrivateStateVector(object, vector);
+	}
+#endif
+
 	//Get state vector data
 	SIMC_SRW_EnterRead(object->state_lock);
 	memcpy(vector,&object->state,sizeof(EVDS_STATE_VECTOR));
@@ -2357,6 +2364,13 @@ int EVDS_Object_SetStateVector(EVDS_OBJECT* object, EVDS_STATE_VECTOR* vector) {
 	if (object->destroyed) return EVDS_ERROR_INVALID_OBJECT;
 #endif
 
+	// If object is being integrated, any changes to its state vector must reflect in private state vector instead
+#ifndef EVDS_SINGLETHREADED
+	if (SIMC_Thread_GetUniqueID() == object->integrate_thread) {
+		return EVDS_InternalObject_SetPrivateStateVector(object, vector);
+	}
+#endif
+
 	//Convert the state vector (FIXME: conversion results in invalid doubles somewhere in the converted vector
 	// must be looked into it)
 	EVDS_Vector_Convert(&new_vector.position,&vector->position,object->parent);
@@ -2401,7 +2415,7 @@ int EVDS_Object_SetStateVector(EVDS_OBJECT* object, EVDS_STATE_VECTOR* vector) {
 
 #ifndef EVDS_SINGLETHREADED
 ////////////////////////////////////////////////////////////////////////////////
-/// @brief Set private state vector derivative of an object.
+/// @brief Set private state vector of an object.
 ///
 /// Private state vector is used by EVDS_Object_Integrate(), and only means something
 /// inside an EVDS_Object_Integrate() call.
@@ -2414,6 +2428,34 @@ int EVDS_InternalObject_SetPrivateStateVector(EVDS_OBJECT* object, EVDS_STATE_VE
 #endif
 
 	memcpy(&object->private_state,vector,sizeof(EVDS_STATE_VECTOR));
+	return EVDS_OK;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+/// @brief Get private state vector of an object
+///
+/// Private state vector is used by EVDS_Object_Integrate(), and only means something
+/// inside an EVDS_Object_Integrate() call.
+////////////////////////////////////////////////////////////////////////////////
+int EVDS_InternalObject_GetPrivateStateVector(EVDS_OBJECT* object, EVDS_STATE_VECTOR* vector) {
+	if (!object) return EVDS_ERROR_BAD_PARAMETER;
+	if (!vector) return EVDS_ERROR_BAD_PARAMETER;
+#ifndef EVDS_SINGLETHREADED
+	if (object->destroyed) return EVDS_ERROR_INVALID_OBJECT;
+#endif
+
+	//Get state vector data
+	memcpy(vector, &object->private_state, sizeof(EVDS_STATE_VECTOR));
+
+	//Update internal vector information
+	EVDS_Vector_SetPositionVector(&vector->velocity, &vector->position);
+	EVDS_Vector_SetPositionVector(&vector->acceleration, &vector->position);
+	EVDS_Vector_SetPositionVector(&vector->angular_velocity, &vector->position);
+	EVDS_Vector_SetPositionVector(&vector->angular_acceleration, &vector->position);
+
+	EVDS_Vector_SetVelocityVector(&vector->acceleration, &vector->velocity);
+	EVDS_Vector_SetVelocityVector(&vector->angular_velocity, &vector->velocity);
+	EVDS_Vector_SetVelocityVector(&vector->angular_acceleration, &vector->velocity);
 	return EVDS_OK;
 }
 #endif
@@ -2541,7 +2583,7 @@ int EVDS_Object_GetCoMPosition(EVDS_OBJECT* object, EVDS_VECTOR* cm) { //FIXME: 
 	if (object->destroyed) return EVDS_ERROR_INVALID_OBJECT;
 #endif
 
-	if (EVDS_Object_GetVariable(object,"total_cm",&variable) == EVDS_OK) {
+	if ((EVDS_Object_GetVariable(object, "total_cm", &variable) == EVDS_OK) && (EVDS_RigidBody_IsConsistent(object) == EVDS_OK)) {
 		EVDS_Variable_GetVector(variable,cm);
 	} else if (EVDS_Object_GetVariable(object,"cm",&variable) == EVDS_OK) {
 		EVDS_Variable_GetVector(variable,cm);
@@ -2567,7 +2609,10 @@ int EVDS_InternalObject_SetPosition(EVDS_OBJECT* object, int use_cm, EVDS_OBJECT
 	if (use_cm) {
 		EVDS_VECTOR cm;
 		EVDS_Object_GetCoMPosition(object,&cm);
-		EVDS_Vector_Add(&temporary,&temporary,&cm);
+
+		// Treat CM position as displacement
+		cm.derivative_level = EVDS_VECTOR_DISPLACEMENT;
+		EVDS_Vector_Subtract(&temporary, &temporary, &cm);
 	}
 
 	//Convert into right coordinates

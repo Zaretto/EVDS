@@ -1,14 +1,13 @@
 #include "framework.h"
 
 void Test_EVDS_RIGID_BODY() {
-	START_TEST("Rigid body test") {
+	/*START_TEST("Rigid body basic integration test") {
 		int i;
 		EVDS_OBJECT* vessel;
 		EVDS_STATE_VECTOR state_vector;
 		EVDS_REAL x,y,z;
 
-		/// This test verifies that linear modifier creates children copies,
-		/// and that these copies are named correctly and present at their correct spots.
+		/// This test verifies basics of rigid body integration
 		ERROR_CHECK(EVDS_Object_LoadFromString(root,
 "<EVDS version=\"31\">"
 "    <object type=\"propagator_rk4\">"
@@ -47,8 +46,120 @@ void Test_EVDS_RIGID_BODY() {
 		REAL_EQUAL_TO_EPS(x,180,EVDS_EPSf);
 		REAL_EQUAL_TO_EPS(y,0,EVDS_EPSf);
 		REAL_EQUAL_TO_EPS(z,180,EVDS_EPSf);
+	} END_TEST*/
+
+
+	START_TEST("Rigid body rotation with offset CoM") {
+		int i;
+		EVDS_OBJECT* vessel;
+		EVDS_STATE_VECTOR state_vector;
+		EVDS_VECTOR CoM;
+		EVDS_REAL x, y, z;
+
+		/// This test verifies how rigid body responds to off-center forces
+		ERROR_CHECK(EVDS_Object_LoadFromString(root,
+			"<EVDS version=\"31\">"
+			"    <object type=\"propagator_rk4\">"
+			"        <object name=\"Vessel\" type=\"vessel\" x=\"-5\">"
+			"            <parameter name=\"cm\">5 0 0</parameter>"
+			"            <parameter name=\"mass\">1000</parameter>"
+			"            <parameter name=\"jx\">1 0 0</parameter>"
+			"            <parameter name=\"jy\">0 1 0</parameter>"
+			"            <parameter name=\"jz\">0 0 1</parameter>"
+			"        </object>"
+			"    </object>"
+			"</EVDS>", &object));
+		ERROR_CHECK(EVDS_Object_Initialize(object, 1));
+		ERROR_CHECK(EVDS_System_GetObjectByName(system, 0, "Vessel", &vessel));
+
+		// Give object basic angular rotation and initial state
+		EVDS_Object_GetStateVector(vessel, &state_vector);
+		EVDS_Vector_Set(&state_vector.angular_velocity, EVDS_VECTOR_ANGULAR_VELOCITY,
+			state_vector.angular_velocity.coordinate_system, 0, EVDS_RAD(90), 0);
+		EVDS_Object_SetStateVector(vessel, &state_vector);
+		EVDS_Object_SetCoMPosition(vessel, state_vector.velocity.coordinate_system, 0, 0, 0);
+		EVDS_Object_SetCoMVelocity(vessel, state_vector.velocity.coordinate_system, 0, 0, 0);
+
+		//Check CoM position
+		EVDS_Object_GetCoMPosition(vessel, &CoM);
+		EVDS_Vector_Convert(&CoM, &CoM, object);
+		REAL_EQUAL_TO_EPS(CoM.x, 0, EVDS_EPSf);
+		REAL_EQUAL_TO_EPS(CoM.y, 0, EVDS_EPSf);
+		REAL_EQUAL_TO_EPS(CoM.z, 0, EVDS_EPSf);
+
+		//Simulate for four seconds
+		for (i = 0; i < 40; i++) {
+			EVDS_Object_Solve(object, 0.1);
+		}
+
+		//Check if object COM stayed in same position
+		EVDS_Object_GetCoMPosition(vessel, &CoM);
+		EVDS_Vector_Convert(&CoM, &CoM, object);
+		REAL_EQUAL_TO_EPS(CoM.x, 0, 1e-5);
+		REAL_EQUAL_TO_EPS(CoM.y, 0, 1e-5);
+		REAL_EQUAL_TO_EPS(CoM.z, 0, 1e-5);
+
+		//Check angles
+		EVDS_Object_GetStateVector(vessel, &state_vector);
+		EVDS_Quaternion_ToEuler(&state_vector.orientation, state_vector.orientation.coordinate_system, &x, &y, &z);
+		x = EVDS_DEG(x);
+		y = EVDS_DEG(y);
+		z = EVDS_DEG(z);
+		REAL_EQUAL_TO_EPS(x, 0, EVDS_EPSf);
+		REAL_EQUAL_TO_EPS(y, 0, EVDS_EPSf);
+		REAL_EQUAL_TO_EPS(z, 0, EVDS_EPSf);
 	} END_TEST
 
+
+	/*START_TEST("Rigid body rotation under force") {
+		int i;
+		EVDS_OBJECT* vessel;
+		EVDS_STATE_VECTOR state_vector;
+		EVDS_VECTOR CoM;
+		EVDS_REAL x, y, z;
+
+		/// This test verifies how rigid body responds to off-center forces
+		ERROR_CHECK(EVDS_Object_LoadFromString(root,
+"<EVDS version=\"31\">"
+"    <object type=\"propagator_rk4\">"
+"        <object name=\"Vessel\" type=\"vessel\" x=\"-5\">"
+"            <parameter name=\"cm\">5 0 0</parameter>"
+"            <parameter name=\"mass\">1000</parameter>"
+"            <parameter name=\"jx\">1 0 0</parameter>"
+"            <parameter name=\"jy\">0 1 0</parameter>"
+"            <parameter name=\"jz\">0 0 1</parameter>"
+"            <object type=\"force\" x=\"10\" y=\"0\" z=\"0\">"
+"                <parameter name=\"magnitude\">0 0 -000</parameter>"
+"            </object>"
+"        </object>"
+"    </object>"
+"</EVDS>", &object));
+		ERROR_CHECK(EVDS_Object_Initialize(object, 1));
+		ERROR_CHECK(EVDS_System_GetObjectByName(system, 0, "Vessel", &vessel));
+
+		// Give object basic angular rotation and initial state
+		EVDS_Object_GetStateVector(vessel, &state_vector);
+		EVDS_Object_SetAngularVelocity(vessel, state_vector.angular_velocity.coordinate_system, 0, EVDS_RAD(90), 0);
+		EVDS_Object_SetStateVector(vessel, &state_vector);
+		EVDS_Object_SetCoMPosition(vessel, state_vector.velocity.coordinate_system, 0, 0, 0);
+		EVDS_Object_SetCoMVelocity(vessel, state_vector.velocity.coordinate_system, 0, 0, 0);
+
+		//Simulate for two seconds
+		for (i = 0; i < 40; i++) {
+			EVDS_Object_Solve(object, 0.1);
+
+			EVDS_Object_GetStateVector(vessel, &state_vector);
+			EVDS_Quaternion_ToEuler(&state_vector.orientation, state_vector.orientation.coordinate_system, &x, &y, &z);
+			x = EVDS_DEG(x);
+			y = EVDS_DEG(y);
+			z = EVDS_DEG(z);
+			printf("A X %7.3f m  Y %7.3f m  Z %7.3f m   Pitch %.3f deg\n", state_vector.position.x, state_vector.position.y, state_vector.position.z, y);
+
+			EVDS_Object_GetCoMPosition(vessel, &CoM);
+			EVDS_Vector_Convert(&CoM, &CoM, object);
+			printf("B X %7.3f m  Y %7.3f m  Z %7.3f m   Pitch %.3f deg\n", CoM.x, CoM.y, CoM.z, y);
+		}
+	} END_TEST*/
 }
 
 

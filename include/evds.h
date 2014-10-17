@@ -145,6 +145,7 @@ typedef struct EVDS_MESH_INTERNAL_TAG EVDS_MESH_INTERNAL;
 /// @c EVDS_VECTOR_ACCELERATION			| m/s^2		| Acceleration
 /// @c EVDS_VECTOR_ANGULAR_VELOCITY		| rad/s		| Angular velocity
 /// @c EVDS_VECTOR_ANGULAR_ACCELERATION	| rad/s2	| Angular acceleration
+/// @c EVDS_VECTOR_INERTIAL_TRANSFORM	| N/A		| Special vector type to indicate that this vector must be transformed without non-inertial components
 ///
 /// @note Direction vectors share the vector type with force vectors - so a force vector can be treated as
 ///       directional one or vice versa without conversion.
@@ -938,6 +939,8 @@ typedef int EVDS_Callback_GetRadiationData(EVDS_OBJECT* object, EVDS_VECTOR* r, 
 #define EVDS_VECTOR_ANGULAR_VELOCITY		-1
 /// Angular acceleration vector (units: \f$\frac{rad}{sec^2}\f$)
 #define EVDS_VECTOR_ANGULAR_ACCELERATION	-2
+/// Vector that must be transformed without non-inertial components
+#define EVDS_VECTOR_INERTIAL_TRANSFORM		12
 
 /// @}
 ////////////////////////////////////////////////////////////////////////////////
@@ -1669,6 +1672,8 @@ EVDS_API int EVDS_Propagator_RK4_Register(EVDS_SYSTEM* system);
 
 // Update all vessels and detach them if required. Must be called by user to support "detach" variable for vessels.
 EVDS_API int EVDS_RigidBody_UpdateDetaching(EVDS_SYSTEM* system);
+// Returns EVDS_OK if rigid body is consistent (solver was called at least once)
+EVDS_API int EVDS_RigidBody_IsConsistent(EVDS_OBJECT* object);
 
 // Consume fuel from a fuel tank (thread-safe - does not leak fuel away)
 EVDS_API int EVDS_FuelTank_Consume(EVDS_OBJECT* tank, EVDS_REAL amount, EVDS_REAL* consumed);

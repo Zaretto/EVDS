@@ -107,6 +107,7 @@ void EVDS_Vector_ShortConvert(EVDS_VECTOR* target, EVDS_VECTOR* vector, EVDS_OBJ
 
 	//Execute transformation
 	switch (vector->derivative_level) {
+		case EVDS_VECTOR_INERTIAL_TRANSFORM:
 		case EVDS_VECTOR_ANGULAR_VELOCITY:
 		case EVDS_VECTOR_ANGULAR_ACCELERATION: 
 		case EVDS_VECTOR_FORCE:

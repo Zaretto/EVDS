@@ -522,14 +522,14 @@ struct EVDS_OBJECT_TAG {
 	// State in which object must be rendered
 	EVDS_STATE_VECTOR render_state;			//FIXME
 
-	// Public object state, used by functions which are not the integrating thread
+	// Locks and specific support for multithreading
 #ifndef EVDS_SINGLETHREADED
 	SIMC_SRW_ID state_lock;
 	SIMC_SRW_ID previous_state_lock;
-	EVDS_STATE_VECTOR private_state;
 	SIMC_THREAD_ID integrate_thread;		//Thread that's integrating position 
 											// (makes transformations use "state" and not "public_state")
 	SIMC_THREAD_ID render_thread;			//Rendering thread (overrides coordinate conversions)
+	EVDS_STATE_VECTOR private_state;		//Objects coordinates and state in space within an EVDS_Objects_Integrate() call
 #endif
 
 	// Fixed object information
@@ -667,6 +667,13 @@ struct EVDS_MESH_INTERNAL_TAG {
 ////////////////////////////////////////////////////////////////////////////////
 // Internal API
 ////////////////////////////////////////////////////////////////////////////////
+#ifndef EVDS_SINGLETHREADED
+// Set private state vector
+int EVDS_InternalObject_SetPrivateStateVector(EVDS_OBJECT* object, EVDS_STATE_VECTOR* vector);
+// Get private state vector
+int EVDS_InternalObject_GetPrivateStateVector(EVDS_OBJECT* object, EVDS_STATE_VECTOR* vector);
+#endif
+
 // Destroy object internal data
 int EVDS_InternalObject_DestroyData(EVDS_OBJECT* object);
 // Destroy variable internal data
@@ -684,12 +691,6 @@ int EVDS_InternalVariable_DestroyFunction(EVDS_VARIABLE* variable, EVDS_VARIABLE
 extern EVDS_Callback_Log* EVDS_Internal_LogCallback;
 // Log a message
 void EVDS_Log(int type, char* text, ...);
-
-
-#ifndef EVDS_SINGLETHREADED
-// Set private state vector
-int EVDS_InternalObject_SetPrivateStateVector(EVDS_OBJECT* object, EVDS_STATE_VECTOR* vector);
-#endif
 
 #ifdef __cplusplus
 }

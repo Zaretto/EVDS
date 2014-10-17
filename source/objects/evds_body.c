@@ -521,68 +521,44 @@ int EVDS_InternalRigidBody_Integrate(EVDS_SYSTEM* system, EVDS_SOLVER* solver, E
 	EVDS_Vector_SetPositionVector(&derivative->force,&cm);
 
 	// Convert force to linear acceleration (a = F/m)
-	/*EVDS_Vector_Multiply(&cm_a, &cm_force, 1 / mass); // Apply scalar scale (1/m)
-	cm_a.derivative_level = EVDS_VECTOR_ACCELERATION; // Force-change to acceleration vector
-	EVDS_Vector_SetPositionVector(&cm_a, 0); // Assume it is acceleration of the origin point for the conversion
+	EVDS_Vector_Multiply(&cm_a, &cm_force, 1 / mass); // Apply scalar scale (1/m)
+	EVDS_Vector_SetPositionVector(&cm_a, &cm);
 
-	// Convert acceleration from body coordinates to inertial coordinates.
-	// Because we assume this acceleration is in origin point, there will be no fictious components
+	// Because we're supposed to make calculations in inertial (but local) frame, 
+	// we will have to convert this vector in a special way (our normal local frame is non-inertial)
+	cm_a.derivative_level = EVDS_VECTOR_INERTIAL_TRANSFORM;
 	EVDS_Vector_Convert(&cm_a, &cm_a, parent_coordinates);
 
-	//Apply acceleration to the object
-	EVDS_Vector_Add(&derivative->acceleration, &derivative->acceleration, &cm_a);*/
-
-	// Convert force to linear acceleration (a = F/m)
-	EVDS_Vector_Multiply(&cm_a,&cm_force,1/mass); // Apply scalar scale (1/m)
-	cm_a.derivative_level = EVDS_VECTOR_ACCELERATION; // Force-change to acceleration vector
-	EVDS_Vector_SetPositionVector(&cm_a,&cm); // Acceleration is located in CM of rigid body
-
-	// Convert acceleration from body coordinates to inertial coordinates
-	EVDS_Vector_Convert(&cm_a,&cm_a,parent_coordinates);
-	// At this point acceleration contains extra components due to motion of CM frame
-	// and rotation of CM point in body frame. The will be removed later
-
-	//Apply acceleration to the object
-	EVDS_Vector_Add(&derivative->acceleration,&derivative->acceleration,&cm_a);
-
-	//Subtract acceleration of CM-centered coordinate frame (FIXME: optimize this out)
-	EVDS_Vector_Set(&cm_a,EVDS_VECTOR_ACCELERATION,object,0,0,0);
-	EVDS_Vector_SetPositionVector(&cm_a,&cm);
-	EVDS_Vector_Convert(&cm_a,&cm_a,parent_coordinates);
-	EVDS_Vector_Subtract(&derivative->acceleration,&derivative->acceleration,&cm_a);
+	// Apply acceleration to the object
+	cm_a.derivative_level = EVDS_VECTOR_ACCELERATION; // Explicitly change to acceleration vector
+	EVDS_Vector_Add(&derivative->acceleration, &derivative->acceleration, &cm_a);
 
 
 	//------------------------------------------------------------------
 	// Convert torque into angular acceleration
 	//------------------------------------------------------------------
 	//Store torque (as torque in center of mass) in the derivative
-	EVDS_Vector_Copy(&derivative->torque,&cm_torque);
-	EVDS_Vector_SetPositionVector(&derivative->torque,&cm);
+	EVDS_Vector_Copy(&derivative->torque, &cm_torque);
+	EVDS_Vector_SetPositionVector(&derivative->torque, &cm);
 
-	//Compute angular acceleration in inertial coordinates
+	//Compute angular acceleration in *local* inertial coordinate frame
 	//alpha_l = (I^-1) [T_l - w_l x (I*w_l)]
-	EVDS_Vector_Convert(&w,&state->angular_velocity,object); //Calculate w (in local coordinates)
-	EVDS_Tensor_MultiplyByVector(&Iw,&Ix,&Iy,&Iz,&w); //I*w
-	EVDS_Vector_Cross(&Iw,&w,&Iw); //w x [I*w]
+	EVDS_Vector_Convert(&w, &state->angular_velocity, object); //Calculate w (in local coordinates)
+	EVDS_Tensor_MultiplyByVector(&Iw, &Ix, &Iy, &Iz, &w); //I*w
+	EVDS_Vector_Cross(&Iw, &w, &Iw); //w x [I*w]
 	Iw.derivative_level = EVDS_VECTOR_TORQUE; //Treat [w x (I*w)] as torque
-	EVDS_Vector_Subtract(&Iw,&cm_torque,&Iw); //T - [w x (I*w)]
-	EVDS_Tensor_MultiplyByVector(&cm_alpha,&Ix1,&Iy1,&Iz1,&Iw); //alpha = I^-1 [T - w x (I*w)]
+	EVDS_Vector_Subtract(&Iw, &cm_torque, &Iw); //T - [w x (I*w)]
+	EVDS_Tensor_MultiplyByVector(&cm_alpha, &Ix1, &Iy1, &Iz1, &Iw); //alpha = I^-1 [T - w x (I*w)]
+	EVDS_Vector_SetPositionVector(&cm_alpha, &cm); //Set explicitly where vector is located
 
-	//Force alpha to be angular acceleration in CM of objects reference frame
-	cm_alpha.derivative_level = EVDS_VECTOR_ANGULAR_ACCELERATION;
-	EVDS_Vector_SetPositionVector(&cm_alpha,&cm);
-
-	//Move angular acceleration to inertial coordinates
+	// Because we're supposed to make calculations in inertial (but local) frame, 
+	// we will have to convert this vector in a special way (our normal local frame is non-inertial)
+	cm_a.derivative_level = EVDS_VECTOR_INERTIAL_TRANSFORM;
 	EVDS_Vector_Convert(&cm_alpha,&cm_alpha,parent_coordinates);
 
 	//Apply angular acceleration to the object
+	cm_alpha.derivative_level = EVDS_VECTOR_ANGULAR_ACCELERATION; // Explicitly change to angular acceleration vector
 	EVDS_Vector_Add(&derivative->angular_acceleration,&derivative->angular_acceleration,&cm_alpha);
-
-	//Subtract angular acceleration of CM-centered coordinate frame (FIXME: optimize this out)
-	EVDS_Vector_Set(&cm_alpha,EVDS_VECTOR_ANGULAR_ACCELERATION,object,0,0,0);
-	EVDS_Vector_SetPositionVector(&cm_alpha,&cm);
-	EVDS_Vector_Convert(&cm_alpha,&cm_alpha,parent_coordinates);
-	EVDS_Vector_Subtract(&derivative->angular_acceleration,&derivative->angular_acceleration,&cm_alpha);
 
 
 	//------------------------------------------------------------------
@@ -594,7 +570,9 @@ int EVDS_InternalRigidBody_Integrate(EVDS_SYSTEM* system, EVDS_SOLVER* solver, E
 
 	//Convert to local acceleration (acceleration corresponding to zero inertial in CM, in local frame)
 	EVDS_Vector_Convert(&cm_a,&cm_a,object);
+	//EVDS_Vector_Multiply(&cm_a, &cm_a, -1);
 	EVDS_Vector_SetPositionVector(&cm_a,&state->position);
+	
 
 	//Add this acceleration to force center of mass acceleration to be zero
 	EVDS_Vector_Convert(&cm_a,&cm_a,parent_coordinates);
@@ -733,6 +711,28 @@ int EVDS_RigidBody_UpdateDetaching(EVDS_SYSTEM* system) {
 		entry = SIMC_List_GetNext(list,entry);
 	}
 	return EVDS_OK;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+/// @brief Returns EVDS_OK if rigid body is consistent (solver was called at least once)
+////////////////////////////////////////////////////////////////////////////////
+int EVDS_RigidBody_IsConsistent(EVDS_OBJECT* object) {
+	EVDS_SOLVER_RIGID_USERDATA* userdata;
+
+	//Check correct object type
+	if (EVDS_Object_CheckType(object, "vessel") != EVDS_OK) {
+		if (EVDS_Object_CheckType(object, "rigid_body") != EVDS_OK) {
+			if (EVDS_Object_CheckType(object, "static_body") != EVDS_OK) return EVDS_ERROR_INVALID_OBJECT;
+		}
+	}
+
+	// Check if consistent
+	EVDS_ERRCHECK(EVDS_Object_GetSolverdata(object, &userdata));
+	if (userdata->is_consistent) {
+		return EVDS_OK;
+	} else {
+		return EVDS_ERROR_BAD_STATE;
+	}
 }
 
 

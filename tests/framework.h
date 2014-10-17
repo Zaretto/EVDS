@@ -83,6 +83,13 @@ int Test_InList(void* ptr, SIMC_LIST* list);
 		Test_Failure(#real,#value,__FILE__,__LINE__); \
 	}
 
+#define REAL_ANG_EQUAL_TO_EPS(real,value,eps) \
+	if (fabs((real > 180.0 ? real - 360.0 : real)  - value) < eps) { \
+		Test_Passed(#real, #value, __FILE__, __LINE__); \
+	} else { \
+		Test_Failure(#real, #value, __FILE__, __LINE__); \
+	}
+
 #define IS_IN_LIST(ptr,list) \
 	if (Test_InList(ptr,list)) { \
 		Test_Passed(#ptr,"IN "#list,__FILE__,__LINE__); \

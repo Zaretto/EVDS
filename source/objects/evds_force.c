@@ -87,6 +87,10 @@ int EVDS_InternalForce_Integrate(EVDS_SYSTEM* system, EVDS_SOLVER* solver, EVDS_
 	// Apply force and torque
 	EVDS_Variable_GetVector(userdata->force, &derivative->force);
 	EVDS_Variable_GetVector(userdata->torque, &derivative->torque);
+	
+	// Give them proper type
+	derivative->force.derivative_level = EVDS_VECTOR_FORCE;
+	derivative->torque.derivative_level = EVDS_VECTOR_TORQUE;
 
 	// Put them in origin of this object
 	EVDS_Vector_SetPosition(&derivative->force, object, 0.0, 0.0, 0.0);
