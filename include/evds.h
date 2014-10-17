@@ -1642,6 +1642,9 @@ EVDS_API int EVDS_Mesh_Destroy(EVDS_MESH* mesh);
 ////////////////////////////////////////////////////////////////////////////////
 // Rigid body (moving object with mass), vessel (same as rigid body), vessel part (static object)
 EVDS_API int EVDS_RigidBody_Register(EVDS_SYSTEM* system);
+// Linear force or torque
+EVDS_API int EVDS_Force_Register(EVDS_SYSTEM* system);
+
 // Rocket engine (creates force along it's forward axis)
 EVDS_API int EVDS_RocketEngine_Register(EVDS_SYSTEM* system);
 // Fuel tank (stores fuel)
@@ -1683,6 +1686,7 @@ EVDS_API int EVDS_Material_IsFuel(EVDS_SYSTEM* system, const char* name);
 /// Register all common objects
 #define EVDS_Common_Register(system) \
 EVDS_RigidBody_Register(system); \
+EVDS_Force_Register(system); \
 EVDS_RocketEngine_Register(system); \
 EVDS_FuelTank_Register(system); \
 EVDS_Gimbal_Register(system); \
