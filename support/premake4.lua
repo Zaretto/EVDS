@@ -71,7 +71,7 @@ project "evds"
            "../source/objects/**",
            "../source/propagators/**",
            "../source/models/**",
-		   "../private/**",
+           "../private/evds_**",
            "../include/**" }
    defines { "EVDS_LIBRARY", "SIMC_LIBRARY" }
    configuration { "*Dynamic*" }
@@ -117,6 +117,7 @@ if EVDS_STANDALONE ~= false then
    -- Add tutorials
    tutorial(1)
    tutorial(2)
+   --tutorial(3)
    
    -- Add unit tests
    project "evds_tests"
@@ -128,4 +129,18 @@ if EVDS_STANDALONE ~= false then
                     "../tests" }
       files { "../tests/**" }
       links { "evds", "simc" }
+      
+      
+   -- Projects internal to FoxWorks
+   if not os.isfile("F:\Development\Metrosim\Source\EVDS\private\evds_railsim.c") then
+      project "evds_railsim_test"
+         uuid "28E158E3-1600-4B73-C385-8E9228D33F19"
+         kind "ConsoleApp"
+         language "C"
+         includedirs { "../include",
+                       "../external/simc/include",
+                       "../external/glfw/include" }
+         files { "../private/railsim_test.c" }
+         links { "evds", "simc" }
+   end
 end
