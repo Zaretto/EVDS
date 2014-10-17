@@ -598,11 +598,15 @@ void EVDS_Vector_GetPositionVector(EVDS_VECTOR* v, EVDS_VECTOR* position) {
 /// @param[in] position Vector of EVDS_VECTOR_POSITION type, in which vector "v" is located
 ////////////////////////////////////////////////////////////////////////////////
 void EVDS_Vector_SetPositionVector(EVDS_VECTOR* v, EVDS_VECTOR* position) {
-	EVDS_ASSERT(position->derivative_level == EVDS_VECTOR_POSITION);
-	v->px = position->x;
-	v->py = position->y;
-	v->pz = position->z;
-	v->pcoordinate_system = position->coordinate_system;
+	if (position) {
+		EVDS_ASSERT(position->derivative_level == EVDS_VECTOR_POSITION);
+		v->px = position->x;
+		v->py = position->y;
+		v->pz = position->z;
+		v->pcoordinate_system = position->coordinate_system;
+	} else {
+		v->pcoordinate_system = 0;
+	}
 }
 
 
@@ -635,11 +639,15 @@ void EVDS_Vector_GetVelocityVector(EVDS_VECTOR* v, EVDS_VECTOR* velocity) {
 /// @brief Sets vector velocity by a velocity vector
 ////////////////////////////////////////////////////////////////////////////////
 void EVDS_Vector_SetVelocityVector(EVDS_VECTOR* v, EVDS_VECTOR* velocity) {
-	EVDS_ASSERT(velocity->derivative_level == EVDS_VECTOR_VELOCITY);
-	v->vx = velocity->x;
-	v->vy = velocity->y;
-	v->vz = velocity->z;
-	v->vcoordinate_system = velocity->coordinate_system;
+	if (velocity) {
+		EVDS_ASSERT(velocity->derivative_level == EVDS_VECTOR_VELOCITY);
+		v->vx = velocity->x;
+		v->vy = velocity->y;
+		v->vz = velocity->z;
+		v->vcoordinate_system = velocity->coordinate_system;
+	} else {
+		v->vcoordinate_system = 0;
+	}
 }
 
 
