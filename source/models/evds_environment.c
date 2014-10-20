@@ -137,7 +137,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 int EVDS_Environment_GetGravitationalField(EVDS_SYSTEM* system, EVDS_VECTOR* position, EVDS_REAL* phi, EVDS_VECTOR* field) {
 	EVDS_OBJECT* target_coordinates;
-	SIMC_LIST* planets;
+	SIMC_LIST *planets, *constant_sources;
 	SIMC_LIST_ENTRY* entry;
 	EVDS_VECTOR total_field;
 	EVDS_REAL total_phi;
@@ -147,10 +147,30 @@ int EVDS_Environment_GetGravitationalField(EVDS_SYSTEM* system, EVDS_VECTOR* pos
 	if (!position) return EVDS_ERROR_BAD_PARAMETER;
 	target_coordinates = position->coordinate_system;
 	EVDS_System_GetObjectsByType(system,"planet",&planets);
+	EVDS_System_GetObjectsByType(system, "constant_gravity", &constant_sources);
 
 	//Start accumulating total field and potential
 	EVDS_Vector_Set(&total_field,EVDS_VECTOR_ACCELERATION,target_coordinates,0.0,0.0,0.0);
 	total_phi = 0.0;
+
+	//Iterate through all constant sources
+	entry = SIMC_List_GetFirst(constant_sources);
+	while (entry) {
+		EVDS_OBJECT* constant_gravity = SIMC_List_GetData(constant_sources, entry);
+		EVDS_VARIABLE* acceleration_var; // Constant acceleration
+		EVDS_VECTOR acceleration;
+
+		// Get parameter
+		EVDS_Object_GetVariable(constant_gravity, "acceleration", &acceleration_var);
+		EVDS_Variable_GetVector(acceleration_var, &acceleration);
+		
+		//Reinterpret vector as acceleration and add to total field
+		acceleration.derivative_level = EVDS_VECTOR_ACCELERATION;
+		EVDS_Vector_Add(&total_field, &total_field, &acceleration);
+		total_phi += 0; // FIXME
+
+		entry = SIMC_List_GetNext(constant_sources, entry);
+	}
 
 	//Iterate through all planets
 	entry = SIMC_List_GetFirst(planets);

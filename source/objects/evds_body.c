@@ -488,25 +488,18 @@ int EVDS_InternalRigidBody_Integrate(EVDS_SYSTEM* system, EVDS_SOLVER* solver, E
 		EVDS_Vector_Add(&cm_force,&cm_force,&force);
 		EVDS_Vector_Add(&cm_torque,&cm_torque,&torque);
 
-
 		//------------------------------------------------------------------
 		// Calculate torque around current rigid bodies CM
 		//------------------------------------------------------------------
-		//Convert torque into vessel coordinates
-		/*EVDS_Vector_Convert(&torque,&child_derivative.torque,object);
+		// Convert force into vessel coordinates
+		EVDS_Vector_Convert(&torque, &child_derivative.torque, object);
 
-		//Move torque into center of mass
-		EVDS_Vector_GetPositionVector(&torque,&torque_position);
-		if (!torque_position.coordinate_system) EVDS_Vector_Copy(&torque_position,&cm);
-		EVDS_Vector_SetPositionVector(&torque,&cm);
-		EVDS_Vector_Subtract(&torque_position,&torque_position,&cm);
+		// Move this force vector into center of mass (and calculate new torque that corresponds to this change)
+		EVDS_Vector_MoveTorqueToPosition(&force, &torque, &cm);
 
-		//Compute force relative to center of mass
-		EVDS_Vector_Cross(&force,&torque,&torque_position);
-
-		//Accumulate forces and torques
-		//EVDS_Vector_Add(&cm_force,&cm_force,&force);
-		//EVDS_Vector_Add(&cm_torque,&cm_torque,&torque);*/
+		// Accumulate forces and torques
+		EVDS_Vector_Add(&cm_force, &cm_force, &force);
+		EVDS_Vector_Add(&cm_torque, &cm_torque, &torque);
 		
 
 		entry = SIMC_List_GetNext(children,entry);

@@ -2044,3 +2044,13 @@ int EVDS_ShortVector_Equal(EVDS_SHORT_VECTOR* v1, EVDS_SHORT_VECTOR* v2) {
 		(v1->z - v2->z)*(v1->z - v2->z);
 	return distance2 < EVDS_EPSf;
 }
+
+
+////////////////////////////////////////////////////////////////////////////////
+/// @brief Multiply vector v by a scalar
+////////////////////////////////////////////////////////////////////////////////
+void EVDS_ShortVector_Multiply(EVDS_SHORT_VECTOR* target, EVDS_SHORT_VECTOR* v, EVDS_REAL scalar) {
+	target->x = v->x*scalar;
+	target->y = v->y*scalar;
+	target->z = v->z*scalar;
+}

@@ -1492,6 +1492,8 @@ EVDS_API void EVDS_ShortVector_Length(EVDS_REAL* target, EVDS_SHORT_VECTOR* v);
 EVDS_API void EVDS_ShortVector_Distance(EVDS_REAL* target, EVDS_SHORT_VECTOR* v1, EVDS_SHORT_VECTOR* v2);
 //
 EVDS_API int EVDS_ShortVector_Equal(EVDS_SHORT_VECTOR* v1, EVDS_SHORT_VECTOR* v2);
+//
+EVDS_API void EVDS_ShortVector_Multiply(EVDS_SHORT_VECTOR* target, EVDS_SHORT_VECTOR* v, EVDS_REAL scalar);
 
 ////////////////////////////////////////////////////////////////////////////////
 /// @}
