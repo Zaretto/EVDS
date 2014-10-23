@@ -108,11 +108,21 @@ void EVDS_Vector_ShortConvert(EVDS_VECTOR* target, EVDS_VECTOR* vector, EVDS_OBJ
 	//Execute transformation
 	switch (vector->derivative_level) {
 		case EVDS_VECTOR_INERTIAL_TRANSFORM:
-		case EVDS_VECTOR_ANGULAR_VELOCITY:
-		case EVDS_VECTOR_ANGULAR_ACCELERATION: 
+		case EVDS_VECTOR_ANGULAR_ACCELERATION: // FIXME!
 		case EVDS_VECTOR_FORCE:
 		case EVDS_VECTOR_TORQUE: {
-			//Do nothing
+									 //Do nothing
+		} break;
+		case EVDS_VECTOR_ANGULAR_VELOCITY: {
+			EVDS_ASSERT(child_state->angular_velocity.coordinate_system == parent_coordinates);
+			if (!target_is_child) {
+				//w[P/a] = w[P/b] + w[Q/a]
+				EVDS_Vector_Add(target, target, &child_state->angular_velocity);
+			}
+			else {
+				//w[P/b] = w[P/a] - w[Q/a]
+				EVDS_Vector_Subtract(target, target, &child_state->angular_velocity);
+			}
 		} break;
 		case EVDS_VECTOR_POSITION: {
 			EVDS_ASSERT(child_state->position.coordinate_system == parent_coordinates);
@@ -678,25 +688,23 @@ void EVDS_Vector_MoveForceToPosition(EVDS_VECTOR* force, EVDS_VECTOR* torque, EV
 
 ////////////////////////////////////////////////////////////////////////////////
 /// @brief Change position where torque is applied
+///
+/// There is no general solution for moving torque to position, so this function must be
+/// paired with EVDS_Vector_MoveForceToPosition() to make physical sense.
+///
+/// In general case, there is no single solution to equation \f$T = r \cross F\f$, nor
+/// there is a general solution to adding two torques at two different locations. For entirely
+/// correct transformation, forces must be added properly (e.g. in rigid body simulation).
+///
+/// This function therefore simply changes position of the torque vector, not resulting in
+/// any forces.
 ////////////////////////////////////////////////////////////////////////////////
-void EVDS_Vector_MoveTorqueToPosition(EVDS_VECTOR* force, EVDS_VECTOR* torque, EVDS_VECTOR* new_position) {
-	EVDS_VECTOR torque_position;
+void EVDS_Vector_MoveTorqueToPosition(EVDS_VECTOR* torque, EVDS_VECTOR* new_position) {
 	EVDS_ASSERT(torque->derivative_level == EVDS_VECTOR_TORQUE);
 	EVDS_ASSERT(new_position->derivative_level == EVDS_VECTOR_POSITION);
 
-	//Move torque into target position
-	EVDS_Vector_GetPositionVector(torque, &torque_position); //Get force position
-	if (!torque_position.coordinate_system) EVDS_Vector_Copy(&torque_position, new_position);
-	EVDS_Vector_SetPositionVector(torque, new_position); //Put force into center of mass
-	EVDS_Vector_Subtract(&torque_position, &torque_position, new_position); //Find moment arm
-
-	//Compute torque relative to center of mass
-	EVDS_Vector_Cross(force, torque, &torque_position);
-	EVDS_Vector_SetPositionVector(force, new_position);
-
-	//Make sure this returns correct vector (FIXME apply this to all operations!)
-	force->pcoordinate_system = 0;
-	force->vcoordinate_system = 0;
+	// Set new position (there is no transformation we can do on torque alone)
+	EVDS_Vector_SetPositionVector(torque, new_position);
 }
 
 

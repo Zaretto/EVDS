@@ -475,9 +475,9 @@ int EVDS_InternalRigidBody_Integrate(EVDS_SYSTEM* system, EVDS_SOLVER* solver, E
 		EVDS_Vector_Initialize(force_position);
 		EVDS_Vector_Initialize(torque_position);
 
-		//------------------------------------------------------------------
+		//----------------------------------------------------------------------
 		// Calculate force around current rigid bodies CM
-		//------------------------------------------------------------------
+		//----------------------------------------------------------------------
 		// Convert force into vessel coordinates
 		EVDS_Vector_Convert(&force,&child_derivative.force,object);
 
@@ -488,17 +488,17 @@ int EVDS_InternalRigidBody_Integrate(EVDS_SYSTEM* system, EVDS_SOLVER* solver, E
 		EVDS_Vector_Add(&cm_force,&cm_force,&force);
 		EVDS_Vector_Add(&cm_torque,&cm_torque,&torque);
 
-		//------------------------------------------------------------------
+		//----------------------------------------------------------------------
 		// Calculate torque around current rigid bodies CM
-		//------------------------------------------------------------------
+		//----------------------------------------------------------------------
 		// Convert force into vessel coordinates
 		EVDS_Vector_Convert(&torque, &child_derivative.torque, object);
 
-		// Move this force vector into center of mass (and calculate new torque that corresponds to this change)
-		EVDS_Vector_MoveTorqueToPosition(&force, &torque, &cm);
+		// Move torque into center of mass (does not result in any extra forces, as those are summed up by previous call)
+		EVDS_Vector_MoveTorqueToPosition(&torque, &cm);
 
 		// Accumulate forces and torques
-		EVDS_Vector_Add(&cm_force, &cm_force, &force);
+		//EVDS_Vector_Add(&cm_force, &cm_force, &force); // This is not required for torques
 		EVDS_Vector_Add(&cm_torque, &cm_torque, &torque);
 		
 
@@ -506,9 +506,9 @@ int EVDS_InternalRigidBody_Integrate(EVDS_SYSTEM* system, EVDS_SOLVER* solver, E
 	}
 
 
-	//------------------------------------------------------------------
+	//--------------------------------------------------------------------------
 	// Convert force into acceleration
-	//------------------------------------------------------------------
+	//--------------------------------------------------------------------------
 	// Store force (as force in center of mass) in the derivative
 	EVDS_Vector_Copy(&derivative->force,&cm_force);
 	EVDS_Vector_SetPositionVector(&derivative->force,&cm);
@@ -527,9 +527,9 @@ int EVDS_InternalRigidBody_Integrate(EVDS_SYSTEM* system, EVDS_SOLVER* solver, E
 	EVDS_Vector_Add(&derivative->acceleration, &derivative->acceleration, &cm_a);
 
 
-	//------------------------------------------------------------------
+	//--------------------------------------------------------------------------
 	// Convert torque into angular acceleration
-	//------------------------------------------------------------------
+	//--------------------------------------------------------------------------
 	//Store torque (as torque in center of mass) in the derivative
 	EVDS_Vector_Copy(&derivative->torque, &cm_torque);
 	EVDS_Vector_SetPositionVector(&derivative->torque, &cm);
@@ -554,9 +554,9 @@ int EVDS_InternalRigidBody_Integrate(EVDS_SYSTEM* system, EVDS_SOLVER* solver, E
 	EVDS_Vector_Add(&derivative->angular_acceleration,&derivative->angular_acceleration,&cm_alpha);
 
 
-	//------------------------------------------------------------------
+	//--------------------------------------------------------------------------
 	// Add fictious accelerations due to rotation around CM rather than body origin
-	//------------------------------------------------------------------
+	//--------------------------------------------------------------------------
 	//Acceleration of bodies center of mass is zero in inertial coordinates (excluding additional forces)
 	EVDS_Vector_Set(&cm_a,EVDS_VECTOR_ACCELERATION,parent_coordinates,0,0,0);
 	EVDS_Vector_SetPositionVector(&cm_a,&cm);
@@ -572,9 +572,9 @@ int EVDS_InternalRigidBody_Integrate(EVDS_SYSTEM* system, EVDS_SOLVER* solver, E
 	EVDS_Vector_Add(&derivative->acceleration,&derivative->acceleration,&cm_a);
 
 
-	//------------------------------------------------------------------
+	//--------------------------------------------------------------------------
 	// Add additional forces (envrionmental forces)
-	//------------------------------------------------------------------
+	//--------------------------------------------------------------------------
 	//Calculate acceleration due to gravity
 	EVDS_Environment_GetGravitationalField(system,&state->position,0,&Ga);
 	EVDS_Vector_Add(&derivative->acceleration,&derivative->acceleration,&Ga);

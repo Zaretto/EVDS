@@ -1329,6 +1329,11 @@ EVDS_API int EVDS_Variable_GetFunctionPointer(EVDS_VARIABLE* variable, void** da
 // Get value from a 1D/2D/3D function 
 EVDS_API int EVDS_Variable_GetFunctionValue(EVDS_VARIABLE* variable, EVDS_REAL x, EVDS_REAL y, EVDS_REAL z, EVDS_REAL* p_value);
 
+// Convert variable to a printable string
+EVDS_API int EVDS_Variable_ToString(EVDS_VARIABLE* variable, char* name, size_t max_length);
+// Return printable string that represents variables value
+EVDS_API int EVDS_Variable_ToString(EVDS_VARIABLE* variable, char* name, size_t max_length);
+
 // Set userdata
 EVDS_API int EVDS_Variable_SetUserdata(EVDS_VARIABLE* variable, void* userdata);
 // Get userdata
@@ -1379,7 +1384,7 @@ EVDS_API void EVDS_Vector_SetVelocityVector(EVDS_VECTOR* v, EVDS_VECTOR* velocit
 // Change position where force is applied
 EVDS_API void EVDS_Vector_MoveForceToPosition(EVDS_VECTOR* force, EVDS_VECTOR* torque, EVDS_VECTOR* new_position);
 // Change position where torque is applied
-EVDS_API void EVDS_Vector_MoveTorqueToPosition(EVDS_VECTOR* force, EVDS_VECTOR* torque, EVDS_VECTOR* new_position);
+EVDS_API void EVDS_Vector_MoveTorqueToPosition(EVDS_VECTOR* torque, EVDS_VECTOR* new_position);
 // Nullify the vector velocity and position
 EVDS_API void EVDS_Vector_NullifyPositionAndVelocity(EVDS_VECTOR* v);
 
