@@ -1330,9 +1330,9 @@ EVDS_API int EVDS_Variable_GetFunctionPointer(EVDS_VARIABLE* variable, void** da
 EVDS_API int EVDS_Variable_GetFunctionValue(EVDS_VARIABLE* variable, EVDS_REAL x, EVDS_REAL y, EVDS_REAL z, EVDS_REAL* p_value);
 
 // Convert variable to a printable string
-EVDS_API int EVDS_Variable_ToString(EVDS_VARIABLE* variable, char* name, size_t max_length);
+EVDS_API int EVDS_Variable_ToString(EVDS_VARIABLE* variable, char* string, size_t max_length);
 // Return printable string that represents variables value
-EVDS_API int EVDS_Variable_ToString(EVDS_VARIABLE* variable, char* name, size_t max_length);
+EVDS_API char* EVDS_Variable_Astring(EVDS_VARIABLE* variable);
 
 // Set userdata
 EVDS_API int EVDS_Variable_SetUserdata(EVDS_VARIABLE* variable, void* userdata);

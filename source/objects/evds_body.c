@@ -197,8 +197,9 @@
 
 #ifndef DOXYGEN_INTERNAL_STRUCTS
 typedef struct EVDS_SOLVER_RIGID_USERDATA_TAG {
-	//Is this body static?
+	// Is this body static? (immovable in any context)
 	int is_static;
+	// Is this body 
 	
 	//Is state consistent (has Solver been already called at least once)
 	int is_consistent;
