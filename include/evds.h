@@ -32,7 +32,7 @@ extern "C" {
 ////////////////////////////////////////////////////////////////////////////////
 // Library management
 ////////////////////////////////////////////////////////////////////////////////
-#define EVDS_VERSION			37
+#define EVDS_VERSION			38
 #ifndef EVDS_DYNAMIC
 #	define EVDS_API
 #else
@@ -1332,7 +1332,7 @@ EVDS_API int EVDS_Variable_GetFunctionValue(EVDS_VARIABLE* variable, EVDS_REAL x
 // Convert variable to a printable string
 EVDS_API int EVDS_Variable_ToString(EVDS_VARIABLE* variable, char* string, size_t max_length);
 // Return printable string that represents variables value
-EVDS_API char* EVDS_Variable_Astring(EVDS_VARIABLE* variable);
+EVDS_API char* EVDS_Variable_AsString(EVDS_VARIABLE* variable);
 
 // Set userdata
 EVDS_API int EVDS_Variable_SetUserdata(EVDS_VARIABLE* variable, void* userdata);

@@ -1144,3 +1144,43 @@ int EVDS_Variable_GetFunctionPointer(EVDS_VARIABLE* variable, void** data) {
 	*data = variable->value;
 	return EVDS_OK;
 }
+
+
+////////////////////////////////////////////////////////////////////////////////
+/// @brief Convert variable to a printable string
+///
+/// @param[in] variable Variable
+/// @param[out] value Pointer to value to be set
+/// @param[in] max_length Size of the destanation buffer
+///
+/// @returns Error code, string representation of the variable
+/// @retval EVDS_OK Successfully completed
+/// @retval EVDS_ERROR_BAD_PARAMETER "string" is null
+////////////////////////////////////////////////////////////////////////////////
+int EVDS_Variable_ToString(EVDS_VARIABLE* variable, char* string, size_t max_length) {
+	if (!string) return EVDS_ERROR_BAD_PARAMETER;
+	// FIXME: add code
+	return EVDS_OK;
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+/// @brief Return printable string that represents variables value
+///
+/// This function will return a pointer to a temporary string that is only valid
+/// until the next EVDS_Variable_AsString() call, although it is safe to pass
+/// several EVDS_Variable_AsString() calls as parameters to, for example, printf.
+///
+/// @note This is not a thread safe call. Use it only in one thread for debugging purposes.
+///		See EVDS_Variable_ToString() for a correct solution!
+///
+/// @param[in] variable Variable
+///
+/// @returns String representation of the variable
+/// @retval EVDS_OK Successfully completed
+/// @retval EVDS_ERROR_BAD_PARAMETER "variable" is null
+/// @retval EVDS_ERROR_BAD_PARAMETER "string" is null
+////////////////////////////////////////////////////////////////////////////////
+char* EVDS_Variable_AsString(EVDS_VARIABLE* variable) {
+	return "";
+}

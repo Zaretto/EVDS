@@ -1,6 +1,29 @@
 #include "framework.h"
 
 void Test_EVDS_VECTOR() {
+	START_TEST("Torque and force") {
+		EVDS_VECTOR new_position,force,torque;
+
+		//
+		EVDS_Vector_Set(&force, EVDS_VECTOR_FORCE, system->inertial_space, 100.0, 0.0, 0.0);
+		EVDS_Vector_SetPosition(&force, system->inertial_space, 0.0, 0.0, -100.0);
+		EVDS_Vector_Set(&new_position, EVDS_VECTOR_POSITION, system->inertial_space, 0.0, 0.0, 0.0);
+		EVDS_Vector_MoveForceToPosition(&force, &torque, &new_position);
+
+		//
+		EVDS_Vector_Set(&force, EVDS_VECTOR_FORCE, system->inertial_space, 100.0, 0.0, 0.0);
+		EVDS_Vector_SetPosition(&force, system->inertial_space, 0.0, 0.0, 100.0);
+		EVDS_Vector_Set(&new_position, EVDS_VECTOR_POSITION, system->inertial_space, 0.0, 0.0, 0.0);
+		EVDS_Vector_MoveForceToPosition(&force, &torque, &new_position);
+
+		//
+		EVDS_Vector_Set(&force, EVDS_VECTOR_FORCE, system->inertial_space, 100.0, 0.0, 0.0);
+		EVDS_Vector_SetPosition(&force, system->inertial_space, 0.0, 0.0, 100.0);
+		EVDS_Vector_Set(&new_position, EVDS_VECTOR_POSITION, system->inertial_space, 0.0, 0.0, 0.0);
+		EVDS_Vector_MoveForceToPosition(&force, &torque, &new_position);
+	} END_TEST
+
+
 	START_TEST("Handedness tests") {
 		//Behavior: pitch forward vector up by 90 deg
 		EVDS_Vector_Set(&vector,EVDS_VECTOR_POSITION,system->inertial_space,-1.0,0.0,0.0);

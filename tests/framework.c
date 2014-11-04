@@ -44,8 +44,8 @@ int Test_InList(void* ptr, SIMC_LIST* list) {
 
 void main() {
 	//Test_EVDS_SYSTEM();
-	Test_EVDS_RIGID_BODY();
-	//Test_EVDS_VECTOR();
+	//Test_EVDS_RIGID_BODY();
+	Test_EVDS_VECTOR();
 	//Test_EVDS_QUATERNION();
 	//Test_EVDS_FRAMES();
 	//Test_EVDS_FUNCTIONS();
