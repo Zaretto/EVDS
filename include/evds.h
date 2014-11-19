@@ -1681,6 +1681,8 @@ EVDS_API int EVDS_Propagator_RK4_Register(EVDS_SYSTEM* system);
 EVDS_API int EVDS_RigidBody_UpdateDetaching(EVDS_SYSTEM* system);
 // Returns EVDS_OK if rigid body is consistent (solver was called at least once)
 EVDS_API int EVDS_RigidBody_IsConsistent(EVDS_OBJECT* object);
+// Get total mass of rigid body. If called upon a child, returns total mass of the parent including all children
+EVDS_API int EVDS_RigidBody_GetTotalMass(EVDS_OBJECT* object, EVDS_REAL* p_mass);
 
 // Consume fuel from a fuel tank (thread-safe - does not leak fuel away)
 EVDS_API int EVDS_FuelTank_Consume(EVDS_OBJECT* tank, EVDS_REAL amount, EVDS_REAL* consumed);

@@ -675,6 +675,7 @@ int EVDS_InternalRigidBody_Deinitialize(EVDS_SYSTEM* system, EVDS_SOLVER* solver
 int EVDS_RigidBody_UpdateDetaching(EVDS_SYSTEM* system) {	
 	SIMC_LIST* list;
 	SIMC_LIST_ENTRY* entry;
+	if (!system) return EVDS_ERROR_BAD_PARAMETER;
 
 	//Check for every vessel object
 	EVDS_ERRCHECK(EVDS_System_GetObjectsByType(system,"vessel",&list));
@@ -707,11 +708,13 @@ int EVDS_RigidBody_UpdateDetaching(EVDS_SYSTEM* system) {
 	return EVDS_OK;
 }
 
+
 ////////////////////////////////////////////////////////////////////////////////
 /// @brief Returns EVDS_OK if rigid body is consistent (solver was called at least once)
 ////////////////////////////////////////////////////////////////////////////////
 int EVDS_RigidBody_IsConsistent(EVDS_OBJECT* object) {
 	EVDS_SOLVER_RIGID_USERDATA* userdata;
+	if (!object) return EVDS_ERROR_BAD_PARAMETER;
 
 	//Check correct object type
 	if (EVDS_Object_CheckType(object, "vessel") != EVDS_OK) {
@@ -727,6 +730,37 @@ int EVDS_RigidBody_IsConsistent(EVDS_OBJECT* object) {
 	} else {
 		return EVDS_ERROR_BAD_STATE;
 	}
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+/// @brief Returns total mass of the object and its children.
+////////////////////////////////////////////////////////////////////////////////
+int EVDS_RigidBody_GetTotalMass(EVDS_OBJECT* object, EVDS_REAL* p_mass) {
+	EVDS_OBJECT *body, *parent;
+	EVDS_VARIABLE* variable;
+	if (!object) return EVDS_ERROR_BAD_PARAMETER;
+	if (!p_mass) return EVDS_ERROR_BAD_PARAMETER;
+
+	// Find the first object which doesn't accumulate total mass
+	body = object;
+	parent = 0;
+	do {
+		// Search higher up the hierarchy
+		if (parent) body = parent;
+		// Get parent of this object
+		EVDS_Object_GetParent(body, &parent);
+	} while (parent && (EVDS_RigidBody_IsConsistent(parent) == EVDS_OK));
+
+	// 'body' is now the last object which has total_mass or mass defined and can accumulate masses
+	if ((EVDS_Object_GetVariable(body, "total_mass", &variable) == EVDS_OK) && (EVDS_RigidBody_IsConsistent(body) == EVDS_OK)) {
+		EVDS_Variable_GetReal(variable, p_mass);
+	} else if (EVDS_Object_GetVariable(body, "mass", &variable) == EVDS_OK) {
+		EVDS_Variable_GetReal(variable, p_mass);
+	} else {
+		*p_mass = 0;
+	}
+	return EVDS_OK;
 }
 
 
