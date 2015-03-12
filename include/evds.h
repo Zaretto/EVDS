@@ -856,6 +856,22 @@ typedef struct EVDS_ENVIRONMENT_RADIATION_TAG {
 } EVDS_ENVIRONMENT_RADIATION;
 
 
+////////////////////////////////////////////////////////////////////////////////
+/// @ingroup EVDS_ENVIRONMENT
+/// @brief Structure that describes a single sound
+///
+/// @todo
+////////////////////////////////////////////////////////////////////////////////
+typedef struct EVDS_SOUND_TAG {
+	int group;					/// Sound group (unique ID of which sound set must be played)
+	int id;						/// ID of the sound (defines which actual sound must be played)
+	EVDS_REAL time;				/// Time at which sound started
+	EVDS_REAL duration;			/// Duration of the sound (<0.0 means indefinite)
+	EVDS_VECTOR position;		/// Location in space
+	EVDS_REAL parameter[4];		/// Arbitrary parameters
+} EVDS_SOUND;
+
+
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -1525,6 +1541,11 @@ EVDS_API int EVDS_Environment_GetMagneticField(EVDS_SYSTEM* system, EVDS_VECTOR*
 EVDS_API int EVDS_Environment_GetAtmosphericParameters(EVDS_SYSTEM* system, EVDS_VECTOR* position, EVDS_ENVIRONMENT_ATMOSPHERE* parameters);
 // Get radiation intensity (including energy spectrum)
 EVDS_API int EVDS_Environment_GetRadiationParameters(EVDS_SYSTEM* system, EVDS_VECTOR* position, EVDS_ENVIRONMENT_RADIATION* parameters);
+
+// Play a sound in the 3D world
+EVDS_API int EVDS_Sound_Play(EVDS_SYSTEM* system, EVDS_SOUND* sound);
+// Get the next sound entry and remove it from the internal list of sounds
+EVDS_API int EVDS_Sound_Pop(EVDS_SYSTEM* system, EVDS_SOUND* sound);
 ////////////////////////////////////////////////////////////////////////////////
 /// @}
 ////////////////////////////////////////////////////////////////////////////////

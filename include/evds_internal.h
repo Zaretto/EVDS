@@ -626,6 +626,7 @@ struct EVDS_SYSTEM_TAG {
 	// Other lists
 	SIMC_LIST* solvers;							// List of solvers
 	SIMC_LIST* databases;						// List of databases (each an EVDS_VARIABLE)
+	SIMC_QUEUE* sounds;							// List of sounds currently playing
 
 	// Global callbacks
 	EVDS_GLOBAL_CALLBACKS callbacks;			// Global callbacks

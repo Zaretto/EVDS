@@ -149,6 +149,7 @@ int EVDS_System_Create(EVDS_SYSTEM** p_system) {
 	SIMC_List_Create(&system->objects,1);
 	SIMC_List_Create(&system->solvers,1); //FIXME
 	SIMC_List_Create(&system->databases,1);
+	SIMC_Queue_Create(&system->sounds, 8192, sizeof(EVDS_SOUND));
 
 	//Create root inertial space
 	//FIXME: EVDS_InternalObject_Create(system,0,&inertial_space);
@@ -283,6 +284,7 @@ int EVDS_System_Destroy(EVDS_SYSTEM* system) {
 	SIMC_List_Destroy(system->objects);
 	SIMC_List_Destroy(system->solvers);
 	SIMC_List_Destroy(system->databases);
+	SIMC_Queue_Destroy(system->sounds);
 
 	//Remove system data structure and deinitialize threading
 #ifndef EVDS_SINGLETHREADED

@@ -9,6 +9,8 @@ if EVDS_STANDALONE ~= false then
      dofile("./../external/simc/support/premake4.lua")
 end
 
+local HAS_RAILSIM = os.isdir("../../EVDS_Railsim")
+
 
 --------------------------------------------------------------------------------
 -- EVDS documentation
@@ -71,8 +73,8 @@ project "evds"
            "../source/objects/**",
            "../source/propagators/**",
            "../source/models/**",
-           "../private/evds_**",
            "../include/**" }
+   if HAS_RAILSIM then files { "../../EVDS_Railsim/source/evds_**" } end
    defines { "EVDS_LIBRARY", "SIMC_LIBRARY" }
    configuration { "*Dynamic*" }
       links { "simc" }
@@ -132,7 +134,7 @@ if EVDS_STANDALONE ~= false then
       
       
    -- Projects internal to FoxWorks
-   if not os.isfile("F:\Development\Metrosim\Source\EVDS\private\evds_railsim.c") then
+   if HAS_RAILSIM then
       project "evds_railsim_test"
          uuid "28E158E3-1600-4B73-C385-8E9228D33F19"
          kind "ConsoleApp"
@@ -140,7 +142,7 @@ if EVDS_STANDALONE ~= false then
          includedirs { "../include",
                        "../external/simc/include",
                        "../external/glfw/include" }
-         files { "../private/railsim_test.c" }
+         files { "../../EVDS_Railsim/source/railsim_test.c" }
          links { "evds", "simc" }
    end
 end
