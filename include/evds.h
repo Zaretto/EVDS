@@ -43,6 +43,20 @@ extern "C" {
 #	endif
 #endif
 
+#ifdef _DEBUG
+#	define EVDS_ERRCHECK(expr) { int error_code = expr; EVDS_ASSERT(error_code == EVDS_OK); if (error_code != EVDS_OK) return error_code; }
+#	define EVDS_ASSERT(what) ((what) ? ((void)0) : EVDS_Log(EVDS_ERROR,"Assert failed: %s (%s:%d)\n",#what,__FILE__,__LINE__))
+#	ifdef PLATFORM32
+#		define EVDS_BREAKPOINT() _asm {int 3}
+#	else
+#		define EVDS_BREAKPOINT() __debugbreak()
+#	endif
+#else
+#	define EVDS_ERRCHECK(expr) { int error_code = expr; if (error_code != EVDS_OK) return error_code; }
+#	define EVDS_ASSERT(nothing) ((void)0)
+#	define EVDS_BREAKPOINT()
+#endif
+
 #include "stddef.h"
 #include "sim_core.h"
 
@@ -362,6 +376,8 @@ typedef int EVDS_Callback_Initialize(EVDS_SYSTEM* system, EVDS_SOLVER* solver, E
 typedef int EVDS_Callback_PostInitialize(EVDS_SYSTEM* system, EVDS_SOLVER* solver, EVDS_OBJECT* object);
 /// Called when object is being deinitialized
 typedef int EVDS_Callback_Deinitialize(EVDS_SYSTEM* system, EVDS_SOLVER* solver, EVDS_OBJECT* object);
+/// Called when object data is being destroyed (delayed destroy) to cleanup data which may exist between object being destroyed in system and for real
+typedef int EVDS_Callback_Finalize(EVDS_SYSTEM* system, EVDS_OBJECT* object);
 /// Called when solver is started up
 typedef int EVDS_Callback_Startup(EVDS_SYSTEM* system, EVDS_SOLVER* solver);
 /// Called when solver is shut down
@@ -437,7 +453,7 @@ struct EVDS_SOLVER_TAG {
 #else
 struct EVDS_SOLVER {
 #endif
-	//Callbacks
+	// Callbacks
 	EVDS_Callback_Initialize*		OnInitialize;		///< Called when object is being initialized
 	EVDS_Callback_Deinitialize*		OnDeinitialize;		///< Called when object is being deinitialized
 	EVDS_Callback_Solve*			OnSolve;			///< Called to propagate object state in time
@@ -445,11 +461,14 @@ struct EVDS_SOLVER {
 	EVDS_Callback_StateSave*		OnStateSave;		///< Called when objects state must be saved
 	EVDS_Callback_StateLoad*		OnStateLoad;		///< Called when objects state must be restored
 
-	//Called only once
+	// Called only once
 	EVDS_Callback_Startup*			OnStartup;			///< Called when solver is started up
 	EVDS_Callback_Shutdown*			OnShutdown;			///< Called when solver is shut down
 
-	//User-defined data
+	// Extra callbacks
+	EVDS_Callback_Finalize*			OnFinalize;			///< Called when object data is deleted
+
+	// User-defined data
 	void* userdata;										///< Pointer to user data
 };
 
@@ -863,8 +882,9 @@ typedef struct EVDS_ENVIRONMENT_RADIATION_TAG {
 /// @todo
 ////////////////////////////////////////////////////////////////////////////////
 typedef struct EVDS_SOUND_TAG {
-	int group;					/// Sound group (unique ID of which sound set must be played)
 	int id;						/// ID of the sound (defines which actual sound must be played)
+	EVDS_OBJECT* source;		/// Source object which generated this sound
+
 	EVDS_REAL time;				/// Time at which sound started
 	EVDS_REAL duration;			/// Duration of the sound (<0.0 means indefinite)
 	EVDS_VECTOR position;		/// Location in space
